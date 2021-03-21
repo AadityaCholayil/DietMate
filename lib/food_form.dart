@@ -83,7 +83,7 @@ class _FoodFormState extends State<FoodForm> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Food form'),
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.green,
       ),
       body: Container(
         padding: EdgeInsets.all(15),
