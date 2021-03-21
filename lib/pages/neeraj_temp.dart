@@ -19,7 +19,7 @@ class _NeerajTempState extends State<NeerajTemp> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Auth Screens(Temporary)\n(Neeraj)',
+                'Auth Screens(Temporary)\n(Neeraj)\nGitHub Done',
                 style: TextStyle(
                   fontSize: 30,
                 ),
