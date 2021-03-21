@@ -1,4 +1,4 @@
-import 'file:///C:/Users/chola/AndroidStudioProjects/dietmate/lib/food_form.dart';
+import 'package:dietmate/food_form.dart';
 import 'package:dietmate/pages/homepage.dart';
 import 'package:dietmate/pages/neeraj_temp.dart';
 import 'package:dietmate/pages/profile_detail_page.dart';
