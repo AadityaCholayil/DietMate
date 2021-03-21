@@ -11,7 +11,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: Center(
           child: Text(
-            'Home Page\n(Nupoor)\nGitHub Done',
+            'Home Page\n(Nupoor)\nGitHub Branch',
             style: TextStyle(
               fontSize: 40,
             ),
