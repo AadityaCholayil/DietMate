@@ -44,6 +44,8 @@ class _HomeScreenState extends State<HomeScreen> {
         width: 75,
         child: FittedBox(
           child: OpenContainer(
+            closedColor: Theme.of(context).canvasColor,
+            openColor: Theme.of(context).canvasColor,
             transitionDuration: Duration(milliseconds: 350),
             openBuilder: (context, closedContainer){
               return FoodForm();
