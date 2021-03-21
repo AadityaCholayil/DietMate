@@ -37,7 +37,7 @@ class _FoodFormState extends State<FoodForm> {
   Widget _buildName(){
     return TextFormField(
       decoration: InputDecoration(
-          labelText: 'Food Name',
+          labelText: 'FoodName',
           labelStyle: TextStyle(fontSize: 25)
       ),
       keyboardType: TextInputType.name,
@@ -57,7 +57,6 @@ class _FoodFormState extends State<FoodForm> {
   Widget _buildList(List<Food> foodList){
     return Container(
       alignment: Alignment.topCenter,
-
       child: ListView.builder(
         padding: EdgeInsets.all(5),
         scrollDirection: Axis.vertical,
@@ -82,6 +81,10 @@ class _FoodFormState extends State<FoodForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Food form'),
+        backgroundColor: Colors.blue,
+      ),
       body: Container(
         padding: EdgeInsets.all(15),
         child: Center(
@@ -92,7 +95,13 @@ class _FoodFormState extends State<FoodForm> {
               children: <Widget>[
                 _buildName(),
                 SizedBox(height: 10,),
-                isSearching==true?CircularProgressIndicator():SizedBox.shrink(),
+                isSearching==true?Column(
+                  children: [
+                    SizedBox(height: 20),
+                    CircularProgressIndicator(),
+                    SizedBox(height: 20),
+                  ],
+                ):SizedBox.shrink(),
                 searchDone==true?_buildList(foodList):SizedBox.shrink(),
                 Builder(builder: (context) => ElevatedButton(
                   child: Text(
