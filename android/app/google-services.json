@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "390567119575",
+    "project_id": "dietmate-4abfc",
+    "storage_bucket": "dietmate-4abfc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:390567119575:android:5ef549e34f582e9bd07e92",
+        "android_client_info": {
+          "package_name": "com.aadi.dietmate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "390567119575-nefm6guo441n6nu5ih638i4mofm15ikp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANyYxtkpkLqspqx07uCFe-YbTAqRjrIYc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "390567119575-nefm6guo441n6nu5ih638i4mofm15ikp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
