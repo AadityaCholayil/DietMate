@@ -82,7 +82,7 @@ class _FoodFormState extends State<FoodForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Food form'),
+        title: Text('Food form 2'),
         backgroundColor: Colors.green,
       ),
       body: Container(
