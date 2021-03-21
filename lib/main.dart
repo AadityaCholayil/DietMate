@@ -1,3 +1,6 @@
+import 'package:dietmate/themes/custom_theme.dart';
+import 'package:dietmate/themes/dark_theme.dart';
+import 'package:dietmate/themes/light_theme.dart';
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
 
@@ -14,6 +17,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: isDarkTheme?darkTheme:lightTheme,
       home: HomeScreen(),
     );
   }

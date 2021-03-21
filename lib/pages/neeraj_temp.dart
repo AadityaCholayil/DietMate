@@ -3,6 +3,7 @@ import 'package:dietmate/auth_screens/login_screen.dart';
 import 'package:dietmate/auth_screens/plan_screen.dart';
 import 'package:dietmate/auth_screens/signup_screen.dart';
 import 'package:dietmate/auth_screens/start_screen.dart';
+import 'package:dietmate/themes/custom_theme.dart';
 import 'package:flutter/material.dart';
 
 class NeerajTemp extends StatefulWidget {
@@ -68,6 +69,14 @@ class _NeerajTempState extends State<NeerajTemp> {
                   );
                 },
               ),
+              Switch(
+                value: isDarkTheme,
+                onChanged: (bool newValue){
+                  setState(() {
+                    isDarkTheme=newValue;
+                  });
+                },
+              )
             ],
           )
       ),

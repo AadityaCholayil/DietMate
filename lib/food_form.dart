@@ -57,23 +57,42 @@ class _FoodFormState extends State<FoodForm> {
   Widget _buildList(List<Food> foodList){
     return Container(
       alignment: Alignment.topCenter,
-      child: ListView.builder(
-        padding: EdgeInsets.all(5),
+      child: ListView.separated(
+        padding: EdgeInsets.zero,
         scrollDirection: Axis.vertical,
         //primary: false,
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index){
           Food food=foodList[index];
-          return Center(
-            child: Text(
-              '${food.name}: ${food.calories} Kcal',
-              style: TextStyle(
-                fontSize: 20
-              ),
-            )
+          return InkWell(
+            child: Container(
+              //color: Colors.yellow,
+              width: double.infinity,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${food.name}',
+                    style: TextStyle(
+                      fontSize: 25
+                    ),
+                  ),
+                  Text(
+                    'Calories: ${food.calories} Kcal',
+                    style: TextStyle(
+                        fontSize: 19
+                    ),
+                  ),
+                ],
+              )
+            ),
+            onTap: (){
+
+            },
           );
         },
         itemCount: foodList.length,
+        separatorBuilder: (BuildContext context, int index) => Divider(thickness: 2),
       ),
     );
   }
@@ -81,58 +100,52 @@ class _FoodFormState extends State<FoodForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Food form 2'),
-        backgroundColor: Colors.cyan,
-      ),
       body: Container(
         padding: EdgeInsets.all(15),
-        child: Center(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                _buildName(),
-                SizedBox(height: 10,),
-                isSearching==true?Column(
-                  children: [
-                    SizedBox(height: 20),
-                    CircularProgressIndicator(),
-                    SizedBox(height: 20),
-                  ],
-                ):SizedBox.shrink(),
-                searchDone==true?_buildList(foodList):SizedBox.shrink(),
-                Builder(builder: (context) => ElevatedButton(
-                  child: Text(
-                    'Search',
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),
-                  ),
-                  onPressed: () async {
-                    setState(() {
-                      if (!_formKey.currentState.validate()) {
-                        return;
-                      }
-                      isSearching=true;
-                      _formKey.currentState.save();
-                    });
-                    foodData = await getData();
-                    food1.set(foodData, 0);
-                    food2.set(foodData, 1);
-                    food3.set(foodData, 2);
-                    foodList.add(food1);
-                    foodList.add(food2);
-                    foodList.add(food3);
-                    // food4.set(foodData, 3);
-                    // food5.set(foodData, 4);
-                    setState(() {
-                      isSearching=false;
-                      searchDone=true;
-                    });
-                  },
-                )),
-              ],
-            ),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              _buildName(),
+              SizedBox(height: 10,),
+              isSearching==true?Column(
+                children: [
+                  SizedBox(height: 20),
+                  CircularProgressIndicator(),
+                  SizedBox(height: 20),
+                ],
+              ):SizedBox.shrink(),
+              searchDone==true?_buildList(foodList):SizedBox.shrink(),
+              Builder(builder: (context) => ElevatedButton(
+                child: Text(
+                  'Search',
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),
+                ),
+                onPressed: () async {
+                  setState(() {
+                    if (!_formKey.currentState.validate()) {
+                      return;
+                    }
+                    isSearching=true;
+                    _formKey.currentState.save();
+                  });
+                  foodData = await getData();
+                  food1.set(foodData, 0);
+                  food2.set(foodData, 1);
+                  food3.set(foodData, 2);
+                  foodList.add(food1);
+                  foodList.add(food2);
+                  foodList.add(food3);
+                  // food4.set(foodData, 3);
+                  // food5.set(foodData, 4);
+                  setState(() {
+                    isSearching=false;
+                    searchDone=true;
+                  });
+                },
+              )),
+            ],
           ),
         ),
       ),
