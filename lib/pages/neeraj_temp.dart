@@ -1,8 +1,8 @@
-import 'package:dietmate/auth_pages/additional_details_page.dart';
-import 'package:dietmate/auth_pages/login_page.dart';
-import 'package:dietmate/auth_pages/plan_page.dart';
-import 'package:dietmate/auth_pages/signup_page.dart';
-import 'package:dietmate/auth_pages/start_page.dart';
+import 'package:dietmate/auth_screens/additional_details_screen.dart';
+import 'package:dietmate/auth_screens/login_screen.dart';
+import 'package:dietmate/auth_screens/plan_screen.dart';
+import 'package:dietmate/auth_screens/signup_screen.dart';
+import 'package:dietmate/auth_screens/start_screen.dart';
 import 'package:flutter/material.dart';
 
 class NeerajTemp extends StatefulWidget {
@@ -19,34 +19,34 @@ class _NeerajTempState extends State<NeerajTemp> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Auth Temp page\n(Neeraj)',
+                'Auth Screens(Temporary)\n(Neeraj)',
                 style: TextStyle(
                   fontSize: 30,
                 ),
                 textAlign: TextAlign.center,
               ),
               ElevatedButton(
-                child: Text('Start Page(1)'),
+                child: Text('Start Screen(1)'),
                 onPressed: () => Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (BuildContext context) => StartPage()),
+                  MaterialPageRoute(builder: (BuildContext context) => StartScreen()),
                 ),
               ),
               ElevatedButton(
-                child: Text('Sign up Page(2a)'),
+                child: Text('Sign up Screen(2a)'),
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (BuildContext context) => SignUpPage()),
+                    MaterialPageRoute(builder: (BuildContext context) => SignUpScreen()),
                   );
                 },
               ),
               ElevatedButton(
-                child: Text('Login Page(2)'),
+                child: Text('Login Screen(2)'),
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (BuildContext context) => LoginPage()),
+                    MaterialPageRoute(builder: (BuildContext context) => LoginScreen()),
                   );
                 },
               ),
@@ -55,16 +55,16 @@ class _NeerajTempState extends State<NeerajTemp> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (BuildContext context) => AddDetailsPage()),
+                    MaterialPageRoute(builder: (BuildContext context) => AddDetailsScreen()),
                   );
                 },
               ),
               ElevatedButton(
-                child: Text('Plan Page(2c)'),
+                child: Text('Plan Screen(2c)'),
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (BuildContext context) => PlanPage()),
+                    MaterialPageRoute(builder: (BuildContext context) => PlanScreen()),
                   );
                 },
               ),

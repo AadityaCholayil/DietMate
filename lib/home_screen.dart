@@ -1,4 +1,4 @@
-import 'package:dietmate/pages/food_form.dart';
+import 'file:///C:/Users/chola/AndroidStudioProjects/dietmate/lib/food_form.dart';
 import 'package:dietmate/pages/homepage.dart';
 import 'package:dietmate/pages/neeraj_temp.dart';
 import 'package:dietmate/pages/profile_detail_page.dart';
@@ -8,12 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:preload_page_view/preload_page_view.dart';
 import 'package:animations/animations.dart';
 
-class InitialPage extends StatefulWidget {
+class HomeScreen extends StatefulWidget {
   @override
-  _InitialPageState createState() => _InitialPageState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _InitialPageState extends State<InitialPage> {
+class _HomeScreenState extends State<HomeScreen> {
 
   PreloadPageController pageController = PreloadPageController(initialPage: 0);
   int pageNo = 0;

@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 
-class PlanPage extends StatefulWidget {
+class AddDetailsScreen extends StatefulWidget {
   @override
-  _PlanPageState createState() => _PlanPageState();
+  _AddDetailsScreenState createState() => _AddDetailsScreenState();
 }
 
-class _PlanPageState extends State<PlanPage> {
+class _AddDetailsScreenState extends State<AddDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: Text(
-          'Plan Page',
+          'Additional Details Page',
           style: TextStyle(
             fontSize: 40,
           ),
+          textAlign: TextAlign.center,
         ),
       ),
     );

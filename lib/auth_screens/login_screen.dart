@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
-class SignUpPage extends StatefulWidget {
+class LoginScreen extends StatefulWidget {
   @override
-  _SignUpPageState createState() => _SignUpPageState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: Text(
-          'SignUp Page',
+          'Login Page',
           style: TextStyle(
             fontSize: 40,
           ),

@@ -1,5 +1,4 @@
 import 'package:dietmate/model/food.dart';
-import 'package:dietmate/model/food_func.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
