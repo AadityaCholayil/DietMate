@@ -82,8 +82,8 @@ class _FoodFormState extends State<FoodForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Food form'),
-        backgroundColor: Colors.red,
+        title: Text('Food form 2'),
+        backgroundColor: Colors.green,
       ),
       body: Container(
         padding: EdgeInsets.all(15),
