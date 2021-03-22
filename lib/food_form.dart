@@ -1,4 +1,5 @@
 import 'package:dietmate/model/food.dart';
+import 'package:dietmate/pages/image_search_test.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
@@ -145,6 +146,15 @@ class _FoodFormState extends State<FoodForm> {
                   });
                 },
               )),
+              ElevatedButton(
+                child: Text('Search Image'),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (BuildContext context) => ImageSearch())
+                  );
+                },
+              ),
             ],
           ),
         ),
