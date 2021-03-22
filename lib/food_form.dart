@@ -12,11 +12,7 @@ class FoodForm extends StatefulWidget {
 class _FoodFormState extends State<FoodForm> {
 
   String foodName='default';
-  Food food1 = new Food();
-  Food food2 = new Food();
-  Food food3 = new Food();
-  Food food4 = new Food();
-  Food food5 = new Food();
+  Food food1, food2, food3, food4, food5;
   var foodData;
   bool isSearching=false;
   bool searchDone=false;
@@ -132,14 +128,12 @@ class _FoodFormState extends State<FoodForm> {
                     _formKey.currentState.save();
                   });
                   foodData = await getData();
-                  food1.set(foodData, 0);
-                  food2.set(foodData, 1);
-                  food3.set(foodData, 2);
+                  food1=Food.fromData(foodData, 0);
+                  food2=Food.fromData(foodData, 1);
+                  food3=Food.fromData(foodData, 2);
                   foodList.add(food1);
                   foodList.add(food2);
                   foodList.add(food3);
-                  // food4.set(foodData, 3);
-                  // food5.set(foodData, 4);
                   setState(() {
                     isSearching=false;
                     searchDone=true;

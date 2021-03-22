@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:dietmate/model/image_details.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
@@ -14,28 +15,12 @@ class _ImageSearchState extends State<ImageSearch> {
   bool isSearching=false;
   bool searchDone=false;
   var searchResult;
-  Image image1, image2, image3;
+  FoodImage foodImage1, foodImage2, foodImage3;
   List<String> imgList=[];
-
-  Future<dynamic> getImagesByName(String query) async {
-    Client _client = Client();
-    const String _apiKey = "gqDMu5m4NrqfExqrZh6jecOdbS_6K0WFXsaOw4Ve9JE";
-    const String _baseUrl = "api.unsplash.com";
-    Response response;
-    Map data;
-    response = await _client
-        .get(Uri.https(_baseUrl, "/search/photos", {"page": "1", "query": query, "client_id": _apiKey}));
-    data=jsonDecode(response.body);
-    print(data);
-    if (response.statusCode == 200)
-      return data;
-    else
-      return response.statusCode.toString();
-  }
 
   Future<dynamic> getImages(String query) async {
     Client _client = Client();
-    const String _baseUrl = "https://contextualwebsearch-websearch-v1.p.rapidapi.com";
+    const String _baseUrl = "contextualwebsearch-websearch-v1.p.rapidapi.com";
     Response response = await _client
         .get(Uri.https(_baseUrl, "/api/Search/ImageSearchAPI",
         {"q": query, "pageNumber": "1", "pageSize":"3", "autoCorrect":"true"}),
@@ -106,10 +91,9 @@ class _ImageSearchState extends State<ImageSearch> {
                     isSearching=true;
                     _imgFormKey.currentState.save();
                   });
-                  searchResult=await getImagesByName(searchQuery);
-                  print(searchResult['results'][0]['urls']['regular']);
-                  imgList.add('${searchResult['results'][0]['urls']['regular']}');
-
+                  searchResult=await getImages(searchQuery);
+                  foodImage1=FoodImage.fromData(searchResult, 0);
+                  imgList.add(foodImage1.fullUrl);
                   setState(() {
                     isSearching=false;
                     searchDone=true;
