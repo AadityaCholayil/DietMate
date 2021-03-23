@@ -17,6 +17,8 @@ class FoodImage{
 class FoodImages{
   var foodImageList=[];
 
+  FoodImages({this.foodImageList});
+
   FoodImages.fromData(Map data){
     int i=0;
     while(foodImageList.length<9&&i<15){

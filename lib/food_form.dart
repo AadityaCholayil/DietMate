@@ -1,4 +1,6 @@
 import 'package:dietmate/model/food.dart';
+import 'package:dietmate/model/image_details.dart';
+import 'package:dietmate/pages/food_form_final.dart';
 import 'package:dietmate/pages/image_search_test.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -38,7 +40,7 @@ class _FoodFormState extends State<FoodForm> {
     return TextFormField(
       decoration: InputDecoration(
           labelText: 'Food Name',
-          labelStyle: TextStyle(fontSize: 25)
+          labelStyle: TextStyle(fontSize: 25),
       ),
       keyboardType: TextInputType.name,
       style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
@@ -92,7 +94,13 @@ class _FoodFormState extends State<FoodForm> {
                     ],
                   )
                 ),
-                onTap: (){},
+                onTap: (){
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (BuildContext context) =>
+                          FoodFormFinal(food: food))
+                  );
+                },
               );
             },
             itemCount: foodList.list.length,
@@ -131,10 +139,10 @@ class _FoodFormState extends State<FoodForm> {
                   style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),
                 ),
                 onPressed: () async {
+                  if (!_formKey.currentState.validate()) {
+                    return;
+                  }
                   setState(() {
-                    if (!_formKey.currentState.validate()) {
-                      return;
-                    }
                     isSearching=true;
                     searchDone=false;
                     _formKey.currentState.save();
@@ -151,15 +159,7 @@ class _FoodFormState extends State<FoodForm> {
                   });
                 },
               )),
-              ElevatedButton(
-                child: Text('Search Image'),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (BuildContext context) => ImageSearch())
-                  );
-                },
-              ),
+
             ],
           ),
         ),

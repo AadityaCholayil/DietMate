@@ -30,6 +30,9 @@ class _ImageSearchState extends State<ImageSearch> {
     );
     Map data=jsonDecode(response.body);
     print(data);
+    if(data['totalCount']==0){
+      return 'No results';
+    }
     return data;
   }
 
@@ -73,21 +76,24 @@ class _ImageSearchState extends State<ImageSearch> {
             );
           },
           errorBuilder: (BuildContext context, Object exception, StackTrace stackTrace){
-            // return Image.network(
-            //   'https://www.pacificfoodmachinery.com.au/media/catalog/product/placeholder/default/no-product-image-400x400.png',
-            //   fit: BoxFit.fill,
-            // );
-            return SizedBox.shrink();
+            return Image.network(
+              'https://www.pacificfoodmachinery.com.au/media/catalog/product/placeholder/default/no-product-image-400x400.png',
+              fit: BoxFit.fill,
+            );
+            //return SizedBox.shrink();
           },
         ),
       ),
       onTap: (){
-
+        Navigator.pop(context, image);
       },
     );
   }
 
   Widget _buildImageList(FoodImages foodImages){
+    if(foodImages.foodImageList.length==0){
+      return Text('No results found');
+    }
     return Column(
       children: [
         GridView.builder(
@@ -134,16 +140,20 @@ class _ImageSearchState extends State<ImageSearch> {
                   style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),
                 ),
                 onPressed: () async {
+                  if (!_imgFormKey.currentState.validate()) {
+                    return;
+                  }
                   setState(() {
-                    if (!_imgFormKey.currentState.validate()) {
-                      return;
-                    }
                     isSearching=true;
                     searchDone=false;
                     _imgFormKey.currentState.save();
                   });
                   searchResult=await getImages(searchQuery);
-                  foodImages=FoodImages.fromData(searchResult);
+                  if(searchResult=='No results'){
+                    foodImages=FoodImages(foodImageList: []);
+                  }else{
+                    foodImages=FoodImages.fromData(searchResult);
+                  }
                   setState(() {
                     isSearching=false;
                     searchDone=true;
