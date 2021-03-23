@@ -1,7 +1,5 @@
 import 'package:dietmate/model/food.dart';
-import 'package:dietmate/model/image_details.dart';
 import 'package:dietmate/pages/food_form_final.dart';
-import 'package:dietmate/pages/image_search_test.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'dart:convert';

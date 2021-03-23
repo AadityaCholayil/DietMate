@@ -15,7 +15,6 @@ class FoodFormFinal extends StatefulWidget {
 
 class _FoodFormFinalState extends State<FoodFormFinal> {
   Food _food;
-  Food _finalFood;
   FoodImage _foodImage;
   String _name;
   int _calories, _fats, _protein, _carbohydrates;
@@ -26,10 +25,8 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    if(widget.food.calories!=0){
-      _food = widget.food;
+    if(widget.food.fullUrl==null){
       _name = widget.food.name;
       _calories = widget.food.calories;
       _fats = widget.food.fats;
@@ -192,6 +189,101 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
     );
   }
 
+  Widget _buildFoodImage(){
+    return Column(
+      children: <Widget>[
+        Container(
+          margin: EdgeInsets.fromLTRB(0, 20, 20, 0),
+          width: MediaQuery.of(context).size.width*0.44,
+          height: MediaQuery.of(context).size.width*0.44,
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          decoration: BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.circular(10)
+          ),
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              Opacity(
+                child: Image.network(
+                  _fullUrl==null?'https://cdn.dribbble.com/users/1012997/screenshots/14073001/media/4994fedc83e967607f1e3b3e17525831.png?compress=1&resize=400x300'
+                      : _fullUrl,
+                  fit: _fullUrl==null?BoxFit.fitHeight:_imageWidth>_imageHeight?BoxFit.fitHeight:BoxFit.fitWidth,
+                ),
+                opacity: _fullUrl==null?0.6:1,
+              ),
+              _fullUrl==null?Container(
+                alignment: Alignment.center,
+                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                width: MediaQuery.of(context).size.width*0.44,
+                child: ElevatedButton(
+                  child: Text(
+                    'Select Image',
+                    style: TextStyle(
+                        fontSize: 20
+                    ),
+                  ),
+                  onPressed: () async {
+                    setState(() async{
+                      _foodImage = await Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (BuildContext context) => ImageSearch())
+                      );
+                      if(_foodImage!=null) {
+                        _fullUrl = _foodImage.fullUrl;
+                        _thumbnailUrl = _foodImage.thumbnailUrl;
+                        _imageWidth = _foodImage.width;
+                        _imageHeight = _foodImage.height;
+                      }
+                    });
+                  },
+                ),
+              ):SizedBox.shrink(),
+            ],
+          ),
+        ),
+        _fullUrl!=null?Container(
+          margin: EdgeInsets.fromLTRB(0, 0, 20, 0),
+          width: MediaQuery.of(context).size.width*0.44,
+          child: ElevatedButton(
+            child: Text(
+              'Select Image',
+              style: TextStyle(
+                  fontSize: 20
+              ),
+            ),
+            onPressed: () async {
+              _foodImage = await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (BuildContext context) => ImageSearch())
+              );
+              _fullUrl=_foodImage.fullUrl;
+              _thumbnailUrl=_foodImage.thumbnailUrl;
+              _imageWidth=_foodImage.width;
+              _imageHeight=_foodImage.height;
+            },
+          ),
+        ):SizedBox.shrink(),
+      ],
+    );
+  }
+
+  Widget _buildTitle(){
+    return Center(
+      child: Container(
+        padding: EdgeInsets.fromLTRB(22, 0, 0, 13),
+        alignment: Alignment.centerLeft,
+        child: Text(
+          'Food Form',
+          style: TextStyle(
+            fontSize: 55,
+            fontWeight: FontWeight.bold
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -201,90 +293,14 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            _buildTitle(),
             _buildName(),
             SizedBox(height: 10),
             _buildCalories(),
             SizedBox(height: 10),
             Row(
               children: <Widget>[
-                Center(
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.fromLTRB(0, 20, 20, 0),
-                        width: MediaQuery.of(context).size.width*0.44,
-                        height: MediaQuery.of(context).size.width*0.44,
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                        decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(10)
-                        ),
-                        child: Stack(
-                          fit: StackFit.expand,
-                          children: [
-                            Opacity(
-                              child: Image.network(
-                                _fullUrl==null?'https://cdn.dribbble.com/users/1012997/screenshots/14073001/media/4994fedc83e967607f1e3b3e17525831.png?compress=1&resize=400x300'
-                                    : _fullUrl,
-                                fit: _fullUrl==null?BoxFit.fitHeight:_imageWidth>_imageHeight?BoxFit.fitHeight:BoxFit.fitWidth,
-                              ),
-                              opacity: _fullUrl==null?0.6:1,
-                            ),
-                            _fullUrl==null?Container(
-                              alignment: Alignment.center,
-                              margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                              width: MediaQuery.of(context).size.width*0.44,
-                              child: ElevatedButton(
-                                child: Text(
-                                  'Select Image',
-                                  style: TextStyle(
-                                    fontSize: 20
-                                  ),
-                                ),
-                                onPressed: () async {
-                                  setState(() async{
-                                    _foodImage = await Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (BuildContext context) => ImageSearch())
-                                    );
-                                    if(_foodImage!=null) {
-                                      _fullUrl = _foodImage.fullUrl;
-                                      _thumbnailUrl = _foodImage.thumbnailUrl;
-                                      _imageWidth = _foodImage.width;
-                                      _imageHeight = _foodImage.height;
-                                    }
-                                  });
-                                },
-                              ),
-                            ):SizedBox.shrink(),
-                          ],
-                        ),
-                      ),
-                      _fullUrl!=null?Container(
-                        margin: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                        width: MediaQuery.of(context).size.width*0.44,
-                        child: ElevatedButton(
-                          child: Text(
-                            'Select Image',
-                            style: TextStyle(
-                                fontSize: 20
-                            ),
-                          ),
-                          onPressed: () async {
-                            _foodImage = await Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (BuildContext context) => ImageSearch())
-                            );
-                            _fullUrl=_foodImage.fullUrl;
-                            _thumbnailUrl=_foodImage.thumbnailUrl;
-                            _imageWidth=_foodImage.width;
-                            _imageHeight=_foodImage.height;
-                          },
-                        ),
-                      ):SizedBox.shrink(),
-                    ],
-                  ),
-                ),
+                _buildFoodImage(),
                 Column(
                   children: <Widget>[
                     Container(
@@ -319,16 +335,29 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
                 ),
               ],
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 15),
             ElevatedButton(
               child: Text(
                 'Submit',
                 style: TextStyle(
-                    fontSize: 20
+                    fontSize: 25
                 ),
               ),
               onPressed: (){
-
+                _food=Food(
+                  name: _name,
+                  calories: _calories,
+                  fats: _fats,
+                  protein: _protein,
+                  carbohydrates: _carbohydrates,
+                  servingSizeQty: _servingSizeQty,
+                  servingSizeUnit: _servingSizeUnit,
+                  fullUrl: _fullUrl,
+                  thumbnailUrl: _thumbnailUrl,
+                  imageWidth: _imageWidth,
+                  imageHeight: _imageHeight,
+                );
+                _food.printDetails();
               },
             )
           ],
