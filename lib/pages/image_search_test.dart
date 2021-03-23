@@ -15,15 +15,14 @@ class _ImageSearchState extends State<ImageSearch> {
   bool isSearching=false;
   bool searchDone=false;
   var searchResult;
-  FoodImage foodImage1, foodImage2, foodImage3;
-  List<String> imgList=[];
+  FoodImages foodImages;
 
   Future<dynamic> getImages(String query) async {
     Client _client = Client();
     const String _baseUrl = "contextualwebsearch-websearch-v1.p.rapidapi.com";
     Response response = await _client
         .get(Uri.https(_baseUrl, "/api/Search/ImageSearchAPI",
-        {"q": query, "pageNumber": "1", "pageSize":"3", "autoCorrect":"true"}),
+        {"q": query, "pageNumber": "1", "pageSize":"20", "autoCorrect":"true"}),
         headers: {
           "x-rapidapi-key": "9b837a32d8mshd72f108cc18a5ebp160760jsnc13d929cb7fd",
           "x-rapidapi-host": "contextualwebsearch-websearch-v1.p.rapidapi.com",
@@ -54,14 +53,65 @@ class _ImageSearchState extends State<ImageSearch> {
     );
   }
 
-  Widget _buildImgList(List<String> imgList){
-    print(imgList);
-    return Image.network(imgList[0]);
+  Widget customImage(FoodImage image){
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(7),
+      ),
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      child: Image.network(
+        image.fullUrl,
+        fit: image.width>image.height? BoxFit.fitHeight : BoxFit.fitWidth,
+        loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
+          return loadingProgress==null?
+            child:
+            CircularProgressIndicator(
+              value: loadingProgress.expectedTotalBytes != null ?
+              loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
+                  : null,
+            );
+        },
+        errorBuilder: (BuildContext context, Object exception, StackTrace stackTrace){
+          return Image.network(
+            'https://www.pacificfoodmachinery.com.au/media/catalog/product/placeholder/default/no-product-image-400x400.png',
+            fit: BoxFit.fill,
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildImgList(FoodImages imageList){
+    return Column(
+      children: [
+        GridView.count(
+          padding: EdgeInsets.fromLTRB(0, 10, 0, 12),
+          primary: false,
+          shrinkWrap: true,
+          //padding: EdgeInsets.all(10),
+          crossAxisSpacing: 4,
+          mainAxisSpacing: 4,
+          crossAxisCount: 3,
+          children: <Widget>[
+            customImage(imageList.img1),
+            customImage(imageList.img2),
+            customImage(imageList.img3),
+            customImage(imageList.img4),
+            customImage(imageList.img5),
+            customImage(imageList.img6),
+            customImage(imageList.img7),
+            customImage(imageList.img8),
+            customImage(imageList.img9),
+          ],
+        ),
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         padding: EdgeInsets.all(10),
         child: Form(
@@ -77,7 +127,7 @@ class _ImageSearchState extends State<ImageSearch> {
                   SizedBox(height: 20),
                 ],
               ):SizedBox.shrink(),
-              searchDone==true?_buildImgList(imgList):SizedBox.shrink(),
+              searchDone==true?_buildImgList(foodImages):SizedBox.shrink(),
               Builder(builder: (context) => ElevatedButton(
                 child: Text(
                   'Search',
@@ -92,8 +142,7 @@ class _ImageSearchState extends State<ImageSearch> {
                     _imgFormKey.currentState.save();
                   });
                   searchResult=await getImages(searchQuery);
-                  foodImage1=FoodImage.fromData(searchResult, 0);
-                  imgList.add(foodImage1.fullUrl);
+                  foodImages=FoodImages.fromData(searchResult);
                   setState(() {
                     isSearching=false;
                     searchDone=true;

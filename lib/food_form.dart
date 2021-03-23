@@ -148,15 +148,15 @@ class _FoodFormState extends State<FoodForm> {
                   });
                 },
               )),
-              // ElevatedButton(
-              //   child: Text('Search Image'),
-              //   onPressed: () {
-              //     Navigator.push(
-              //       context,
-              //       MaterialPageRoute(builder: (BuildContext context) => ImageSearch())
-              //     );
-              //   },
-              // ),
+              ElevatedButton(
+                child: Text('Search Image'),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (BuildContext context) => ImageSearch())
+                  );
+                },
+              ),
             ],
           ),
         ),
