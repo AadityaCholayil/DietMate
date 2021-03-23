@@ -11,7 +11,7 @@ class _ReportPageState extends State<ReportPage> {
     return Scaffold(
       body: Center(
         child: Text(
-          'Report Page\n(Pranav)',
+          'Report Page\n(Pranav)\nGithub Done',
           style: TextStyle(
             fontSize: 40,
           ),
