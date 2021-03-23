@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:animations/animations.dart';
 import 'package:dietmate/model/image_details.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -54,34 +55,49 @@ class _ImageSearchState extends State<ImageSearch> {
   }
 
   Widget customImage(FoodImage image){
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(7),
-      ),
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      child: Image.network(
-        image.fullUrl,
-        fit: image.width>image.height? BoxFit.fitHeight : BoxFit.fitWidth,
-        loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
-          return loadingProgress==null?
-            child:
-            CircularProgressIndicator(
-              value: loadingProgress.expectedTotalBytes != null ?
-              loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
-                  : null,
-            );
-        },
-        errorBuilder: (BuildContext context, Object exception, StackTrace stackTrace){
-          return Image.network(
-            'https://www.pacificfoodmachinery.com.au/media/catalog/product/placeholder/default/no-product-image-400x400.png',
-            fit: BoxFit.fill,
-          );
-        },
-      ),
+    return OpenContainer(
+      openBuilder: (context, closedBuilder){
+        return Container(
+          color: Colors.red,
+        );
+      },
+      closedBuilder:(context, openContainer) {
+        return InkWell(
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(7),
+            ),
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            child: Image.network(
+              image.fullUrl,
+              fit: image.width>image.height? BoxFit.fitHeight : BoxFit.fitWidth,
+              loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
+                return loadingProgress==null?
+                child:
+                CircularProgressIndicator(
+                  value: loadingProgress.expectedTotalBytes != null ?
+                  loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
+                      : null,
+                );
+              },
+              errorBuilder: (BuildContext context, Object exception, StackTrace stackTrace){
+                return Image.network(
+                  'https://www.pacificfoodmachinery.com.au/media/catalog/product/placeholder/default/no-product-image-400x400.png',
+                  fit: BoxFit.fill,
+                );
+              },
+            ),
+          ),
+          onTap: (){
+            openContainer();
+          },
+        );
+      }
     );
   }
 
   Widget _buildImgList(FoodImages imageList){
+    //imageList.foodImageList[0];
     return Column(
       children: [
         GridView.count(

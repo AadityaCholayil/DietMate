@@ -19,6 +19,7 @@ class FoodImage{
 class FoodImages{
   FoodImage img1,img2,img3,img4,img5,img6,img7,img8,img9;
   int hitNo=0;
+  List<FoodImage> foodImageList;
 
   FoodImages.fromData(Map data){
     img1=FoodImage.fromData(data, hitNoIncrement(data));
@@ -31,6 +32,11 @@ class FoodImages{
     img8=FoodImage.fromData(data, hitNoIncrement(data));
     img9=FoodImage.fromData(data, hitNoIncrement(data));
     printAllUrl();
+    imagesToList();
+  }
+
+  void imagesToList(){
+    foodImageList=[img1,img2,img3,img4,img5,img6,img7,img8,img9];
   }
 
   void printAllUrl(){
