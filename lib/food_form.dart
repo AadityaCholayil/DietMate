@@ -28,13 +28,17 @@ class _FoodFormState extends State<FoodForm> {
         }
     );
     Map data = jsonDecode(response.body);
-    return data;
+    print(data);
+    if(data['max_score']>2)
+      return data;
+    else
+      return {'result': 'No results found'};
   }
 
   Widget _buildName(){
     return TextFormField(
       decoration: InputDecoration(
-          labelText: 'FoodName',
+          labelText: 'Food Name',
           labelStyle: TextStyle(fontSize: 25)
       ),
       keyboardType: TextInputType.name,
@@ -54,42 +58,46 @@ class _FoodFormState extends State<FoodForm> {
   Widget _buildList(List<Food> foodList){
     return Container(
       alignment: Alignment.topCenter,
-      child: ListView.separated(
-        padding: EdgeInsets.zero,
-        scrollDirection: Axis.vertical,
-        //primary: false,
-        shrinkWrap: true,
-        itemBuilder: (BuildContext context, int index){
-          Food food=foodList[index];
-          return InkWell(
-            child: Container(
-              //color: Colors.yellow,
-              width: double.infinity,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${food.name}',
-                    style: TextStyle(
-                      fontSize: 25
-                    ),
-                  ),
-                  Text(
-                    'Calories: ${food.calories} Kcal',
-                    style: TextStyle(
-                        fontSize: 19
-                    ),
-                  ),
-                ],
-              )
-            ),
-            onTap: (){
-
+      child: Column(
+        children: [
+          ListView.separated(
+            padding: EdgeInsets.zero,
+            scrollDirection: Axis.vertical,
+            //primary: false,
+            shrinkWrap: true,
+            itemBuilder: (BuildContext context, int index){
+              Food food=foodList[index];
+              return InkWell(
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                  //color: Colors.yellow,
+                  width: double.infinity,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${food.name}',
+                        style: TextStyle(
+                          fontSize: 25,
+                        ),
+                      ),
+                      Text(
+                        'Calories: ${food.calories} Kcal',
+                        style: TextStyle(
+                            fontSize: 19
+                        ),
+                      ),
+                    ],
+                  )
+                ),
+                onTap: (){},
+              );
             },
-          );
-        },
-        itemCount: foodList.length,
-        separatorBuilder: (BuildContext context, int index) => Divider(thickness: 2),
+            itemCount: foodList.length,
+            separatorBuilder: (BuildContext context, int index) => Divider(thickness: 2),
+          ),
+          Divider(thickness: 2),
+        ],
       ),
     );
   }
@@ -140,15 +148,15 @@ class _FoodFormState extends State<FoodForm> {
                   });
                 },
               )),
-              ElevatedButton(
-                child: Text('Search Image'),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (BuildContext context) => ImageSearch())
-                  );
-                },
-              ),
+              // ElevatedButton(
+              //   child: Text('Search Image'),
+              //   onPressed: () {
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(builder: (BuildContext context) => ImageSearch())
+              //     );
+              //   },
+              // ),
             ],
           ),
         ),

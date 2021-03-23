@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class FoodImage{
   String fullUrl;
   String thumbnailUrl;

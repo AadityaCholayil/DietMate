@@ -39,6 +39,11 @@ final ThemeData lightTheme = ThemeData(
   indicatorColor: Color( 0xffb82fd0 ),
   hintColor: Color( 0x8a000000 ),
   errorColor: Color( 0xffd32f2f ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      primary: Color( 0xffde9ee9 ),
+    ),
+  ),
   buttonTheme: ButtonThemeData(
     textTheme: ButtonTextTheme.normal,
     minWidth: 88,
