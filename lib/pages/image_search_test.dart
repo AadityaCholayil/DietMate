@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:animations/animations.dart';
 import 'package:dietmate/model/image_details.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -23,7 +22,7 @@ class _ImageSearchState extends State<ImageSearch> {
     const String _baseUrl = "contextualwebsearch-websearch-v1.p.rapidapi.com";
     Response response = await _client
         .get(Uri.https(_baseUrl, "/api/Search/ImageSearchAPI",
-        {"q": query, "pageNumber": "1", "pageSize":"20", "autoCorrect":"true"}),
+        {"q": query, "pageNumber": "1", "pageSize":"15", "autoCorrect":"true"}),
         headers: {
           "x-rapidapi-key": "9b837a32d8mshd72f108cc18a5ebp160760jsnc13d929cb7fd",
           "x-rapidapi-host": "contextualwebsearch-websearch-v1.p.rapidapi.com",
@@ -55,70 +54,55 @@ class _ImageSearchState extends State<ImageSearch> {
   }
 
   Widget customImage(FoodImage image){
-    return OpenContainer(
-      openBuilder: (context, closedBuilder){
-        return Container(
-          color: Colors.red,
-        );
-      },
-      closedBuilder:(context, openContainer) {
-        return InkWell(
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(7),
-            ),
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            child: Image.network(
-              image.fullUrl,
-              fit: image.width>image.height? BoxFit.fitHeight : BoxFit.fitWidth,
-              loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
-                return loadingProgress==null?
-                child:
-                CircularProgressIndicator(
-                  value: loadingProgress.expectedTotalBytes != null ?
-                  loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
-                      : null,
-                );
-              },
-              errorBuilder: (BuildContext context, Object exception, StackTrace stackTrace){
-                return Image.network(
-                  'https://www.pacificfoodmachinery.com.au/media/catalog/product/placeholder/default/no-product-image-400x400.png',
-                  fit: BoxFit.fill,
-                );
-              },
-            ),
-          ),
-          onTap: (){
-            openContainer();
+    return InkWell(
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(7),
+        ),
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        child: Image.network(
+          image.fullUrl,
+          fit: image.width>image.height? BoxFit.fitHeight : BoxFit.fitWidth,
+          loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
+            return loadingProgress==null?
+            child:
+            CircularProgressIndicator(
+              value: loadingProgress.expectedTotalBytes != null ?
+              loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
+                  : null,
+            );
           },
-        );
-      }
+          errorBuilder: (BuildContext context, Object exception, StackTrace stackTrace){
+            // return Image.network(
+            //   'https://www.pacificfoodmachinery.com.au/media/catalog/product/placeholder/default/no-product-image-400x400.png',
+            //   fit: BoxFit.fill,
+            // );
+            return SizedBox.shrink();
+          },
+        ),
+      ),
+      onTap: (){
+
+      },
     );
   }
 
-  Widget _buildImgList(FoodImages imageList){
-    //imageList.foodImageList[0];
+  Widget _buildImageList(FoodImages foodImages){
     return Column(
       children: [
-        GridView.count(
+        GridView.builder(
           padding: EdgeInsets.fromLTRB(0, 10, 0, 12),
           primary: false,
           shrinkWrap: true,
-          //padding: EdgeInsets.all(10),
-          crossAxisSpacing: 4,
-          mainAxisSpacing: 4,
-          crossAxisCount: 3,
-          children: <Widget>[
-            customImage(imageList.img1),
-            customImage(imageList.img2),
-            customImage(imageList.img3),
-            customImage(imageList.img4),
-            customImage(imageList.img5),
-            customImage(imageList.img6),
-            customImage(imageList.img7),
-            customImage(imageList.img8),
-            customImage(imageList.img9),
-          ],
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            crossAxisSpacing: 4,
+            mainAxisSpacing: 4,
+          ),
+          itemBuilder: (BuildContext context, int index){
+            return customImage(foodImages.foodImageList[index]);
+          },
+          itemCount: foodImages.foodImageList.length,
         ),
       ],
     );
@@ -143,7 +127,7 @@ class _ImageSearchState extends State<ImageSearch> {
                   SizedBox(height: 20),
                 ],
               ):SizedBox.shrink(),
-              searchDone==true?_buildImgList(foodImages):SizedBox.shrink(),
+              searchDone==true?_buildImageList(foodImages):SizedBox.shrink(),
               Builder(builder: (context) => ElevatedButton(
                 child: Text(
                   'Search',
@@ -155,6 +139,7 @@ class _ImageSearchState extends State<ImageSearch> {
                       return;
                     }
                     isSearching=true;
+                    searchDone=false;
                     _imgFormKey.currentState.save();
                   });
                   searchResult=await getImages(searchQuery);

@@ -12,15 +12,14 @@ class FoodForm extends StatefulWidget {
 class _FoodFormState extends State<FoodForm> {
 
   String foodName='default';
-  Food food1, food2, food3, food4, food5;
   var foodData;
   bool isSearching=false;
   bool searchDone=false;
-  List<Food> foodList = [];
+  FoodList foodList;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  Future<Map> getData() async {
+  Future<dynamic> getData() async {
     Response response = await get("https://nutritionix-api.p.rapidapi.com/v1_1/search/$foodName?fields=item_name%2Citem_id%2Cbrand_name%2Cnf_calories%2Cnf_total_fat%2Cnf_total_carbohydrate%2Cnf_protein",
         headers: {
           "x-rapidapi-key": "9b837a32d8mshd72f108cc18a5ebp160760jsnc13d929cb7fd",
@@ -29,10 +28,10 @@ class _FoodFormState extends State<FoodForm> {
     );
     Map data = jsonDecode(response.body);
     print(data);
-    if(data['max_score']>2)
+    if(data['max_score']!=null && data['max_score']>2)
       return data;
     else
-      return {'result': 'No results found'};
+      return 'No results';
   }
 
   Widget _buildName(){
@@ -55,7 +54,10 @@ class _FoodFormState extends State<FoodForm> {
     );
   }
 
-  Widget _buildList(List<Food> foodList){
+  Widget _buildList(FoodList foodList){
+    if(foodList.list.length==0){
+      return Text('No results found');
+    }
     return Container(
       alignment: Alignment.topCenter,
       child: Column(
@@ -66,7 +68,7 @@ class _FoodFormState extends State<FoodForm> {
             //primary: false,
             shrinkWrap: true,
             itemBuilder: (BuildContext context, int index){
-              Food food=foodList[index];
+              Food food=foodList.list[index];
               return InkWell(
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
@@ -93,7 +95,7 @@ class _FoodFormState extends State<FoodForm> {
                 onTap: (){},
               );
             },
-            itemCount: foodList.length,
+            itemCount: foodList.list.length,
             separatorBuilder: (BuildContext context, int index) => Divider(thickness: 2),
           ),
           Divider(thickness: 2),
@@ -105,6 +107,7 @@ class _FoodFormState extends State<FoodForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         padding: EdgeInsets.all(15),
         child: Form(
@@ -133,15 +136,15 @@ class _FoodFormState extends State<FoodForm> {
                       return;
                     }
                     isSearching=true;
+                    searchDone=false;
                     _formKey.currentState.save();
                   });
                   foodData = await getData();
-                  food1=Food.fromData(foodData, 0);
-                  food2=Food.fromData(foodData, 1);
-                  food3=Food.fromData(foodData, 2);
-                  foodList.add(food1);
-                  foodList.add(food2);
-                  foodList.add(food3);
+                  if(foodData=='No results'){
+                    foodList=FoodList(list: []);
+                  }else{
+                    foodList=FoodList.fromData(foodData);
+                  }
                   setState(() {
                     isSearching=false;
                     searchDone=true;
