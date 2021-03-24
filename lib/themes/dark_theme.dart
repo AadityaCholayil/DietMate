@@ -365,27 +365,27 @@ final ThemeData darkTheme = ThemeData(
     filled: false,
     fillColor: Color( 0x00000000 ),
     errorBorder: UnderlineInputBorder(
-      borderSide: BorderSide(color: Color( 0xffd32f2f ), width: 1, style: BorderStyle.solid, ),
+      borderSide: BorderSide(color: Color( 0xffd32f2f ), width: 2, style: BorderStyle.solid, ),
       borderRadius: BorderRadius.all(Radius.circular(4.0)),
     ),
     focusedBorder: UnderlineInputBorder(
-      borderSide: BorderSide(color: Color( 0xffb82fd0 ), width: 1, style: BorderStyle.solid, ),
+      borderSide: BorderSide(color: Color( 0xffb82fd0 ), width: 2, style: BorderStyle.solid, ),
       borderRadius: BorderRadius.all(Radius.circular(4.0)),
     ),
     focusedErrorBorder: UnderlineInputBorder(
-      borderSide: BorderSide(color: Color( 0xffd32f2f ), width: 1, style: BorderStyle.solid, ),
+      borderSide: BorderSide(color: Color( 0xffd32f2f ), width: 2, style: BorderStyle.solid, ),
       borderRadius: BorderRadius.all(Radius.circular(4.0)),
     ),
     disabledBorder: UnderlineInputBorder(
-      borderSide: BorderSide(color: Color( 0xff000000 ), width: 1, style: BorderStyle.solid, ),
+      borderSide: BorderSide(color: Color( 0xff000000 ), width: 2, style: BorderStyle.solid, ),
       borderRadius: BorderRadius.all(Radius.circular(4.0)),
     ),
     enabledBorder: UnderlineInputBorder(
-      borderSide: BorderSide(color: Color( 0xffffffff ), width: 1, style: BorderStyle.solid, ),
+      borderSide: BorderSide(color: Color( 0xffffffff ), width: 2, style: BorderStyle.solid, ),
       borderRadius: BorderRadius.all(Radius.circular(4.0)),
     ),
     border: UnderlineInputBorder(
-      borderSide: BorderSide(color: Color( 0xff000000 ), width: 1, style: BorderStyle.solid, ),
+      borderSide: BorderSide(color: Color( 0xff000000 ), width: 2, style: BorderStyle.solid, ),
       borderRadius: BorderRadius.all(Radius.circular(4.0)),
     ),
   ),

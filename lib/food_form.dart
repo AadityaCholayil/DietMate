@@ -193,6 +193,35 @@ class _FoodFormState extends State<FoodForm> {
     );
   }
 
+  Widget _buildSearchButton(){
+    return Builder(builder: (context) => ElevatedButton(
+      child: Text(
+        'Search',
+        style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),
+      ),
+      onPressed: () async {
+        if (!_formKey.currentState.validate()) {
+          return;
+        }
+        setState(() {
+          isSearching=true;
+          searchDone=false;
+          _formKey.currentState.save();
+        });
+        foodData = await getData();
+        if(foodData=='No results'){
+          foodList=FoodList(list: []);
+        }else{
+          foodList=FoodList.fromData(foodData);
+        }
+        setState(() {
+          isSearching=false;
+          searchDone=true;
+        });
+      },
+    ));
+  }
+
   Widget _buildTitle(){
     double paddingHeight=0;
     if(searchDone==true){
@@ -220,7 +249,7 @@ class _FoodFormState extends State<FoodForm> {
     return Center(
       child: Container(
         padding: searchDone==true?EdgeInsets.fromLTRB(22, paddingHeight, 0, 5)
-            :EdgeInsets.fromLTRB(22, screenHeight/3.3, 0, 30),
+            :EdgeInsets.fromLTRB(22, screenHeight/3.5, 0, 30),
         alignment: Alignment.centerLeft,
         child: Text(
           'Enter Food',
@@ -263,32 +292,7 @@ class _FoodFormState extends State<FoodForm> {
                   ],
                 ):SizedBox.shrink(),
                 searchDone==true?_buildList(foodList):SizedBox.shrink(),
-                Builder(builder: (context) => ElevatedButton(
-                  child: Text(
-                    'Search',
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),
-                  ),
-                  onPressed: () async {
-                    if (!_formKey.currentState.validate()) {
-                      return;
-                    }
-                    setState(() {
-                      isSearching=true;
-                      searchDone=false;
-                      _formKey.currentState.save();
-                    });
-                    foodData = await getData();
-                    if(foodData=='No results'){
-                      foodList=FoodList(list: []);
-                    }else{
-                      foodList=FoodList.fromData(foodData);
-                    }
-                    setState(() {
-                      isSearching=false;
-                      searchDone=true;
-                    });
-                  },
-                )),
+                _buildSearchButton(),
                 searchDone!=true?SizedBox(height:screenHeight/9,):
                     SizedBox.shrink(),
               ],

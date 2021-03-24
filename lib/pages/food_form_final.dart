@@ -1,6 +1,6 @@
 import 'package:dietmate/model/food.dart';
 import 'package:dietmate/model/image_details.dart';
-import 'package:dietmate/pages/image_search_test.dart';
+import 'package:dietmate/pages/image_search_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -22,6 +22,8 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
   String _servingSizeUnit;
   String _fullUrl, _thumbnailUrl;
   int _imageWidth, _imageHeight;
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -224,11 +226,11 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
                     ),
                   ),
                   onPressed: () async {
-                    setState(() async{
-                      _foodImage = await Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (BuildContext context) => ImageSearch())
-                      );
+                    _foodImage = await Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (BuildContext context) => ImageSearch(foodName: _name))
+                    );
+                    setState(() {
                       if(_foodImage!=null) {
                         _fullUrl = _foodImage.fullUrl;
                         _thumbnailUrl = _foodImage.thumbnailUrl;
@@ -253,19 +255,51 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
               ),
             ),
             onPressed: () async {
-              _foodImage = await Navigator.push(
+              FoodImage foodImage = await Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (BuildContext context) => ImageSearch())
+                  MaterialPageRoute(builder: (BuildContext context) => ImageSearch(foodName: _name))
               );
-              _fullUrl=_foodImage.fullUrl;
-              _thumbnailUrl=_foodImage.thumbnailUrl;
-              _imageWidth=_foodImage.width;
-              _imageHeight=_foodImage.height;
+              setState(() {
+                if(foodImage!=null){
+                  _foodImage=foodImage;
+                  _fullUrl=_foodImage.fullUrl;
+                  _thumbnailUrl=_foodImage.thumbnailUrl;
+                  _imageWidth=_foodImage.width;
+                  _imageHeight=_foodImage.height;
+                }
+              });
             },
           ),
         ):SizedBox.shrink(),
       ],
     );
+  }
+  Widget _buildSubmitButton(){
+    return Builder(builder: (context) => ElevatedButton(
+      child: Text(
+        'Submit',
+        style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),
+      ),
+      onPressed: () {
+        if (!_formKey.currentState.validate()) {
+          return;
+        }
+        _food=Food(
+          name: _name,
+          calories: _calories,
+          fats: _fats,
+          protein: _protein,
+          carbohydrates: _carbohydrates,
+          servingSizeQty: _servingSizeQty,
+          servingSizeUnit: _servingSizeUnit,
+          fullUrl: _fullUrl,
+          thumbnailUrl: _thumbnailUrl,
+          imageWidth: _imageWidth,
+          imageHeight: _imageHeight,
+        );
+        _food.printDetails();
+      },
+    ));
   }
 
   Widget _buildTitle(){
@@ -274,7 +308,7 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
         padding: EdgeInsets.fromLTRB(22, 0, 0, 13),
         alignment: Alignment.centerLeft,
         child: Text(
-          'Food Form',
+          'Enter Food',
           style: TextStyle(
             fontSize: 55,
             fontWeight: FontWeight.bold
@@ -290,77 +324,57 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
       resizeToAvoidBottomInset: false,
       body: Container(
         padding: EdgeInsets.all(13),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            _buildTitle(),
-            _buildName(),
-            SizedBox(height: 10),
-            _buildCalories(),
-            SizedBox(height: 10),
-            Row(
-              children: <Widget>[
-                _buildFoodImage(),
-                Column(
-                  children: <Widget>[
-                    Container(
-                      width: MediaQuery.of(context).size.width*0.45,
-                      child: _buildFats(),
-                    ),
-                    SizedBox(height: 10),
-                    Container(
-                      width: MediaQuery.of(context).size.width*0.45,
-                      child: _buildProtein(),
-                    ),
-                    SizedBox(height: 10),
-                    Container(
-                      width: MediaQuery.of(context).size.width*0.45,
-                      child: _buildCarbohydrates(),
-                    ),
-                  ],
-                )
-              ],
-            ),
-            SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(
-                  width: MediaQuery.of(context).size.width*0.45,
-                  child: _buildServingSizeQty(),
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width*0.45,
-                  child: _buildServingSizeUnit(),
-                ),
-              ],
-            ),
-            SizedBox(height: 15),
-            ElevatedButton(
-              child: Text(
-                'Submit',
-                style: TextStyle(
-                    fontSize: 25
-                ),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              _buildTitle(),
+              _buildName(),
+              SizedBox(height: 10),
+              _buildCalories(),
+              SizedBox(height: 10),
+              Row(
+                children: <Widget>[
+                  _buildFoodImage(),
+                  Column(
+                    children: <Widget>[
+                      Container(
+                        width: MediaQuery.of(context).size.width*0.45,
+                        child: _buildFats(),
+                      ),
+                      SizedBox(height: 10),
+                      Container(
+                        width: MediaQuery.of(context).size.width*0.45,
+                        child: _buildProtein(),
+                      ),
+                      SizedBox(height: 10),
+                      Container(
+                        width: MediaQuery.of(context).size.width*0.45,
+                        child: _buildCarbohydrates(),
+                      ),
+                    ],
+                  )
+                ],
               ),
-              onPressed: (){
-                _food=Food(
-                  name: _name,
-                  calories: _calories,
-                  fats: _fats,
-                  protein: _protein,
-                  carbohydrates: _carbohydrates,
-                  servingSizeQty: _servingSizeQty,
-                  servingSizeUnit: _servingSizeUnit,
-                  fullUrl: _fullUrl,
-                  thumbnailUrl: _thumbnailUrl,
-                  imageWidth: _imageWidth,
-                  imageHeight: _imageHeight,
-                );
-                _food.printDetails();
-              },
-            )
-          ],
+              SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
+                    width: MediaQuery.of(context).size.width*0.45,
+                    child: _buildServingSizeQty(),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width*0.45,
+                    child: _buildServingSizeUnit(),
+                  ),
+                ],
+              ),
+              SizedBox(height: 15),
+              _buildSubmitButton(),
+            ],
+          ),
         ),
       ),
     );

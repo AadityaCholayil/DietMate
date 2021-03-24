@@ -4,18 +4,28 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
 class ImageSearch extends StatefulWidget {
+  final String foodName;
+  ImageSearch({this.foodName});
   @override
   _ImageSearchState createState() => _ImageSearchState();
 }
 
 class _ImageSearchState extends State<ImageSearch> {
 
-  String searchQuery;
+  String searchQuery, foodName='';
   GlobalKey<FormState> _imgFormKey = GlobalKey<FormState>();
   bool isSearching=false;
   bool searchDone=false;
   var searchResult;
   FoodImages foodImages;
+
+  @override
+  void initState() {
+    super.initState();
+    if(widget.foodName!=null){
+      foodName=widget.foodName;
+    }
+  }
 
   Future<dynamic> getImages(String query) async {
     Client _client = Client();
@@ -38,6 +48,7 @@ class _ImageSearchState extends State<ImageSearch> {
 
   Widget _buildSearchQuery(){
     return TextFormField(
+      initialValue: foodName,
       decoration: InputDecoration(
           labelText: 'Food Name',
           labelStyle: TextStyle(fontSize: 25)
@@ -114,6 +125,22 @@ class _ImageSearchState extends State<ImageSearch> {
     );
   }
 
+  Widget _buildTitle(){
+    return Center(
+      child: Container(
+        padding: EdgeInsets.fromLTRB(22, 10, 0, 13),
+        alignment: Alignment.centerLeft,
+        child: Text(
+          'Image Search',
+          style: TextStyle(
+              fontSize: 50,
+              fontWeight: FontWeight.bold
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -125,7 +152,9 @@ class _ImageSearchState extends State<ImageSearch> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              _buildTitle(),
               _buildSearchQuery(),
+              SizedBox(height: 15),
               isSearching==true?Column(
                 children: [
                   SizedBox(height: 20),
@@ -160,6 +189,7 @@ class _ImageSearchState extends State<ImageSearch> {
                   });
                 },
               )),
+              SizedBox(height: 40,)
             ],
           ),
         )
