@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:dietmate/model/food.dart';
 import 'package:dietmate/pages/food_form_final.dart';
 import 'package:flutter/material.dart';
@@ -69,35 +70,41 @@ class _FoodFormState extends State<FoodForm> {
             shrinkWrap: true,
             itemBuilder: (BuildContext context, int index){
               Food food=foodList.list[index];
-              return InkWell(
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-                  //color: Colors.yellow,
-                  width: double.infinity,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${food.name}',
-                        style: TextStyle(
-                          fontSize: 25,
-                        ),
-                      ),
-                      Text(
-                        'Calories: ${food.calories} Kcal',
-                        style: TextStyle(
-                            fontSize: 19
-                        ),
-                      ),
-                    ],
-                  )
-                ),
-                onTap: (){
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (BuildContext context) =>
-                          FoodFormFinal(food: food))
+              return OpenContainer(
+                closedColor: Theme.of(context).canvasColor,
+                openColor: Theme.of(context).canvasColor,
+                transitionDuration: Duration(milliseconds: 500),
+                closedBuilder: (context, openBuilder){
+                  return InkWell(
+                    child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                        color: Colors.transparent,
+                        width: double.infinity,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${food.name}',
+                              style: TextStyle(
+                                fontSize: 25,
+                              ),
+                            ),
+                            Text(
+                              'Calories: ${food.calories} Kcal',
+                              style: TextStyle(
+                                  fontSize: 19
+                              ),
+                            ),
+                          ],
+                        )
+                    ),
+                    onTap: (){
+                      openBuilder();
+                    },
                   );
+                },
+                openBuilder: (context, closedBuilder){
+                  return FoodFormFinal(food: food);
                 },
               );
             },
@@ -106,6 +113,23 @@ class _FoodFormState extends State<FoodForm> {
           ),
           Divider(thickness: 2),
         ],
+      ),
+    );
+  }
+
+  Widget _buildTitle(){
+    return Center(
+      child: Container(
+        padding: searchDone==true?EdgeInsets.fromLTRB(22, 25, 0, 5)
+            :EdgeInsets.fromLTRB(22, 0, 0, 30),
+        alignment: Alignment.centerLeft,
+        child: Text(
+          'Food Form',
+          style: TextStyle(
+              fontSize: 55,
+              fontWeight: FontWeight.bold
+          ),
+        ),
       ),
     );
   }
@@ -121,6 +145,7 @@ class _FoodFormState extends State<FoodForm> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              _buildTitle(),
               _buildName(),
               SizedBox(height: 10,),
               isSearching==true?Column(
@@ -157,7 +182,7 @@ class _FoodFormState extends State<FoodForm> {
                   });
                 },
               )),
-
+              SizedBox(height:90,)
             ],
           ),
         ),
