@@ -27,8 +27,14 @@ class Food{
   }
 
   void printDetails(){
-    print('name: $name, calories: $calories, fats: $fats, carb: $carbohydrates,'
-        'protein: $protein, $servingSizeQty $servingSizeUnit ');
+    print('Name: $name, Calories: $calories, Fats: $fats, Carb: $carbohydrates,'
+        'Protein: $protein, $servingSizeQty $servingSizeUnit ');
+  }
+
+  void printFullDetails(){
+    print('Name: $name, Calories: $calories, Fats: $fats, Carb: $carbohydrates, '
+        'Protein: $protein, $servingSizeQty $servingSizeUnit, fullUrl: $fullUrl, '
+        'Dim: $imageWidth x $imageHeight');
   }
 
 }

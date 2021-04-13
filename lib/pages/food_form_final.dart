@@ -195,7 +195,7 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
     return Column(
       children: <Widget>[
         Container(
-          margin: EdgeInsets.fromLTRB(0, 20, 20, 0),
+          margin: EdgeInsets.fromLTRB(0, 20, MediaQuery.of(context).size.width/21.6, 0),
           width: MediaQuery.of(context).size.width*0.44,
           height: MediaQuery.of(context).size.width*0.44,
           clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -297,7 +297,7 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
           imageWidth: _imageWidth,
           imageHeight: _imageHeight,
         );
-        _food.printDetails();
+        _food.printFullDetails();
       },
     ));
   }
@@ -320,6 +320,7 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
 
   @override
   Widget build(BuildContext context) {
+    print(MediaQuery.of(context).size.width/43.2);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(

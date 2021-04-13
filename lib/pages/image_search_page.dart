@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ui';
 import 'package:dietmate/model/food_image.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -18,6 +19,7 @@ class _ImageSearchState extends State<ImageSearch> {
   bool searchDone=false;
   var searchResult;
   FoodImages foodImages;
+  int selectedImage=10;
 
   @override
   void initState() {
@@ -72,30 +74,71 @@ class _ImageSearchState extends State<ImageSearch> {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(7),
+          boxShadow: index==selectedImage?[
+            BoxShadow(color: Theme.of(context).accentColor, spreadRadius: 3)
+          ]:[],
         ),
+        alignment: Alignment.center,
         clipBehavior: Clip.antiAliasWithSaveLayer,
-        child: Image.network(
-          image.fullUrl,
-          fit: image.width>image.height? BoxFit.fitHeight : BoxFit.fitWidth,
-          loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
-            return loadingProgress==null? child :
-            CircularProgressIndicator(
-              value: loadingProgress.expectedTotalBytes != null ?
-              loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
-                  : null,
-            );
-          },
-          errorBuilder: (BuildContext context, Object exception, StackTrace stackTrace){
-            return Image.network(
-              'https://www.pacificfoodmachinery.com.au/media/catalog/product/placeholder/default/no-product-image-400x400.png',
-              fit: BoxFit.fill,
-            );
-            //return SizedBox.shrink();
-          },
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            selectedImage==10?Center(
+              child: SizedBox(
+                child: CircularProgressIndicator(),
+                height: 60,
+                width: 60,
+              ),
+            ):SizedBox.shrink(),
+            ImageFiltered(
+              imageFilter: selectedImage==index?
+                ImageFilter.blur(sigmaX: 1.5, sigmaY: 1.5):
+                ImageFilter.blur(),
+              child: Image.network(
+                image.fullUrl,
+                fit: image.width>image.height? BoxFit.fitHeight : BoxFit.fitWidth,
+                //fit: BoxFit.contain,
+                loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
+                  return loadingProgress==null? child :
+                  Center(
+                    child: SizedBox(
+                      height: 60,
+                      width: 60,
+                      child: CircularProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null ?
+                        loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
+                            : null,
+                      ),
+                    ),
+                  );
+                },
+                errorBuilder: (BuildContext context, Object exception, StackTrace stackTrace){
+                  return Image.network(
+                    'https://www.pacificfoodmachinery.com.au/media/catalog/product/placeholder/default/no-product-image-400x400.png',
+                    fit: BoxFit.fill,
+                  );
+                  //return SizedBox.shrink();
+                },
+              ),
+            ),
+            selectedImage==index?Center(
+              child: ElevatedButton(
+                child: Text(
+                  'Select',
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w300),
+                ),
+                onPressed: () {
+                  Navigator.pop(context, image);
+                },
+              ),
+            ):SizedBox.shrink(),
+          ],
         ),
       ),
       onTap: (){
-        Navigator.pop(context, image);
+        setState(() {
+          selectedImage=index;
+        });
       },
     );
   }
