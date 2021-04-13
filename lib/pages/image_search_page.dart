@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:dietmate/model/image_details.dart';
+import 'package:dietmate/model/food_image.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 

@@ -266,7 +266,6 @@ class _FoodFormState extends State<FoodForm> {
   Widget build(BuildContext context) {
     screenHeight=MediaQuery.of(context).size.height;
     screenWidth=MediaQuery.of(context).size.width;
-    print('h: $screenHeight x w: $screenWidth');
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
