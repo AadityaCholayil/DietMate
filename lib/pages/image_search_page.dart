@@ -67,7 +67,7 @@ class _ImageSearchState extends State<ImageSearch> {
     );
   }
 
-  Widget customImage(FoodImage image){
+  Widget customImage(FoodImage image, int index){
     return InkWell(
       child: Container(
         decoration: BoxDecoration(
@@ -78,8 +78,7 @@ class _ImageSearchState extends State<ImageSearch> {
           image.fullUrl,
           fit: image.width>image.height? BoxFit.fitHeight : BoxFit.fitWidth,
           loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
-            return loadingProgress==null?
-            child:
+            return loadingProgress==null? child :
             CircularProgressIndicator(
               value: loadingProgress.expectedTotalBytes != null ?
               loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
@@ -103,7 +102,7 @@ class _ImageSearchState extends State<ImageSearch> {
 
   Widget _buildImageList(FoodImages foodImages){
     if(foodImages.foodImageList.length==0){
-      return Text('No results found');
+      return Text('No results found.');
     }
     return Column(
       children: [
@@ -117,7 +116,7 @@ class _ImageSearchState extends State<ImageSearch> {
             mainAxisSpacing: 4,
           ),
           itemBuilder: (BuildContext context, int index){
-            return customImage(foodImages.foodImageList[index]);
+            return customImage(foodImages.foodImageList[index], index);
           },
           itemCount: foodImages.foodImageList.length,
         ),

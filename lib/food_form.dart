@@ -26,15 +26,26 @@ class _FoodFormState extends State<FoodForm> {
     super.initState();
   }
 
-  Future<dynamic> getData() async {
-    Response response = await get("https://nutritionix-api.p.rapidapi.com/v1_1/search/$foodName?fields=item_name%2Citem_id%2Cbrand_name%2Cnf_calories%2Cnf_total_fat%2Cnf_total_carbohydrate%2Cnf_protein",
+  Future<dynamic> getData(String query) async {
+    Client _client = Client();
+    Response response = await _client
+        .get(Uri.https("nutritionix-api.p.rapidapi.com", "/v1_1/search/$query",
+        {"fields": "item_name,item_id,brand_name,nf_calories,nf_total_fat,nf_total_carbohydrate,nf_protein",
+          "limit": "5"}),
         headers: {
           "x-rapidapi-key": "9b837a32d8mshd72f108cc18a5ebp160760jsnc13d929cb7fd",
-          "x-rapidapi-host": "nutritionix-api.p.rapidapi.com"
+          "x-rapidapi-host": "nutritionix-api.p.rapidapi.com",
         }
     );
+    // Response response = await get("https://nutritionix-api.p.rapidapi.com/v1_1/search/$foodName?fields=item_name%2Citem_id%2Cbrand_name%2Cnf_calories%2Cnf_total_fat%2Cnf_total_carbohydrate%2Cnf_protein",
+    //     headers: {
+    //       "x-rapidapi-key": "9b837a32d8mshd72f108cc18a5ebp160760jsnc13d929cb7fd",
+    //       "x-rapidapi-host": "nutritionix-api.p.rapidapi.com"
+    //     }
+    // );
     Map data = jsonDecode(response.body);
     print(data);
+    print(data['hits'].length);
     if(data['max_score']!=null && data['max_score']>2)
       return data;
     else
@@ -44,9 +55,10 @@ class _FoodFormState extends State<FoodForm> {
   Widget _buildName(){
     return TextFormField(
       decoration: InputDecoration(
-          labelText: 'Food Name',
-          labelStyle: TextStyle(fontSize: 25),
+        labelText: 'Food Name',
+        labelStyle: TextStyle(fontSize: 25),
       ),
+      textCapitalization: TextCapitalization.words,
       keyboardType: TextInputType.name,
       style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
       validator: (String value) {
@@ -208,7 +220,7 @@ class _FoodFormState extends State<FoodForm> {
           searchDone=false;
           _formKey.currentState.save();
         });
-        foodData = await getData();
+        foodData = await getData(foodName);
         if(foodData=='No results'){
           foodList=FoodList(list: []);
         }else{
