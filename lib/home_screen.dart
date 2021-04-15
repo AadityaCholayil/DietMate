@@ -1,4 +1,4 @@
-import 'package:dietmate/food_form.dart';
+import 'file:///C:/Users/chola/AndroidStudioProjects/dietmate/lib/form%20pages/food_form.dart';
 import 'package:dietmate/pages/homepage.dart';
 import 'package:dietmate/pages/neeraj_temp.dart';
 import 'package:dietmate/pages/profile_detail_page.dart';
@@ -44,6 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
         width: 75,
         child: FittedBox(
           child: OpenContainer(
+            routeSettings: RouteSettings(name: "/HomeScreen"),
             closedColor: Theme.of(context).canvasColor,
             openColor: Theme.of(context).canvasColor,
             transitionDuration: Duration(milliseconds: 350),

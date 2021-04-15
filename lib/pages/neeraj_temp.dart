@@ -2,7 +2,7 @@ import 'package:dietmate/auth_screens/additional_details_screen.dart';
 import 'package:dietmate/auth_screens/login_screen.dart';
 import 'package:dietmate/auth_screens/plan_screen.dart';
 import 'package:dietmate/auth_screens/signup_screen.dart';
-import 'package:dietmate/auth_screens/start_screen.dart';
+import 'package:dietmate/auth_screens/auth_screen.dart';
 import 'package:dietmate/themes/custom_theme.dart';
 import 'package:flutter/material.dart';
 
@@ -30,7 +30,7 @@ class _NeerajTempState extends State<NeerajTemp> {
                 child: Text('Start Screen(1)'),
                 onPressed: () => Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (BuildContext context) => StartScreen()),
+                  MaterialPageRoute(builder: (BuildContext context) => AuthScreen()),
                 ),
               ),
               ElevatedButton(

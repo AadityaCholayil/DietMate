@@ -1,6 +1,6 @@
 import 'package:dietmate/model/food.dart';
 import 'package:dietmate/model/food_image.dart';
-import 'package:dietmate/pages/image_search_page.dart';
+import 'file:///C:/Users/chola/AndroidStudioProjects/dietmate/lib/form%20pages/image_search_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -222,7 +222,8 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
                   child: Text(
                     'Select Image',
                     style: TextStyle(
-                        fontSize: 20
+                      fontSize: 20,
+                      fontWeight: FontWeight.w300
                     ),
                   ),
                   onPressed: () async {
@@ -249,9 +250,10 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
           width: MediaQuery.of(context).size.width*0.44,
           child: ElevatedButton(
             child: Text(
-              'Select Image',
+              'Change Image',
               style: TextStyle(
-                  fontSize: 20
+                fontSize: 20,
+                fontWeight: FontWeight.w300
               ),
             ),
             onPressed: () async {
@@ -298,6 +300,7 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
           imageHeight: _imageHeight,
         );
         _food.printFullDetails();
+        Navigator.popUntil(context, ModalRoute.withName('/'));
       },
     ));
   }
@@ -320,7 +323,6 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
 
   @override
   Widget build(BuildContext context) {
-    print(MediaQuery.of(context).size.width/43.2);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(

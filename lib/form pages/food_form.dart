@@ -1,6 +1,6 @@
 import 'package:animations/animations.dart';
 import 'package:dietmate/model/food.dart';
-import 'package:dietmate/pages/food_form_final.dart';
+import 'file:///C:/Users/chola/AndroidStudioProjects/dietmate/lib/form%20pages/food_form_final.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
@@ -96,7 +96,10 @@ class _FoodFormState extends State<FoodForm> {
         );
         Navigator.push(
             context,
-            MaterialPageRoute(builder: (BuildContext context) => FoodFormFinal(food: food,))
+            MaterialPageRoute(
+              settings: RouteSettings(name: '/FoodForm'),
+              builder: (BuildContext context) => FoodFormFinal(food: food,)
+            )
         );
       },
     );

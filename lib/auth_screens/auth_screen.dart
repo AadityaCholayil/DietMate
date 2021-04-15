@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class StartScreen extends StatefulWidget {
+class AuthScreen extends StatefulWidget {
   @override
-  _StartScreenState createState() => _StartScreenState();
+  _AuthScreenState createState() => _AuthScreenState();
 }
 
-class _StartScreenState extends State<StartScreen> {
+class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
