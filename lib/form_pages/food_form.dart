@@ -1,6 +1,6 @@
 import 'package:animations/animations.dart';
 import 'package:dietmate/model/food.dart';
-import 'file:///C:/Users/chola/AndroidStudioProjects/dietmate/lib/form%20pages/food_form_final.dart';
+import 'package:dietmate/form_pages/food_form_final.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
@@ -16,7 +16,7 @@ class _FoodFormState extends State<FoodForm> {
   var foodData;
   bool isSearching=false;
   bool searchDone=false;
-  FoodList foodList;
+  FoodListForm foodList;
   double screenHeight, screenWidth;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -105,7 +105,7 @@ class _FoodFormState extends State<FoodForm> {
     );
   }
 
-  Widget _buildList(FoodList foodList){
+  Widget _buildList(FoodListForm foodList){
     if(foodList.list.length==0){
       return Column(
         children: [
@@ -225,9 +225,9 @@ class _FoodFormState extends State<FoodForm> {
         });
         foodData = await getData(foodName);
         if(foodData=='No results'){
-          foodList=FoodList(list: []);
+          foodList=FoodListForm(list: []);
         }else{
-          foodList=FoodList.fromData(foodData);
+          foodList=FoodListForm.fromData(foodData);
         }
         setState(() {
           isSearching=false;

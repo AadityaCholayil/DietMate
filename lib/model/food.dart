@@ -39,12 +39,12 @@ class Food{
 
 }
 
-class FoodList{
+class FoodListForm{
   List<Food> list = [];
 
-  FoodList({this.list});
+  FoodListForm({this.list});
 
-  FoodList.fromData(Map data){
+  FoodListForm.fromData(Map data){
     for(int i=0;i<5;i++){
       Food food = Food.fromData(data, i);
       if(data["hits"][i]["_score"]>2){

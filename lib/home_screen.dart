@@ -1,8 +1,8 @@
-import 'file:///C:/Users/chola/AndroidStudioProjects/dietmate/lib/form%20pages/food_form.dart';
 import 'package:dietmate/pages/homepage.dart';
 import 'package:dietmate/pages/neeraj_temp.dart';
 import 'package:dietmate/pages/profile_detail_page.dart';
 import 'package:dietmate/pages/report_page.dart';
+import 'package:dietmate/form_pages/food_form.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:preload_page_view/preload_page_view.dart';
@@ -25,10 +25,10 @@ class _HomeScreenState extends State<HomeScreen> {
       body: PreloadPageView(
         preloadPagesCount: 4,
         controller: pageController,
-        onPageChanged: (int) {
+        onPageChanged: (index) {
           setState(() {
-            print('Page Changes to index $int');
-            pageNo = int;
+            print('Page Changes to index $index');
+            pageNo = index;
           });
         },
         children: <Widget>[
@@ -77,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
               IconButton(
                 icon: Icon(
                   Icons.home_outlined,
-                  color: pageNo==0?Theme.of(context).primaryColorDark:Theme.of(context).colorScheme.onSurface,
+                  color: pageNo==0?Theme.of(context).toggleableActiveColor:Theme.of(context).colorScheme.onSurface,
                   size: 30.0,
                 ),
                 onPressed: () {
@@ -91,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
               IconButton(
                 icon: Icon(
                   Icons.bar_chart,
-                  color: pageNo==1?Theme.of(context).primaryColorDark:Theme.of(context).colorScheme.onSurface,
+                  color: pageNo==1?Theme.of(context).toggleableActiveColor:Theme.of(context).colorScheme.onSurface,
                   size: 30.0,
                 ),
                 onPressed: () {
@@ -105,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
               IconButton(
                 icon: Icon(
                   Icons.alternate_email,
-                  color: pageNo==2?Theme.of(context).primaryColorDark:Theme.of(context).colorScheme.onSurface,
+                  color: pageNo==2?Theme.of(context).toggleableActiveColor:Theme.of(context).colorScheme.onSurface,
                   size: 30.0,
                 ),
                 onPressed: () {
@@ -119,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
               IconButton(
                 icon: Icon(
                   Icons.perm_identity,
-                  color: pageNo==3?Theme.of(context).primaryColorDark:Theme.of(context).colorScheme.onSurface,
+                  color: pageNo==3?Theme.of(context).toggleableActiveColor:Theme.of(context).colorScheme.onSurface,
                   size: 30.0,
                 ),
                 onPressed: () {

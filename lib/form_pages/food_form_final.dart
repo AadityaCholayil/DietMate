@@ -1,6 +1,6 @@
 import 'package:dietmate/model/food.dart';
 import 'package:dietmate/model/food_image.dart';
-import 'file:///C:/Users/chola/AndroidStudioProjects/dietmate/lib/form%20pages/image_search_page.dart';
+import 'package:dietmate/form_pages/image_search_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
