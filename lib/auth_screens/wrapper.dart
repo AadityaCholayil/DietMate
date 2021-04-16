@@ -1,3 +1,4 @@
+import 'package:dietmate/auth_screens/additional_details_screen.dart';
 import 'package:dietmate/auth_screens/auth_screen.dart';
 import 'package:dietmate/home_screen.dart';
 import 'package:dietmate/model/user.dart';
@@ -22,10 +23,17 @@ class Wrapper extends StatelessWidget {
             builder: (BuildContext context){
               final userData = Provider.of<UserData>(context);
               if (userData!=null) {
-                return MaterialApp(
-                  theme: userData.isDarkMode?darkTheme:lightTheme,
-                  home: HomeScreen(),
-                );
+                if (userData.name=='firebase_default') {
+                  return MaterialApp(
+                    theme: userData.isDarkMode?darkTheme:lightTheme,
+                    home: AdditionalDetailsScreen(),
+                  );
+                } else {
+                  return MaterialApp(
+                    theme: userData.isDarkMode?darkTheme:lightTheme,
+                    home: HomeScreen(),
+                  );
+                }
               } else {
                 return MaterialApp(
                     home: Loading()

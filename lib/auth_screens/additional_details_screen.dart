@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class AddDetailsScreen extends StatefulWidget {
+class AdditionalDetailsScreen extends StatefulWidget {
   @override
-  _AddDetailsScreenState createState() => _AddDetailsScreenState();
+  _AdditionalDetailsScreenState createState() => _AdditionalDetailsScreenState();
 }
 
-class _AddDetailsScreenState extends State<AddDetailsScreen> {
+class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

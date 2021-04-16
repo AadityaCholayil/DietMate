@@ -39,15 +39,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
               onPressed: () async {
                 setState(() => loading = true);
                 UserData userData = UserData(
-                  name: 'Aaditya',
-                  age: 19,
+                  name: 'firebase_default',
+                  age: 1,
                   isMale: true,
-                  height: 168,
-                  weight: 55,
-                  activityLevel: 2,
+                  height: 1,
+                  weight: 1,
+                  activityLevel: 1,
                   isDarkMode: true
                 );
-                dynamic result = await _auth.registerWithEmailAndPassword(email, password, userData);
+                dynamic result = await _auth
+                    .registerWithEmailAndPassword(email, password, userData);
                 if(result == null) {
                   setState(() {
                     loading = false;

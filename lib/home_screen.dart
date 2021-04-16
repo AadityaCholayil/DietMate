@@ -54,6 +54,8 @@ class _HomeScreenState extends State<HomeScreen> {
             closedShape: CircleBorder(),
             closedBuilder: (context, openContainer){
               return FloatingActionButton(
+                backgroundColor: Theme.of(context).accentColor,
+                foregroundColor: Colors.white,
                 elevation: 2,
                 child: Icon(Icons.add,
                   size: 33,

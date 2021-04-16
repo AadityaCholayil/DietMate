@@ -6,7 +6,6 @@ import 'package:dietmate/auth_screens/auth_screen.dart';
 import 'package:dietmate/model/user.dart';
 import 'package:dietmate/services/database.dart';
 import 'package:dietmate/shared/loading.dart';
-import 'package:dietmate/themes/custom_theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -75,7 +74,7 @@ class _NeerajTempState extends State<NeerajTemp> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (BuildContext context) => AddDetailsScreen()),
+                    MaterialPageRoute(builder: (BuildContext context) => AdditionalDetailsScreen()),
                   );
                 },
               ),
