@@ -45,7 +45,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   height: 1,
                   weight: 1,
                   activityLevel: 1,
-                  isDarkMode: true
                 );
                 dynamic result = await _auth
                     .registerWithEmailAndPassword(email, password, userData);

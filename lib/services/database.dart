@@ -20,7 +20,6 @@ class DatabaseService{
       'height': userData.height,
       'weight': userData.weight,
       'activityLevel': userData.activityLevel,
-      'isDarkMode': userData.isDarkMode,
     });
   }
 
@@ -34,12 +33,11 @@ class DatabaseService{
       height: snapshot.data()['height'],
       weight: snapshot.data()['weight'],
       activityLevel: snapshot.data()['activityLevel'],
-      isDarkMode: snapshot.data()['isDarkMode']
     );
   }
 
   Stream<UserData> get userData{
     return db.collection('users').doc(uid).snapshots()
-        .map(_userDataFromSnapshot);
+      .map(_userDataFromSnapshot).handleError((onError){print('error');});
   }
 }

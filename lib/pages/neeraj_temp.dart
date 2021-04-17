@@ -4,11 +4,14 @@ import 'package:dietmate/auth_screens/plan_screen.dart';
 import 'package:dietmate/auth_screens/signup_screen.dart';
 import 'package:dietmate/auth_screens/auth_screen.dart';
 import 'package:dietmate/model/user.dart';
-import 'package:dietmate/services/database.dart';
 import 'package:dietmate/shared/loading.dart';
+import 'package:dietmate/themes/custom_theme.dart';
+import 'package:dietmate/themes/dark_theme.dart';
+import 'package:dietmate/themes/light_theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NeerajTemp extends StatefulWidget {
   @override
@@ -17,19 +20,26 @@ class NeerajTemp extends StatefulWidget {
 
 class _NeerajTempState extends State<NeerajTemp> {
 
-  bool _isDark;
+  bool _darkTheme=true;
+
+  void onThemeChanged(bool value, ThemeNotifier themeNotifier) async {
+    (value)
+        ? themeNotifier.setTheme(darkTheme)
+        : themeNotifier.setTheme(lightTheme);
+    var prefs = await SharedPreferences.getInstance();
+    prefs.setBool('darkMode', value);
+  }
 
   @override
   Widget build(BuildContext context) {
 
     final user = Provider.of<User>(context);
     final userData = Provider.of<UserData>(context);
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
+    _darkTheme = (themeNotifier.getTheme() == darkTheme);
 
     if(userData==null){
       return Loading();
-    }
-    if(_isDark==null){
-      _isDark=userData.isDarkMode??false;
     }
 
     return Scaffold(
@@ -89,21 +99,12 @@ class _NeerajTempState extends State<NeerajTemp> {
               ),
               SwitchListTile(
                 title: Text('Dark Theme?'),
-                value: _isDark,
+                value: _darkTheme,
                 onChanged: (bool newValue) async {
                   setState(() {
-                    _isDark=newValue;
+                    _darkTheme=newValue;
                   });
-                  UserData userDataNew = UserData(
-                      name: userData.name,
-                      age: userData.age,
-                      isMale: userData.isMale,
-                      height: userData.height,
-                      weight: userData.weight,
-                      activityLevel: userData.activityLevel,
-                      isDarkMode: _isDark
-                  );
-                  await DatabaseService(uid: user.uid).updateUserData(userDataNew);
+                  onThemeChanged(newValue, themeNotifier);
                 },
               ),
             ],
