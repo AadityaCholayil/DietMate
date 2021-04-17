@@ -15,15 +15,15 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
-  PreloadPageController pageController = PreloadPageController(initialPage: 0);
+  PageController pageController = PageController(initialPage: 0);
   int pageNo = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      body: PreloadPageView(
-        preloadPagesCount: 4,
+      body: PageView(
+        //pagesCount: 4,
         controller: pageController,
         onPageChanged: (index) {
           setState(() {
@@ -52,6 +52,11 @@ class _HomeScreenState extends State<HomeScreen> {
               return FoodForm();
             },
             closedShape: CircleBorder(),
+            onClosed: (_){
+              setState(() {
+                print('Reload Home');
+              });
+            },
             closedBuilder: (context, openContainer){
               return FloatingActionButton(
                 backgroundColor: Theme.of(context).accentColor,
@@ -61,7 +66,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   size: 33,
                 ),
                 onPressed: () {
-                  openContainer();
+                  setState(() {
+                    openContainer();
+                  });
                 },
               );
             },

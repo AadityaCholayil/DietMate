@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietmate/model/food_day.dart';
+import 'package:dietmate/model/user.dart';
 import 'package:dietmate/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,6 +17,11 @@ class _HomePageState extends State<HomePage> {
   FirebaseFirestore db = FirebaseFirestore.instance;
   String dateToday = '';
 
+  Future<QuerySnapshot> getData(User user) async {
+    return await db.collection('users').doc(user.uid).collection('foods')
+        .where('date', isEqualTo: dateToday).get();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -25,11 +33,11 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
 
     final user = Provider.of<User>(context);
+    final userData = Provider.of<UserData>(context);
 
     return Scaffold(
       body: FutureBuilder<QuerySnapshot>(
-        future: db.collection('users').doc(user.uid).collection('foods')
-            .where('date', isEqualTo: dateToday).get(),
+        future: getData(user),
         builder: (context, snapshot){
           if(snapshot.connectionState!=ConnectionState.done){
             //query in progress
@@ -43,8 +51,8 @@ class _HomePageState extends State<HomePage> {
             );
           }
           if(snapshot.hasData){
-            final List<DocumentSnapshot> documents = snapshot.data.docs;
-            if(documents.isEmpty){
+            FoodList foodList = FoodList.fromSnapshot(snapshot.data);
+            if(foodList.list.isEmpty){
               //query successful but is empty
               return Container(
                 child: Text(
@@ -52,10 +60,10 @@ class _HomePageState extends State<HomePage> {
                 ),
               );
             }
-            //main code
+            //TODO main code
             return Container(
               child: Text(
-                  'Got data (${documents.length} doc/s)'
+                  'Got data (${foodList.list.length} doc/s)\ncalo=${foodList.consumedCalories}'
               ),
             );
           }

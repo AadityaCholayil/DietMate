@@ -21,6 +21,7 @@ class DatabaseService{
       'height': userData.height,
       'weight': userData.weight,
       'activityLevel': userData.activityLevel,
+      'calorieGoal': userData.calorieGoal,
     });
   }
 
@@ -57,6 +58,7 @@ class DatabaseService{
       height: snapshot.data()['height'],
       weight: snapshot.data()['weight'],
       activityLevel: snapshot.data()['activityLevel'],
+      calorieGoal: snapshot.data()['calorieGoal'],
     );
   }
 
