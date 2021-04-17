@@ -1,8 +1,13 @@
 import 'package:dietmate/model/food.dart';
 import 'package:dietmate/model/food_image.dart';
 import 'package:dietmate/form_pages/image_search_page.dart';
+import 'package:dietmate/services/database.dart';
+import 'package:dietmate/shared/conversion.dart';
+import 'package:dietmate/shared/loading.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class FoodFormFinal extends StatefulWidget {
   final Food food;
@@ -23,20 +28,27 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
   String _fullUrl, _thumbnailUrl;
   int _imageWidth, _imageHeight;
 
+  bool isLoading=false;
+  String error='';
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    if(widget.food.fullUrl==null){
-      _name = widget.food.name;
-      _calories = widget.food.calories;
-      _fats = widget.food.fats;
-      _protein = widget.food.protein;
-      _carbohydrates = widget.food.carbohydrates;
-      _servingSizeQty = widget.food.servingSizeQty;
-      _servingSizeUnit = widget.food.servingSizeUnit;
+    if(widget.food.thumbnailUrl!=null){
+      _fullUrl = widget.food.fullUrl;
+      _thumbnailUrl =  widget.food.thumbnailUrl;
+      _imageHeight =  widget.food.imageHeight;
+      _imageWidth =  widget.food.imageWidth;
     }
+    _name = widget.food.name;
+    _calories = widget.food.calories;
+    _fats = widget.food.fats;
+    _protein = widget.food.protein;
+    _carbohydrates = widget.food.carbohydrates;
+    _servingSizeQty = widget.food.servingSizeQty;
+    _servingSizeUnit = widget.food.servingSizeUnit;
   }
 
   Widget _buildName(){
@@ -229,7 +241,7 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
                   onPressed: () async {
                     _foodImage = await Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (BuildContext context) => ImageSearch(foodName: _name))
+                        MaterialPageRoute(builder: (BuildContext context) => ImageSearch())
                     );
                     setState(() {
                       if(_foodImage!=null) {
@@ -259,7 +271,7 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
             onPressed: () async {
               FoodImage foodImage = await Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (BuildContext context) => ImageSearch(foodName: _name))
+                  MaterialPageRoute(builder: (BuildContext context) => ImageSearch())
               );
               setState(() {
                 if(foodImage!=null){
@@ -276,17 +288,24 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
       ],
     );
   }
-  Widget _buildSubmitButton(){
+  Widget _buildSubmitButton(BuildContext context2){
+    final user = Provider.of<User>(context2);
     return Builder(builder: (context) => ElevatedButton(
       child: Text(
         'Submit',
         style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),
       ),
-      onPressed: () {
+      onPressed: () async {
         if (!_formKey.currentState.validate()) {
           return;
         }
+        setState(() => isLoading=true);
+        DateTime now = DateTime.now();
+        String _date = '${now.day}-${now.month}-${now.year}';
+        String _week = weekNumber(now);
         _food=Food(
+          date: _date,
+          week: _week,
           name: _name,
           calories: _calories,
           fats: _fats,
@@ -300,7 +319,15 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
           imageHeight: _imageHeight,
         );
         _food.printFullDetails();
-        Navigator.popUntil(context, ModalRoute.withName('/'));
+        dynamic result = await DatabaseService(uid: user.uid).addFood(_food);
+        if (result=='error'){
+          setState(() {
+            error='error';
+            isLoading=false;
+          });
+        }
+        setState(() => isLoading=false);
+        Navigator.popUntil(context2, ModalRoute.withName('/'));
       },
     ));
   }
@@ -375,7 +402,17 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
                 ],
               ),
               SizedBox(height: 15),
-              _buildSubmitButton(),
+              !isLoading?_buildSubmitButton(context)
+                  :LoadingSmall(),
+              SizedBox(height: 10),
+              error!=''?Text(
+                'Something Went Wrong, Please Try Again',
+                style: TextStyle(
+                  color: Theme.of(context).errorColor,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w300
+                ),
+              ):SizedBox.shrink(),
             ],
           ),
         ),

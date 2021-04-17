@@ -1,6 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:dietmate/model/food.dart';
 import 'package:dietmate/form_pages/food_form_final.dart';
+import 'package:dietmate/shared/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
@@ -300,7 +301,7 @@ class _FoodFormState extends State<FoodForm> {
                     Container(
                       height: 50,
                       width: 50,
-                      child: CircularProgressIndicator()
+                      child: LoadingSmall(),
                     ),
                     SizedBox(height: 30),
                   ],

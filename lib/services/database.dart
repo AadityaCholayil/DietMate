@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietmate/model/food.dart';
 import 'package:dietmate/model/user.dart';
 
 class DatabaseService{
@@ -21,6 +22,29 @@ class DatabaseService{
       'weight': userData.weight,
       'activityLevel': userData.activityLevel,
     });
+  }
+
+  //add food
+  Future addFood(Food food) async {
+    return await db.collection('users').doc(uid).collection('foods').add({
+      'date': food.date,
+      'week': food.week,
+      'name': food.name,
+      'calories': food.calories,
+      'fats': food.fats,
+      'protein': food.protein,
+      'carbohydrates': food.carbohydrates,
+      'servingSizeQty': food.servingSizeQty,
+      'servingSizeUnit': food.servingSizeUnit,
+      'fullUrl': food.fullUrl,
+      'thumbnailUrl': food.thumbnailUrl,
+      'imageWidth': food.imageWidth,
+      'imageHeight': food.imageHeight,
+    }).then((value) => print("Food Added"))
+      .catchError((error) {
+          print("Failed to add food: $error");
+          return 'error';
+      });
   }
 
   //user data from snapshots

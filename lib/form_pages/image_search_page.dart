@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'dart:ui';
 import 'package:dietmate/model/food_image.dart';
+import 'package:dietmate/shared/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
 class ImageSearch extends StatefulWidget {
-  final String foodName;
-  ImageSearch({this.foodName});
+  // final String foodName;
+  // ImageSearch({this.foodName});
   @override
   _ImageSearchState createState() => _ImageSearchState();
 }
@@ -20,14 +21,6 @@ class _ImageSearchState extends State<ImageSearch> {
   var searchResult;
   FoodImages foodImages;
   int selectedImage=10;
-
-  @override
-  void initState() {
-    super.initState();
-    if(widget.foodName!=null){
-      foodName=widget.foodName;
-    }
-  }
 
   Future<dynamic> getImages(String query) async {
     Client _client = Client();
@@ -83,13 +76,13 @@ class _ImageSearchState extends State<ImageSearch> {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            selectedImage==10?Center(
+            Center(
               child: SizedBox(
-                child: CircularProgressIndicator(),
+                child: LoadingSmall(),
                 height: 60,
                 width: 60,
               ),
-            ):SizedBox.shrink(),
+            ),
             ImageFiltered(
               imageFilter: selectedImage==index?
                 ImageFilter.blur(sigmaX: 1.5, sigmaY: 1.5):
@@ -200,7 +193,7 @@ class _ImageSearchState extends State<ImageSearch> {
               isSearching==true?Column(
                 children: [
                   SizedBox(height: 20),
-                  CircularProgressIndicator(),
+                  LoadingSmall(),
                   SizedBox(height: 20),
                 ],
               ):SizedBox.shrink(),

@@ -8,7 +8,6 @@ import 'package:dietmate/shared/loading.dart';
 import 'package:dietmate/themes/custom_theme.dart';
 import 'package:dietmate/themes/dark_theme.dart';
 import 'package:dietmate/themes/light_theme.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -33,7 +32,6 @@ class _NeerajTempState extends State<NeerajTemp> {
   @override
   Widget build(BuildContext context) {
 
-    final user = Provider.of<User>(context);
     final userData = Provider.of<UserData>(context);
     final themeNotifier = Provider.of<ThemeNotifier>(context);
     _darkTheme = (themeNotifier.getTheme() == darkTheme);

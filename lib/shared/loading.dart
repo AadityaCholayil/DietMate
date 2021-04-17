@@ -15,3 +15,16 @@ class Loading extends StatelessWidget {
     );
   }
 }
+
+class LoadingSmall extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: SizedBox(
+        height: 60,
+        width: 60,
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+}
