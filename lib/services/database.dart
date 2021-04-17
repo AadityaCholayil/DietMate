@@ -13,7 +13,7 @@ class DatabaseService{
       FirebaseFirestore.instance.collection('users');
 
   //write UserData
-  Future updateUserData(UserData userData) async {
+  Future setUserData(UserData userData) async {
     return await db.collection('users').doc(uid).set({
       'name': userData.name,
       'age': userData.age,
@@ -23,6 +23,18 @@ class DatabaseService{
       'activityLevel': userData.activityLevel,
       'calorieGoal': userData.calorieGoal,
     });
+  }
+
+  Future updateUserData(UserData userData) async {
+    return await db.collection('users').doc(uid).update({
+      'name': userData.name,
+      'age': userData.age,
+      'isMale': userData.isMale,
+      'height': userData.height,
+      'weight': userData.weight,
+      'activityLevel': userData.activityLevel,
+      'calorieGoal': userData.calorieGoal,
+    }).then((value) => print('Updated!'));
   }
 
   //add food

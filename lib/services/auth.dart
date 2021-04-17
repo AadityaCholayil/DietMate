@@ -34,7 +34,7 @@ class AuthService extends ChangeNotifier {
       User user = result.user;
       //create a new document for the user with the uid
       await DatabaseService(uid: user.uid)
-          .updateUserData(userData);
+          .setUserData(userData);
 
       return user;
     } catch (error) {

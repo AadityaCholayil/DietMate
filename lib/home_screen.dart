@@ -5,7 +5,6 @@ import 'package:dietmate/pages/report_page.dart';
 import 'package:dietmate/form_pages/food_form.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:preload_page_view/preload_page_view.dart';
 import 'package:animations/animations.dart';
 
 class HomeScreen extends StatefulWidget {

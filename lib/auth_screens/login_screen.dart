@@ -1,4 +1,5 @@
 import 'package:dietmate/services/auth.dart';
+import 'package:dietmate/shared/loading.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -30,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 fontSize: 40,
               ),
             ),
-            ElevatedButton(
+            loading?LoadingSmall():ElevatedButton(
               child:  Text(
                 'Login',
                 style: TextStyle(

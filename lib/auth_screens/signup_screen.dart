@@ -1,5 +1,6 @@
 import 'package:dietmate/model/user.dart';
 import 'package:dietmate/services/auth.dart';
+import 'package:dietmate/shared/loading.dart';
 import 'package:flutter/material.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -13,7 +14,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String error = '';
   bool loading = false;
 
-  String email = 'aadi1@xyz.com';
+  String email = 'aadi2@xyz.com';
   String password = 'aadi123';
 
   @override
@@ -29,7 +30,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 fontSize: 40,
               ),
             ),
-            ElevatedButton(
+            loading?LoadingSmall():ElevatedButton(
               child:  Text(
                 'SignUp',
                 style: TextStyle(

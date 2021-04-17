@@ -4,7 +4,6 @@ import 'package:dietmate/model/user.dart';
 import 'package:dietmate/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,6 +15,7 @@ class _HomePageState extends State<HomePage> {
 
   FirebaseFirestore db = FirebaseFirestore.instance;
   String dateToday = '';
+  int caloriesGoal=0;
 
   Future<QuerySnapshot> getData(User user) async {
     return await db.collection('users').doc(user.uid).collection('foods')
@@ -34,6 +34,7 @@ class _HomePageState extends State<HomePage> {
 
     final user = Provider.of<User>(context);
     final userData = Provider.of<UserData>(context);
+    caloriesGoal=userData.calorieGoal;
 
     return Scaffold(
       body: FutureBuilder<QuerySnapshot>(
