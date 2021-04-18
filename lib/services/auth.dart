@@ -9,6 +9,7 @@ class AuthService extends ChangeNotifier {
 
   //auth change user stream
   Stream<User> get user {
+    print('User Stream updated');
     return _auth.authStateChanges();
   }
 
@@ -35,7 +36,6 @@ class AuthService extends ChangeNotifier {
       //create a new document for the user with the uid
       await DatabaseService(uid: user.uid)
           .setUserData(userData);
-
       return user;
     } catch (error) {
       print('error');

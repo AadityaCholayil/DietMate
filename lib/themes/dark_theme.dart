@@ -1,15 +1,26 @@
 import 'package:flutter/material.dart';
 final ThemeData darkTheme = ThemeData(
-  primarySwatch: MaterialColor(4280361249,{50: Color( 0xfff2f2f2 )
-    , 100: Color( 0xffe6e6e6 )
-    , 200: Color( 0xffcccccc )
-    , 300: Color( 0xffb3b3b3 )
-    , 400: Color( 0xff999999 )
-    , 500: Color( 0xff808080 )
-    , 600: Color( 0xff666666 )
-    , 700: Color( 0xff4d4d4d )
-    , 800: Color( 0xff333333 )
-    , 900: Color( 0xff191919 )
+  // primarySwatch: MaterialColor(4280361249,{50: Color( 0xfff2f2f2 )
+  //   , 100: Color( 0xffe6e6e6 )
+  //   , 200: Color( 0xffcccccc )
+  //   , 300: Color( 0xffb3b3b3 )
+  //   , 400: Color( 0xff999999 )
+  //   , 500: Color( 0xff808080 )
+  //   , 600: Color( 0xff666666 )
+  //   , 700: Color( 0xff4d4d4d )
+  //   , 800: Color( 0xff333333 )
+  //   , 900: Color( 0xff191919 )
+  // }),
+  primarySwatch: MaterialColor(4280361249,{50: Color( 0xfff8eafa )
+    , 100: Color( 0xfff1d5f6 )
+    , 200: Color( 0xffe3acec )
+    , 300: Color( 0xffd582e3 )
+    , 400: Color( 0xffc659d9 )
+    , 500: Color( 0xffb82fd0 )
+    , 600: Color( 0xff9326a6 )
+    , 700: Color( 0xff6f1c7d )
+    , 800: Color( 0xff4a1353 )
+    , 900: Color( 0xff25092a )
   }),
   brightness: Brightness.dark,
   primaryColor: Color( 0xff212121 ),
@@ -41,6 +52,11 @@ final ThemeData darkTheme = ThemeData(
       primary: Color( 0xffb82fd0 ),
     ),
   ),
+  textButtonTheme: TextButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      onPrimary: Color( 0xffb82fd0 ),
+    ),
+  ),
   buttonTheme: ButtonThemeData(
     textTheme: ButtonTextTheme.normal,
     minWidth: 88,
@@ -60,7 +76,7 @@ final ThemeData darkTheme = ThemeData(
     hoverColor: Color( 0x0affffff ),
     colorScheme: ColorScheme(
       primary: Color( 0xffde9ee9 ),
-      primaryVariant: Color( 0xff000000 ),
+      primaryVariant: Color( 0xff6f1c7d ),
       secondary: Color( 0xffb82fd0 ),
       secondaryVariant: Color( 0xff6f1c7d ),
       surface: Color( 0xff424242 ),
@@ -74,246 +90,6 @@ final ThemeData darkTheme = ThemeData(
       brightness: Brightness.dark,
     ),
   ),
-  // textTheme: TextTheme(
-  //   display4: TextStyle(
-  //     color: Color( 0xb3ffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   display3: TextStyle(
-  //     color: Color( 0xb3ffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   display2: TextStyle(
-  //     color: Color( 0xb3ffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   display1: TextStyle(
-  //     color: Color( 0xb3ffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   headline: TextStyle(
-  //     color: Color( 0xffffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   title: TextStyle(
-  //     color: Color( 0xffffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   subhead: TextStyle(
-  //     color: Color( 0xffffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   body2: TextStyle(
-  //     color: Color( 0xffffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   body1: TextStyle(
-  //     color: Color( 0xffffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   caption: TextStyle(
-  //     color: Color( 0xb3ffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   button: TextStyle(
-  //     color: Color( 0xffffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   subtitle: TextStyle(
-  //     color: Color( 0xffffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   overline: TextStyle(
-  //     color: Color( 0xffffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  // ),
-  // primaryTextTheme: TextTheme(
-  //   display4: TextStyle(
-  //     color: Color( 0xb3ffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   display3: TextStyle(
-  //     color: Color( 0xb3ffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   display2: TextStyle(
-  //     color: Color( 0xb3ffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   display1: TextStyle(
-  //     color: Color( 0xb3ffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   headline: TextStyle(
-  //     color: Color( 0xffffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   title: TextStyle(
-  //     color: Color( 0xffffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   subhead: TextStyle(
-  //     color: Color( 0xffffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   body2: TextStyle(
-  //     color: Color( 0xffffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   body1: TextStyle(
-  //     color: Color( 0xffffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   caption: TextStyle(
-  //     color: Color( 0xb3ffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   button: TextStyle(
-  //     color: Color( 0xffffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   subtitle: TextStyle(
-  //     color: Color( 0xffffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   overline: TextStyle(
-  //     color: Color( 0xffffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  // ),
-  // accentTextTheme: TextTheme(
-  //   display4: TextStyle(
-  //     color: Color( 0x8a000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   display3: TextStyle(
-  //     color: Color( 0x8a000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   display2: TextStyle(
-  //     color: Color( 0x8a000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   display1: TextStyle(
-  //     color: Color( 0x8a000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   headline: TextStyle(
-  //     color: Color( 0xdd000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   title: TextStyle(
-  //     color: Color( 0xdd000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   subhead: TextStyle(
-  //     color: Color( 0xdd000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   body2: TextStyle(
-  //     color: Color( 0xdd000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   body1: TextStyle(
-  //     color: Color( 0xdd000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   caption: TextStyle(
-  //     color: Color( 0x8a000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   button: TextStyle(
-  //     color: Color( 0xdd000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   subtitle: TextStyle(
-  //     color: Color( 0xff000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   overline: TextStyle(
-  //     color: Color( 0xff000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  // ),
   inputDecorationTheme:   InputDecorationTheme(
     labelStyle: TextStyle(
       color: Color( 0xffffffff ),
@@ -343,6 +119,7 @@ final ThemeData darkTheme = ThemeData(
     floatingLabelBehavior: FloatingLabelBehavior.auto,
     isDense: false,
     contentPadding: EdgeInsets.only(top:12,bottom:12,left:0, right:0),
+    //contentPadding: EdgeInsets.fromLTRB(13, 15, 13, 15),
     isCollapsed : false,
     prefixStyle: TextStyle(
       color: Color( 0xffffffff ),
@@ -364,7 +141,7 @@ final ThemeData darkTheme = ThemeData(
     ),
     filled: false,
     fillColor: Color( 0x00000000 ),
-    errorBorder: UnderlineInputBorder(
+    errorBorder: OutlineInputBorder(
       borderSide: BorderSide(color: Color( 0xffd32f2f ), width: 2, style: BorderStyle.solid, ),
       borderRadius: BorderRadius.all(Radius.circular(4.0)),
     ),
@@ -381,7 +158,7 @@ final ThemeData darkTheme = ThemeData(
       borderRadius: BorderRadius.all(Radius.circular(4.0)),
     ),
     enabledBorder: UnderlineInputBorder(
-      borderSide: BorderSide(color: Color( 0xffffffff ), width: 2, style: BorderStyle.solid, ),
+      borderSide: BorderSide(color: Color( 0x62ffffff ), width: 2, style: BorderStyle.solid, ),
       borderRadius: BorderRadius.all(Radius.circular(4.0)),
     ),
     border: UnderlineInputBorder(

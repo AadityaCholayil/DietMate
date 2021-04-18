@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietmate/model/food_day.dart';
+import 'package:dietmate/model/food_list_day.dart';
 import 'package:dietmate/model/user.dart';
 import 'package:dietmate/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> {
             );
           }
           if(snapshot.hasData){
-            FoodList foodList = FoodList.fromSnapshot(snapshot.data);
+            FoodListDay foodList = FoodListDay.fromSnapshot(snapshot.data);
             if(foodList.list.isEmpty){
               //query successful but is empty
               return Container(

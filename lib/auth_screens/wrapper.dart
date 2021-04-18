@@ -19,6 +19,7 @@ class Wrapper extends StatelessWidget {
         initialData: null,
         value: DatabaseService(uid: user.uid).userData,
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           theme: themeNotifier.getTheme(),
           home: HomeScreen(),
         ),
@@ -27,6 +28,7 @@ class Wrapper extends StatelessWidget {
           if (userData!=null) {
             if (userData.name=='firebase_default') {
               return MaterialApp(
+                debugShowCheckedModeBanner: false,
                 theme: themeNotifier.getTheme(),
                 home: AdditionalDetailsScreen(),
               );
@@ -35,6 +37,7 @@ class Wrapper extends StatelessWidget {
             }
           } else {
             return MaterialApp(
+                debugShowCheckedModeBanner: false,
                 theme: themeNotifier.getTheme(),
                 home: Loading()
             );
@@ -43,6 +46,7 @@ class Wrapper extends StatelessWidget {
       );
     } else {
       return MaterialApp(
+        debugShowCheckedModeBanner: false,
         theme: themeNotifier.getTheme(),
         home: AuthScreen()
       );

@@ -1,6 +1,6 @@
 import 'package:dietmate/pages/homepage.dart';
 import 'package:dietmate/pages/neeraj_temp.dart';
-import 'package:dietmate/pages/profile_detail_page.dart';
+import 'package:dietmate/pages/settings_page.dart';
 import 'package:dietmate/pages/report_page.dart';
 import 'package:dietmate/form_pages/food_form.dart';
 import 'package:flutter/cupertino.dart';
@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
           HomePage(),
           ReportPage(),
           NeerajTemp(),
-          ProfilePage(),
+          SettingsPage(),
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -84,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: <Widget>[
               IconButton(
                 icon: Icon(
-                  Icons.home_outlined,
+                  Icons.home,
                   color: pageNo==0?Theme.of(context).toggleableActiveColor:Theme.of(context).colorScheme.onSurface,
                   size: 30.0,
                 ),
@@ -98,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(width: 15,),
               IconButton(
                 icon: Icon(
-                  Icons.bar_chart,
+                  Icons.show_chart,
                   color: pageNo==1?Theme.of(context).toggleableActiveColor:Theme.of(context).colorScheme.onSurface,
                   size: 30.0,
                 ),
@@ -112,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Spacer(),
               IconButton(
                 icon: Icon(
-                  Icons.alternate_email,
+                  Icons.calendar_today_rounded,
                   color: pageNo==2?Theme.of(context).toggleableActiveColor:Theme.of(context).colorScheme.onSurface,
                   size: 30.0,
                 ),
@@ -126,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(width: 15,),
               IconButton(
                 icon: Icon(
-                  Icons.perm_identity,
+                  Icons.settings,
                   color: pageNo==3?Theme.of(context).toggleableActiveColor:Theme.of(context).colorScheme.onSurface,
                   size: 30.0,
                 ),

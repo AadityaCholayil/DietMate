@@ -75,7 +75,8 @@ class DatabaseService{
   }
 
   Stream<UserData> get userData{
+    print('UserData Stream updated');
     return db.collection('users').doc(uid).snapshots()
-      .map(_userDataFromSnapshot).handleError((onError){print('error');});
+      .map(_userDataFromSnapshot);
   }
 }

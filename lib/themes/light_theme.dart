@@ -41,6 +41,11 @@ final ThemeData lightTheme = ThemeData(
       primary: Color( 0xffde9ee9 ),
     ),
   ),
+  textButtonTheme: TextButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      onPrimary: Color( 0xffb82fd0 ),
+    ),
+  ),
   buttonTheme: ButtonThemeData(
     textTheme: ButtonTextTheme.normal,
     minWidth: 88,
@@ -74,247 +79,7 @@ final ThemeData lightTheme = ThemeData(
       brightness: Brightness.light,
     ),
   ),
-  // textTheme: TextTheme(
-  //   display4: TextStyle(
-  //     color: Color( 0x8a000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   display3: TextStyle(
-  //     color: Color( 0x8a000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   display2: TextStyle(
-  //     color: Color( 0x8a000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   display1: TextStyle(
-  //     color: Color( 0x8a000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   headline: TextStyle(
-  //     color: Color( 0xdd000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   title: TextStyle(
-  //     color: Color( 0xdd000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   subhead: TextStyle(
-  //     color: Color( 0xdd000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   body2: TextStyle(
-  //     color: Color( 0xdd000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   body1: TextStyle(
-  //     color: Color( 0xdd000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   caption: TextStyle(
-  //     color: Color( 0x8a000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   button: TextStyle(
-  //     color: Color( 0xdd000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   subtitle: TextStyle(
-  //     color: Color( 0xff000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   overline: TextStyle(
-  //     color: Color( 0xff000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  // ),
-  // primaryTextTheme: TextTheme(
-  //   display4: TextStyle(
-  //     color: Color( 0x8a000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   display3: TextStyle(
-  //     color: Color( 0x8a000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   display2: TextStyle(
-  //     color: Color( 0x8a000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   display1: TextStyle(
-  //     color: Color( 0x8a000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   headline: TextStyle(
-  //     color: Color( 0xdd000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   title: TextStyle(
-  //     color: Color( 0xdd000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   subhead: TextStyle(
-  //     color: Color( 0xdd000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   body2: TextStyle(
-  //     color: Color( 0xdd000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   body1: TextStyle(
-  //     color: Color( 0xdd000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   caption: TextStyle(
-  //     color: Color( 0x8a000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   button: TextStyle(
-  //     color: Color( 0xdd000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   subtitle: TextStyle(
-  //     color: Color( 0xff000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   overline: TextStyle(
-  //     color: Color( 0xff000000 ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  // ),
-  // accentTextTheme: TextTheme(
-  //   display4: TextStyle(
-  //     color: Color( 0xb3ffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   display3: TextStyle(
-  //     color: Color( 0xb3ffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   display2: TextStyle(
-  //     color: Color( 0xb3ffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   display1: TextStyle(
-  //     color: Color( 0xb3ffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   headline: TextStyle(
-  //     color: Color( 0xffffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   title: TextStyle(
-  //     color: Color( 0xffffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   subhead: TextStyle(
-  //     color: Color( 0xffffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   body2: TextStyle(
-  //     color: Color( 0xffffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   body1: TextStyle(
-  //     color: Color( 0xffffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   caption: TextStyle(
-  //     color: Color( 0xb3ffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   button: TextStyle(
-  //     color: Color( 0xffffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   subtitle: TextStyle(
-  //     color: Color( 0xffffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  //   overline: TextStyle(
-  //     color: Color( 0xffffffff ),
-  //     fontSize: null,
-  //     fontWeight: FontWeight.w400,
-  //     fontStyle: FontStyle.normal,
-  //   ),
-  // ),
-  inputDecorationTheme:   InputDecorationTheme(
+  inputDecorationTheme: ThemeData.dark().inputDecorationTheme.copyWith(
     labelStyle: TextStyle(
       color: Color( 0xdd000000 ),
       fontSize: null,
@@ -342,7 +107,7 @@ final ThemeData lightTheme = ThemeData(
     errorMaxLines: null,
     floatingLabelBehavior: FloatingLabelBehavior.auto,
     isDense: false,
-    contentPadding: EdgeInsets.only(top:12,bottom:12,left:0, right:0),
+    contentPadding: EdgeInsets.fromLTRB(12, 12, 12, 12),
     isCollapsed : false,
     prefixStyle: TextStyle(
       color: Color( 0xdd000000 ),
@@ -364,27 +129,27 @@ final ThemeData lightTheme = ThemeData(
     ),
     filled: false,
     fillColor: Color( 0x00000000 ),
-    errorBorder: UnderlineInputBorder(
+    errorBorder: OutlineInputBorder(
       borderSide: BorderSide(color: Color( 0xffd32f2f ), width: 1, style: BorderStyle.solid, ),
       borderRadius: BorderRadius.all(Radius.circular(4.0)),
     ),
-    focusedBorder: UnderlineInputBorder(
+    focusedBorder: OutlineInputBorder(
       borderSide: BorderSide(color: Color( 0xffb82fd0 ), width: 1, style: BorderStyle.solid, ),
       borderRadius: BorderRadius.all(Radius.circular(4.0)),
     ),
-    focusedErrorBorder: UnderlineInputBorder(
+    focusedErrorBorder: OutlineInputBorder(
       borderSide: BorderSide(color: Color( 0xffd32f2f ), width: 1, style: BorderStyle.solid, ),
       borderRadius: BorderRadius.all(Radius.circular(4.0)),
     ),
-    disabledBorder: UnderlineInputBorder(
+    disabledBorder: OutlineInputBorder(
       borderSide: BorderSide(color: Color( 0xff000000 ), width: 1, style: BorderStyle.solid, ),
       borderRadius: BorderRadius.all(Radius.circular(4.0)),
     ),
-    enabledBorder: UnderlineInputBorder(
+    enabledBorder: OutlineInputBorder(
       borderSide: BorderSide(color: Color( 0xff000000 ), width: 1, style: BorderStyle.solid, ),
       borderRadius: BorderRadius.all(Radius.circular(4.0)),
     ),
-    border: UnderlineInputBorder(
+    border: OutlineInputBorder(
       borderSide: BorderSide(color: Color( 0xff000000 ), width: 1, style: BorderStyle.solid, ),
       borderRadius: BorderRadius.all(Radius.circular(4.0)),
     ),

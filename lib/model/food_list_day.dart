@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietmate/model/food.dart';
 
-class FoodList {
+class FoodListDay {
   int consumedCalories=0;
   List<Food> list=[];
 
-  FoodList({this.consumedCalories, this.list});
+  FoodListDay({this.consumedCalories, this.list});
 
-  FoodList.fromSnapshot(QuerySnapshot snapshot){
+  FoodListDay.fromSnapshot(QuerySnapshot snapshot){
     final List<DocumentSnapshot> documents = snapshot.docs;
     int i=0;
     for (DocumentSnapshot document in documents){

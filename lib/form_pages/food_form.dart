@@ -64,7 +64,7 @@ class _FoodFormState extends State<FoodForm> {
       style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
       validator: (String value) {
         if (value.isEmpty ) {
-          return 'It cannot be empty';
+          return 'Food name is empty!';
         }
         return null;
       },
@@ -268,9 +268,9 @@ class _FoodFormState extends State<FoodForm> {
             :EdgeInsets.fromLTRB(22, screenHeight/3.5, 0, 30),
         alignment: Alignment.centerLeft,
         child: Text(
-          'Enter Food',
+          'Search Food',
           style: TextStyle(
-              fontSize: 55,
+              fontSize: 52,
               fontWeight: FontWeight.bold
           ),
         ),

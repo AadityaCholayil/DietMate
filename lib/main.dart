@@ -61,12 +61,14 @@ class _MyAppState extends State<MyApp> {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
     if(_error) {
       return MaterialApp(
+        debugShowCheckedModeBanner: false,
         theme: themeNotifier.getTheme(),
         home: Loading(),
       );
     }
     if (!_initialized) {
       return MaterialApp(
+        debugShowCheckedModeBanner: false,
         theme: themeNotifier.getTheme(),
         home: Loading(),
       );

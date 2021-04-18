@@ -83,7 +83,7 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
       style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
       validator: (String value) {
         int calories = int.tryParse(value);
-        if (calories == null || calories <= 0) {
+        if (calories == null || calories < 0) {
           return 'Calories must be greater than 0';
         }
         return null;
@@ -105,7 +105,7 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
       style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
       validator: (String value) {
         int fats = int.tryParse(value);
-        if (fats == null || fats <= 0) {
+        if (fats == null || fats < 0) {
           return 'Fats qty must be greater than 0';
         }
         return null;
@@ -127,7 +127,7 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
       style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
       validator: (String value) {
         int protein = int.tryParse(value);
-        if (protein == null || protein <= 0) {
+        if (protein == null || protein < 0) {
           return 'Protein qty must be greater than 0';
         }
         return null;
@@ -149,7 +149,7 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
       style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
       validator: (String value) {
         int carbohydrates = int.tryParse(value);
-        if (carbohydrates == null || carbohydrates <= 0) {
+        if (carbohydrates == null || carbohydrates < 0) {
           return 'Carbohydrates qty must be greater than 0';
         }
         return null;
@@ -171,7 +171,7 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
       style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
       validator: (String value) {
         int servingSizeQty = int.tryParse(value);
-        if (servingSizeQty == null || servingSizeQty <= 0) {
+        if (servingSizeQty == null || servingSizeQty < 0) {
           return 'servingSizeQty must be greater than 0';
         }
         return null;
@@ -193,7 +193,7 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
       style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
       validator: (String value) {
         if (value.isEmpty ) {
-          return 'It cannot be empty';
+          return 'Serving Size Unit cannot be empty';
         }
         return null;
       },
