@@ -19,19 +19,33 @@ class _FoodFormState extends State<FoodForm> {
   var foodData;
   bool isSearching=false;
   bool searchDone=false;
+  bool noResults=false;
   FoodListForm foodList;
   double screenHeight, screenWidth;
+  double searchHeight;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey _searchKey = GlobalKey();
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
+    WidgetsBinding.instance.addPostFrameCallback(updateLayout);
     super.initState();
   }
-  _afterLayout(_) {
+
+  updateLayout(_) {
     _getPositions();
+  }
+
+  Offset _getPositions() {
+    final RenderBox renderBoxSearch = _searchKey.currentContext.findRenderObject();
+    final positionSearch = renderBoxSearch.localToGlobal(Offset.zero);
+    print("Position of Search: $positionSearch ");
+    return positionSearch;
+  }
+
+  void updateHeight(){
+    searchHeight=_getPositions().dy/2;
   }
 
   Future<dynamic> getData(String query) async {
@@ -60,44 +74,49 @@ class _FoodFormState extends State<FoodForm> {
       return 'No results';
   }
 
-  _getPositions() {
-    final RenderBox renderBoxSearch = _searchKey.currentContext.findRenderObject();
-    final positionSearch = renderBoxSearch.localToGlobal(Offset.zero);
-    print("Position of Search: $positionSearch ");
-  }
-
   Widget _buildName(){
-    return TextFormField(
-      key: _searchKey,
-      decoration: InputDecoration(
-        contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 18),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Theme.of(context).disabledColor, width: 2, style: BorderStyle.solid, ),
-          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2, style: BorderStyle.solid, ),
-          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-        ),
-        filled: true,
-        fillColor: Theme.of(context).colorScheme.surface,
-        suffixIcon: Icon(Icons.search, size: 28),
-        labelText: 'Food Name',
-        labelStyle: TextStyle(fontSize: 25),
-        floatingLabelBehavior: FloatingLabelBehavior.never
+    return Card(
+      elevation: 5,
+      margin: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(
+        // side: BorderSide(
+        //   width: 2,
+        //   color: Theme.of(context).disabledColor
+        // ),
+        borderRadius: BorderRadius.circular(15.0),
       ),
-      textCapitalization: TextCapitalization.words,
-      keyboardType: TextInputType.name,
-      style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
-      validator: (String value) {
-        if (value.isEmpty ) {
-          return 'Food name is empty!';
-        }
-        return null;
-      },
-      onSaved: (String value) {
-        foodName = value;
-      },
+      child: TextFormField(
+        key: _searchKey,
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 18),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.transparent, width: 2, style: BorderStyle.solid, ),
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2, style: BorderStyle.solid, ),
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          ),
+          filled: true,
+          fillColor: Theme.of(context).colorScheme.surface,
+          suffixIcon: Icon(Icons.search, size: 28),
+          labelText: 'Food Name',
+          labelStyle: TextStyle(fontSize: 25),
+          floatingLabelBehavior: FloatingLabelBehavior.never
+        ),
+        textCapitalization: TextCapitalization.words,
+        keyboardType: TextInputType.name,
+        style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
+        validator: (String value) {
+          if (value.isEmpty ) {
+            return 'Food name is empty!';
+          }
+          return null;
+        },
+        onSaved: (String value) {
+          foodName = value;
+        },
+      ),
     );
   }
 
@@ -148,25 +167,29 @@ class _FoodFormState extends State<FoodForm> {
               customFoodButton(),
             ],
           ),
-          SizedBox(height: 18),
+          SizedBox(height: 14),
         ],
       );
     }
     return Card(
-      elevation: 3,
-      margin: EdgeInsets.symmetric(horizontal: 20),
+      elevation: 5,
+      margin: EdgeInsets.symmetric(horizontal: 1),
       clipBehavior: Clip.antiAliasWithSaveLayer,
       shape: RoundedRectangleBorder(
-        side: BorderSide(
-          width: 2,
-          color: Theme.of(context).disabledColor
-        ),
+        // side: BorderSide(
+        //   width: 2,
+        //   color: Theme.of(context).disabledColor
+        // ),
         borderRadius: BorderRadius.circular(15.0),
       ),
-      child: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 12),
+      child: Container(
+        alignment: Alignment.center,
+        height: MediaQuery.of(context).size.height*0.55,
+        padding: EdgeInsets.symmetric(horizontal: 12),
+        child: SingleChildScrollView(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
             children: [
               SizedBox(height: 5,),
               ListView.separated(
@@ -250,17 +273,21 @@ class _FoodFormState extends State<FoodForm> {
         setState(() {
           isSearching=true;
           searchDone=false;
+          noResults=false;
           _formKey.currentState.save();
+          updateHeight();
         });
         foodData = await getData(foodName);
         if(foodData=='No results'){
           foodList=FoodListForm(list: []);
+          noResults=true;
         }else{
           foodList=FoodListForm.fromData(foodData);
         }
         setState(() {
           isSearching=false;
           searchDone=true;
+          updateHeight();
         });
       },
     );
@@ -302,7 +329,7 @@ class _FoodFormState extends State<FoodForm> {
   Widget _buildTitle(){
     return Center(
       child: Container(
-        padding: searchDone==true?EdgeInsets.fromLTRB(22, 10, 0, 5)
+        padding: searchDone?EdgeInsets.fromLTRB(22, 5, 0, 10)
             :EdgeInsets.fromLTRB(22, 0, 0, 30),
         alignment: Alignment.centerLeft,
         child: Text(
@@ -322,111 +349,68 @@ class _FoodFormState extends State<FoodForm> {
   Widget build(BuildContext context) {
     screenHeight=MediaQuery.of(context).size.height;
     screenWidth=MediaQuery.of(context).size.width;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Container(
-        height: screenHeight,
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Flexible(
-                flex: searchDone?2:9,
-                child: Container(
-                  // alignment: Alignment.bottomCenter,
-                  // color: Colors.blue,
-                  child: Stack(
-                    alignment: Alignment.bottomCenter,
-                    children: [
-                      Container(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            Flexible(
-                              flex: 25,
-                              child: Card(
-                                margin: EdgeInsets.zero,
-                                clipBehavior: Clip.antiAliasWithSaveLayer,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius:  BorderRadius.vertical(bottom: Radius.elliptical(90, 50)),
-                                ),
-                                elevation: 8,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    gradient: customGradient,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Flexible(
-                              flex: 1,
-                              child: Container()
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 19),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            _buildTitle(),
-                            _buildName(),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+      body: Stack(
+        children: [
+          Card(
+            margin: EdgeInsets.zero,
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            shape: RoundedRectangleBorder(
+              borderRadius:  BorderRadius.vertical(bottom: Radius.elliptical(130, 40)),
+            ),
+            elevation: 8,
+            child: Container(
+              //height: searchHeight,
+              height: noResults?395:searchDone?180:isSearching?326:407,
+              decoration: BoxDecoration(
+                gradient: customGradient,
               ),
-              Flexible(
-                flex: searchDone?7:9,
-                child: Column(
-                  children: [
-                    SizedBox(height: 20,),
-                    isSearching?Column(
-                      children: [
-                        SizedBox(height: 30),
-                        LoadingSmall(),
-                        SizedBox(height: 30),
-                      ],
-                    ):SizedBox.shrink(),
-                    searchDone?
-                    Flexible(
-                      flex: 9,
-                        child: _buildList(foodList)
-                    )
-                        :SizedBox.shrink(),
-                    Flexible(
-                      flex: 2,
-                      child: Column(
-                        children: [
-                          SizedBox(height: 15),
-                          _buildSearchButton(),
-                          SizedBox(height: searchDone?1:15),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'or ',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                ),
-                              ),
-                              customFoodButton(),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
+            ),
           ),
-        ),
+          Container(
+            padding: EdgeInsets.all(20),
+            height: screenHeight,
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  _buildTitle(),
+                  _buildName(),
+                  SizedBox(height: 15,),
+                  isSearching?Column(
+                    children: [
+                      SizedBox(height: 30),
+                      LoadingSmall(),
+                      SizedBox(height: 30),
+                    ],
+                  ):SizedBox.shrink(),
+                  searchDone?
+                  _buildList(foodList)
+                      :SizedBox.shrink(),
+                  SizedBox(height: 17),
+                  _buildSearchButton(),
+                  SizedBox(height: searchDone?1:15),
+                  noResults?SizedBox.shrink():
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'or ',
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
+                      ),
+                      customFoodButton(),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
