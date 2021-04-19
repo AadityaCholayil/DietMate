@@ -5,12 +5,8 @@ import 'package:dietmate/auth_screens/signup_screen.dart';
 import 'package:dietmate/auth_screens/auth_screen.dart';
 import 'package:dietmate/model/user.dart';
 import 'package:dietmate/shared/loading.dart';
-import 'package:dietmate/themes/custom_theme.dart';
-import 'package:dietmate/themes/dark_theme.dart';
-import 'package:dietmate/themes/light_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class NeerajTemp extends StatefulWidget {
   @override
@@ -19,22 +15,11 @@ class NeerajTemp extends StatefulWidget {
 
 class _NeerajTempState extends State<NeerajTemp> {
 
-  bool _darkTheme=true;
-
-  void onThemeChanged(bool value, ThemeNotifier themeNotifier) async {
-    (value)
-        ? themeNotifier.setTheme(darkTheme)
-        : themeNotifier.setTheme(lightTheme);
-    var prefs = await SharedPreferences.getInstance();
-    prefs.setBool('darkMode', value);
-  }
 
   @override
   Widget build(BuildContext context) {
 
     final userData = Provider.of<UserData>(context);
-    final themeNotifier = Provider.of<ThemeNotifier>(context);
-    _darkTheme = (themeNotifier.getTheme() == darkTheme);
 
     if(userData==null){
       return Loading();
@@ -93,16 +78,6 @@ class _NeerajTempState extends State<NeerajTemp> {
                     context,
                     MaterialPageRoute(builder: (BuildContext context) => PlanScreen()),
                   );
-                },
-              ),
-              SwitchListTile(
-                title: Text('Dark Theme?'),
-                value: _darkTheme,
-                onChanged: (bool newValue) async {
-                  setState(() {
-                    _darkTheme=newValue;
-                  });
-                  onThemeChanged(newValue, themeNotifier);
                 },
               ),
             ],

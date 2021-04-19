@@ -1,7 +1,9 @@
 import 'package:animations/animations.dart';
 import 'package:dietmate/model/food.dart';
 import 'package:dietmate/form_pages/food_form_final.dart';
+import 'package:dietmate/shared/gradient.dart';
 import 'package:dietmate/shared/loading.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
@@ -21,10 +23,15 @@ class _FoodFormState extends State<FoodForm> {
   double screenHeight, screenWidth;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey _searchKey = GlobalKey();
 
   @override
   void initState() {
+    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
     super.initState();
+  }
+  _afterLayout(_) {
+    _getPositions();
   }
 
   Future<dynamic> getData(String query) async {
@@ -53,11 +60,31 @@ class _FoodFormState extends State<FoodForm> {
       return 'No results';
   }
 
+  _getPositions() {
+    final RenderBox renderBoxSearch = _searchKey.currentContext.findRenderObject();
+    final positionSearch = renderBoxSearch.localToGlobal(Offset.zero);
+    print("Position of Search: $positionSearch ");
+  }
+
   Widget _buildName(){
     return TextFormField(
+      key: _searchKey,
       decoration: InputDecoration(
+        contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 18),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Theme.of(context).disabledColor, width: 2, style: BorderStyle.solid, ),
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2, style: BorderStyle.solid, ),
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+        ),
+        filled: true,
+        fillColor: Theme.of(context).colorScheme.surface,
+        suffixIcon: Icon(Icons.search, size: 28),
         labelText: 'Food Name',
         labelStyle: TextStyle(fontSize: 25),
+        floatingLabelBehavior: FloatingLabelBehavior.never
       ),
       textCapitalization: TextCapitalization.words,
       keyboardType: TextInputType.name,
@@ -76,13 +103,11 @@ class _FoodFormState extends State<FoodForm> {
 
   Widget customFoodButton(){
     return TextButton(
-      child: Text(
-        'Create a Custom One.',
-        style: TextStyle(
-          fontSize: 20,
-          color: Theme.of(context).accentColor,
-          decoration: TextDecoration.underline,
-        ),
+      child: GradientText(
+        'Create a custom one',
+        size: 23.0,
+        underline: true,
+        fontWeight: FontWeight.w400,
       ),
       onPressed: (){
         Food food;
@@ -127,94 +152,97 @@ class _FoodFormState extends State<FoodForm> {
         ],
       );
     }
-    return Container(
-      alignment: Alignment.topCenter,
-      child: Column(
-        children: [
-          Container(
-            padding: EdgeInsets.fromLTRB(30, 5, 0, 0),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'Select One:',
-              style: TextStyle(
-                fontSize: 20,
-              ),
-            ),
-          ),
-          //Divider(thickness: 2),
-          ListView.separated(
-            padding: EdgeInsets.zero,
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemBuilder: (BuildContext context, int index){
-              Food food=foodList.list[index];
-              return OpenContainer(
-                closedColor: Theme.of(context).canvasColor,
-                openColor: Theme.of(context).canvasColor,
-                transitionDuration: Duration(milliseconds: 500),
-                closedBuilder: (context, openBuilder){
-                  return InkWell(
-                    child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-                        color: Colors.transparent,
-                        width: double.infinity,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '${food.name}',
-                              style: TextStyle(
-                                fontSize: 25,
-                              ),
-                            ),
-                            Text(
-                              'Calories: ${food.calories} Kcal',
-                              style: TextStyle(
-                                  fontSize: 19
-                              ),
-                            ),
-                          ],
-                        )
-                    ),
-                    onTap: (){
-                      openBuilder();
+    return Card(
+      elevation: 3,
+      margin: EdgeInsets.symmetric(horizontal: 20),
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      shape: RoundedRectangleBorder(
+        side: BorderSide(
+          width: 2,
+          color: Theme.of(context).disabledColor
+        ),
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+      child: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 12),
+          child: Column(
+            children: [
+              SizedBox(height: 5,),
+              ListView.separated(
+                padding: EdgeInsets.zero,
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (BuildContext context, int index){
+                  Food food=foodList.list[index];
+                  return OpenContainer(
+                    closedElevation: 0,
+                    closedColor: Theme.of(context).cardColor,
+                    openColor: Theme.of(context).canvasColor,
+                    transitionDuration: Duration(milliseconds: 500),
+                    closedBuilder: (context, openBuilder){
+                      return InkWell(
+                        child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                            color: Theme.of(context).cardColor,
+                            width: double.infinity,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${food.name}',
+                                  style: TextStyle(
+                                    fontSize: 23,
+                                    fontWeight: FontWeight.w300
+                                  ),
+                                ),
+                                SizedBox(height: 5,),
+                                Text(
+                                  'Calories: ${food.calories} KCal',
+                                  style: TextStyle(
+                                    fontSize: 19,
+                                    fontWeight: FontWeight.w300
+                                  ),
+                                ),
+                              ],
+                            )
+                        ),
+                        onTap: (){
+                          openBuilder();
+                        },
+                      );
+                    },
+                    openBuilder: (context, closedBuilder){
+                      return FoodFormFinal(food: food);
                     },
                   );
                 },
-                openBuilder: (context, closedBuilder){
-                  return FoodFormFinal(food: food);
-                },
-              );
-            },
-            itemCount: foodList.list.length,
-            separatorBuilder: (BuildContext context, int index) => Divider(thickness: 2),
-          ),
-          Divider(thickness: 2),
-          SizedBox(height: 4,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Not in the List?',
-                style: TextStyle(
-                  fontSize: 20,
-                ),
+                itemCount: foodList.list.length,
+                separatorBuilder: (BuildContext context, int index) =>
+                    Divider(thickness: 1, color: Theme.of(context).primaryColor,),
               ),
-              customFoodButton(),
+              SizedBox(height: 10,)
+              //Divider(thickness: 1, color: Theme.of(context).primaryColor,),
             ],
           ),
-          SizedBox(height: 6,)
-        ],
+        ),
       ),
     );
   }
 
   Widget _buildSearchButton(){
-    return Builder(builder: (context) => ElevatedButton(
-      child: Text(
+    return GradientButton(
+      label: Text(
         'Search',
-        style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),
+        style: TextStyle(
+            fontSize: 25.0,
+            fontWeight: FontWeight.w300,
+            color: Colors.white,
+        ),
       ),
+      extraPaddingHeight: 2.0,
+      extraPaddingWidth: 2.0,
       onPressed: () async {
         if (!_formKey.currentState.validate()) {
           return;
@@ -235,48 +263,60 @@ class _FoodFormState extends State<FoodForm> {
           searchDone=true;
         });
       },
-    ));
+    );
+    // return Builder(builder: (context) => Container(
+    //   decoration: BoxDecoration(
+    //       gradient: customGradient
+    //   ),
+    //   child: ElevatedButton(
+    //     style: ButtonStyle(),
+    //     clipBehavior: Clip.antiAliasWithSaveLayer,
+    //     child: Text(
+    //       'Search',
+    //       style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),
+    //     ),
+    //     onPressed: () async {
+    //       if (!_formKey.currentState.validate()) {
+    //         return;
+    //       }
+    //       setState(() {
+    //         isSearching=true;
+    //         searchDone=false;
+    //         _formKey.currentState.save();
+    //       });
+    //       foodData = await getData(foodName);
+    //       if(foodData=='No results'){
+    //         foodList=FoodListForm(list: []);
+    //       }else{
+    //         foodList=FoodListForm.fromData(foodData);
+    //       }
+    //       setState(() {
+    //         isSearching=false;
+    //         searchDone=true;
+    //       });
+    //     },
+    //   ),
+    // ));
   }
 
   Widget _buildTitle(){
-    double paddingHeight=0;
-    if(searchDone==true){
-      switch (foodList.list.length) {
-        case 0:
-          paddingHeight = screenHeight/3.3;
-          break;
-        case 1:
-          paddingHeight = screenHeight/4.2;
-          break;
-        case 2:
-          paddingHeight = screenHeight/4.9;
-          break;
-        case 3:
-          paddingHeight = screenHeight/7.2;
-          break;
-        case 4:
-          paddingHeight = screenHeight/12;
-          break;
-        case 5:
-          paddingHeight = screenHeight/25;
-          break;
-      }
-    }
     return Center(
       child: Container(
-        padding: searchDone==true?EdgeInsets.fromLTRB(22, paddingHeight, 0, 5)
-            :EdgeInsets.fromLTRB(22, screenHeight/3.5, 0, 30),
+        padding: searchDone==true?EdgeInsets.fromLTRB(22, 10, 0, 5)
+            :EdgeInsets.fromLTRB(22, 0, 0, 30),
         alignment: Alignment.centerLeft,
         child: Text(
           'Search Food',
           style: TextStyle(
-              fontSize: 52,
-              fontWeight: FontWeight.bold
+            fontSize: 52,
+            fontWeight: FontWeight.bold,
+            color: Colors.white
           ),
         ),
       ),
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -284,34 +324,107 @@ class _FoodFormState extends State<FoodForm> {
     screenWidth=MediaQuery.of(context).size.width;
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.all(15),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                _buildTitle(),
-                _buildName(),
-                SizedBox(height: 10,),
-                isSearching==true?Column(
+      body: Container(
+        height: screenHeight,
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Flexible(
+                flex: searchDone?2:9,
+                child: Container(
+                  // alignment: Alignment.bottomCenter,
+                  // color: Colors.blue,
+                  child: Stack(
+                    alignment: Alignment.bottomCenter,
+                    children: [
+                      Container(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisSize: MainAxisSize.max,
+                          children: <Widget>[
+                            Flexible(
+                              flex: 25,
+                              child: Card(
+                                margin: EdgeInsets.zero,
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius:  BorderRadius.vertical(bottom: Radius.elliptical(90, 50)),
+                                ),
+                                elevation: 8,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    gradient: customGradient,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Flexible(
+                              flex: 1,
+                              child: Container()
+                            )
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 19),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            _buildTitle(),
+                            _buildName(),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Flexible(
+                flex: searchDone?7:9,
+                child: Column(
                   children: [
-                    SizedBox(height: 30),
-                    Container(
-                      height: 50,
-                      width: 50,
-                      child: LoadingSmall(),
+                    SizedBox(height: 20,),
+                    isSearching?Column(
+                      children: [
+                        SizedBox(height: 30),
+                        LoadingSmall(),
+                        SizedBox(height: 30),
+                      ],
+                    ):SizedBox.shrink(),
+                    searchDone?
+                    Flexible(
+                      flex: 9,
+                        child: _buildList(foodList)
+                    )
+                        :SizedBox.shrink(),
+                    Flexible(
+                      flex: 2,
+                      child: Column(
+                        children: [
+                          SizedBox(height: 15),
+                          _buildSearchButton(),
+                          SizedBox(height: searchDone?1:15),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'or ',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                ),
+                              ),
+                              customFoodButton(),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                    SizedBox(height: 30),
                   ],
-                ):SizedBox.shrink(),
-                searchDone==true?_buildList(foodList):SizedBox.shrink(),
-                _buildSearchButton(),
-                searchDone!=true?SizedBox(height:screenHeight/9,):
-                    SizedBox.shrink(),
-              ],
-            ),
+                ),
+              )
+            ],
           ),
         ),
       ),

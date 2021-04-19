@@ -3,6 +3,7 @@ import 'package:dietmate/pages/neeraj_temp.dart';
 import 'package:dietmate/pages/settings_page.dart';
 import 'package:dietmate/pages/report_page.dart';
 import 'package:dietmate/form_pages/food_form.dart';
+import 'package:dietmate/shared/gradient.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:animations/animations.dart';
@@ -61,8 +62,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 backgroundColor: Theme.of(context).accentColor,
                 foregroundColor: Colors.white,
                 elevation: 2,
-                child: Icon(Icons.add,
-                  size: 33,
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: customGradient
+                  ),
+                  height: 75,
+                  width: 75,
+                  child: Icon(Icons.add,
+                    size: 33,
+                  ),
                 ),
                 onPressed: () {
                   setState(() {

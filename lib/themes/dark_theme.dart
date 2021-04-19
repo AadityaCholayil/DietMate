@@ -11,7 +11,7 @@ final ThemeData darkTheme = ThemeData(
   //   , 800: Color( 0xff333333 )
   //   , 900: Color( 0xff191919 )
   // }),
-  primarySwatch: MaterialColor(4280361249,{50: Color( 0xfff8eafa )
+  primarySwatch: MaterialColor(0xffb82fd0,{50: Color( 0xfff8eafa )
     , 100: Color( 0xfff1d5f6 )
     , 200: Color( 0xffe3acec )
     , 300: Color( 0xffd582e3 )
@@ -25,14 +25,15 @@ final ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
   primaryColor: Color( 0xff212121 ),
   primaryColorBrightness: Brightness.dark,
-  primaryColorLight: Color( 0xff9e9e9e ),
+  primaryColorLight: Color( 0xffde9ee9 ),
   primaryColorDark: Color( 0xff000000 ),
-  accentColor: Color( 0xffb82fd0 ),
+  accentColor: Color( 0xff9D06FF ),
   accentColorBrightness: Brightness.light,
-  canvasColor: Color( 0xff303030 ),
-  scaffoldBackgroundColor: Color( 0xff303030 ),
-  bottomAppBarColor: Color( 0xff424242 ),
-  cardColor: Color( 0xff424242 ),
+  // canvasColor: Color( 0xff303030 ),
+  canvasColor: Color( 0xff191919 ),
+  scaffoldBackgroundColor: Color( 0xff191919 ),
+  bottomAppBarColor: Color( 0xff303030 ),
+  cardColor: Color( 0xff303030 ),
   dividerColor: Color( 0x1fffffff ),
   highlightColor: Color( 0x40cccccc ),
   splashColor: Color( 0x40cccccc ),
@@ -40,7 +41,7 @@ final ThemeData darkTheme = ThemeData(
   unselectedWidgetColor: Color( 0xb3ffffff ),
   disabledColor: Color( 0x62ffffff ),
   buttonColor: Color( 0xff1e88e5 ),
-  toggleableActiveColor: Color( 0xff9326a6 ),
+  toggleableActiveColor: Color( 0xff8C0EFF ),
   secondaryHeaderColor: Color( 0xff616161 ),
   backgroundColor: Color( 0xff616161 ),
   dialogBackgroundColor: Color( 0xff424242 ),
@@ -49,12 +50,12 @@ final ThemeData darkTheme = ThemeData(
   errorColor: Color( 0xffd32f2f ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      primary: Color( 0xffb82fd0 ),
+      primary: Color( 0xff9D06FF ),
     ),
   ),
   textButtonTheme: TextButtonThemeData(
     style: ElevatedButton.styleFrom(
-      onPrimary: Color( 0xffb82fd0 ),
+      onPrimary: Color( 0xff9D06FF ),
     ),
   ),
   buttonTheme: ButtonThemeData(

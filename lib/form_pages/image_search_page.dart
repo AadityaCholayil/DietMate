@@ -45,8 +45,21 @@ class _ImageSearchState extends State<ImageSearch> {
     return TextFormField(
       initialValue: foodName,
       decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 18),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Theme.of(context).disabledColor, width: 2, style: BorderStyle.solid, ),
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2, style: BorderStyle.solid, ),
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          ),
+          filled: true,
+          fillColor: Theme.of(context).colorScheme.surface,
+          suffixIcon: Icon(Icons.search, size: 25),
           labelText: 'Food Name',
-          labelStyle: TextStyle(fontSize: 25)
+          labelStyle: TextStyle(fontSize: 25),
+          floatingLabelBehavior: FloatingLabelBehavior.never
       ),
       keyboardType: TextInputType.name,
       style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
@@ -143,7 +156,7 @@ class _ImageSearchState extends State<ImageSearch> {
     return Column(
       children: [
         GridView.builder(
-          padding: EdgeInsets.fromLTRB(0, 10, 0, 12),
+          padding: EdgeInsets.fromLTRB(5, 10, 5, 12),
           primary: false,
           shrinkWrap: true,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
