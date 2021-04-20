@@ -79,16 +79,12 @@ class _FoodFormState extends State<FoodForm> {
       elevation: 5,
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
-        // side: BorderSide(
-        //   width: 2,
-        //   color: Theme.of(context).disabledColor
-        // ),
         borderRadius: BorderRadius.circular(15.0),
       ),
       child: TextFormField(
         key: _searchKey,
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 18),
+          contentPadding: EdgeInsets.fromLTRB(15, 18, 15, 18),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.transparent, width: 2, style: BorderStyle.solid, ),
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -176,10 +172,6 @@ class _FoodFormState extends State<FoodForm> {
       margin: EdgeInsets.symmetric(horizontal: 1),
       clipBehavior: Clip.antiAliasWithSaveLayer,
       shape: RoundedRectangleBorder(
-        // side: BorderSide(
-        //   width: 2,
-        //   color: Theme.of(context).disabledColor
-        // ),
         borderRadius: BorderRadius.circular(15.0),
       ),
       child: Container(

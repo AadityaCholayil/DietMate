@@ -15,7 +15,7 @@ final ThemeData lightTheme = ThemeData(
   primaryColor: Color( 0xffde9ee9 ),
   primaryColorBrightness: Brightness.light,
   primaryColorLight: Color( 0xfff1d5f6 ),
-  primaryColorDark: Color( 0xff6f1c7d ),
+  primaryColorDark: Color( 0xff6A27B7 ),
   accentColor: Color( 0xff9d32fe ),
   //accentColor: Color( 0xffb82fd0 ),
   // accentColor: Colors.indigoAccent[700],
@@ -31,7 +31,7 @@ final ThemeData lightTheme = ThemeData(
   unselectedWidgetColor: Color( 0x8a000000 ),
   disabledColor: Color( 0x61000000 ),
   buttonColor: Color( 0xffe0e0e0 ),
-  toggleableActiveColor: Color( 0xff9326a6 ),
+  toggleableActiveColor: Color( 0xff920BFF),
   secondaryHeaderColor: Color( 0xfff8eafa ),
   backgroundColor: Color( 0xffe3acec ),
   dialogBackgroundColor: Color( 0xffffffff ),
@@ -45,7 +45,7 @@ final ThemeData lightTheme = ThemeData(
   ),
   textButtonTheme: TextButtonThemeData(
     style: ElevatedButton.styleFrom(
-      onPrimary: Color( 0xffb82fd0 ),
+      onPrimary: Color( 0xff920BFF ),
     ),
   ),
   buttonTheme: ButtonThemeData(
@@ -137,8 +137,8 @@ final ThemeData lightTheme = ThemeData(
       borderRadius: BorderRadius.all(Radius.circular(4.0)),
     ),
     focusedBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: Color( 0xffb82fd0 ), width: 2, style: BorderStyle.solid, ),
-      borderRadius: BorderRadius.all(Radius.circular(4.0)),
+      borderSide: BorderSide(color: Color( 0xff920BFF ), width: 2, style: BorderStyle.solid, ),
+      borderRadius: BorderRadius.all(Radius.circular(10.0)),
     ),
     focusedErrorBorder: OutlineInputBorder(
       borderSide: BorderSide(color: Color( 0xffd32f2f ), width: 2, style: BorderStyle.solid, ),
@@ -149,7 +149,7 @@ final ThemeData lightTheme = ThemeData(
       borderRadius: BorderRadius.all(Radius.circular(4.0)),
     ),
     enabledBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: Color( 0x61000000 ), width: 2, style: BorderStyle.solid, ),
+      borderSide: BorderSide(color: Colors.transparent, width: 2, style: BorderStyle.solid, ),
       borderRadius: BorderRadius.all(Radius.circular(4.0)),
     ),
     border: OutlineInputBorder(

@@ -80,7 +80,7 @@ final ThemeData darkTheme = ThemeData(
       primaryVariant: Color( 0xff6f1c7d ),
       secondary: Color( 0xffb82fd0 ),
       secondaryVariant: Color( 0xff6f1c7d ),
-      surface: Color( 0xff424242 ),
+      surface: Color( 0xff303030 ),
       background: Color( 0xff616161 ),
       error: Color( 0xffd32f2f ),
       onPrimary: Color( 0xffffffff ),
@@ -119,7 +119,7 @@ final ThemeData darkTheme = ThemeData(
     errorMaxLines: null,
     floatingLabelBehavior: FloatingLabelBehavior.auto,
     isDense: false,
-    contentPadding: EdgeInsets.only(top:12,bottom:12,left:0, right:0),
+    contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 18),
     //contentPadding: EdgeInsets.fromLTRB(13, 15, 13, 15),
     isCollapsed : false,
     prefixStyle: TextStyle(
@@ -140,31 +140,31 @@ final ThemeData darkTheme = ThemeData(
       fontWeight: FontWeight.w400,
       fontStyle: FontStyle.normal,
     ),
-    filled: false,
-    fillColor: Color( 0x00000000 ),
+    filled: true,
+    fillColor: Color( 0xff303030 ),
     errorBorder: OutlineInputBorder(
       borderSide: BorderSide(color: Color( 0xffd32f2f ), width: 2, style: BorderStyle.solid, ),
-      borderRadius: BorderRadius.all(Radius.circular(4.0)),
+      borderRadius: BorderRadius.all(Radius.circular(15.0)),
     ),
-    focusedBorder: UnderlineInputBorder(
-      borderSide: BorderSide(color: Color( 0xffb82fd0 ), width: 2, style: BorderStyle.solid, ),
-      borderRadius: BorderRadius.all(Radius.circular(4.0)),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Color( 0xff9D06FF ), width: 2, style: BorderStyle.solid, ),
+      borderRadius: BorderRadius.all(Radius.circular(15.0)),
     ),
-    focusedErrorBorder: UnderlineInputBorder(
+    focusedErrorBorder: OutlineInputBorder(
       borderSide: BorderSide(color: Color( 0xffd32f2f ), width: 2, style: BorderStyle.solid, ),
-      borderRadius: BorderRadius.all(Radius.circular(4.0)),
+      borderRadius: BorderRadius.all(Radius.circular(15.0)),
     ),
-    disabledBorder: UnderlineInputBorder(
+    disabledBorder: OutlineInputBorder(
       borderSide: BorderSide(color: Color( 0xff000000 ), width: 2, style: BorderStyle.solid, ),
-      borderRadius: BorderRadius.all(Radius.circular(4.0)),
+      borderRadius: BorderRadius.all(Radius.circular(15.0)),
     ),
-    enabledBorder: UnderlineInputBorder(
-      borderSide: BorderSide(color: Color( 0x62ffffff ), width: 2, style: BorderStyle.solid, ),
-      borderRadius: BorderRadius.all(Radius.circular(4.0)),
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Colors.transparent, width: 2, style: BorderStyle.solid, ),
+      borderRadius: BorderRadius.all(Radius.circular(15.0)),
     ),
-    border: UnderlineInputBorder(
+    border: OutlineInputBorder(
       borderSide: BorderSide(color: Color( 0xff000000 ), width: 2, style: BorderStyle.solid, ),
-      borderRadius: BorderRadius.all(Radius.circular(4.0)),
+      borderRadius: BorderRadius.all(Radius.circular(15.0)),
     ),
   ),
   iconTheme: IconThemeData(

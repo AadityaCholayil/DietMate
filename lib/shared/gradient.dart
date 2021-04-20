@@ -83,3 +83,16 @@ LinearGradient customGradient = LinearGradient(
     // Colors.indigoAccent[700],
   ],
 );
+
+LinearGradient customGradient2 = LinearGradient(
+  // center: Alignment.topLeft,
+  // radius: 1.55,
+  begin: Alignment.topLeft,
+  end: Alignment.bottomRight,
+  colors: [
+    Colors.purpleAccent[100],
+    //Colors.purpleAccent[700],
+    Colors.deepPurpleAccent[100],
+    // Colors.indigoAccent[700],
+  ],
+);

@@ -3,10 +3,12 @@ import 'package:dietmate/model/food_image.dart';
 import 'package:dietmate/form_pages/image_search_page.dart';
 import 'package:dietmate/services/database.dart';
 import 'package:dietmate/shared/conversion.dart';
+import 'package:dietmate/shared/gradient.dart';
 import 'package:dietmate/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:gradient_input_border/gradient_input_border.dart';
 import 'package:provider/provider.dart';
 
 class FoodFormFinal extends StatefulWidget {
@@ -33,6 +35,29 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  InputDecoration inputDecoration(String label){
+    return InputDecoration(
+      // enabledBorder: OutlineInputBorder(
+      //   borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2, style: BorderStyle.solid, ),
+      //   borderRadius: BorderRadius.all(Radius.circular(10.0)),
+      // ),
+      enabledBorder: GradientOutlineInputBorder(
+        focusedGradient: customGradient2,
+        unfocusedGradient: customGradient2,
+        borderSide: BorderSide(width: 1, style: BorderStyle.solid, ),
+        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+      ),
+      focusedBorder: GradientOutlineInputBorder(
+        focusedGradient: customGradient,
+        unfocusedGradient: customGradient2,
+        borderSide: BorderSide(width: 2, style: BorderStyle.solid, ),
+        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+      ),
+      labelText: label,
+      labelStyle: TextStyle(color: Colors.purpleAccent[100], fontSize: 25,),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -54,10 +79,7 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
   Widget _buildName(){
     return TextFormField(
       initialValue: _name,
-      decoration: InputDecoration(
-        labelText: 'Food Name',
-        labelStyle: TextStyle(fontSize: 25),
-      ),
+      decoration: inputDecoration('Food Name'),
       keyboardType: TextInputType.name,
       style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
       validator: (String value) {
@@ -75,10 +97,7 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
   Widget _buildCalories(){
     return TextFormField(
       initialValue: _calories.toString(),
-      decoration: InputDecoration(
-        labelText: 'Calories',
-        labelStyle: TextStyle(fontSize: 25),
-      ),
+      decoration: inputDecoration('Calories'),
       keyboardType: TextInputType.number,
       style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
       validator: (String value) {
@@ -97,10 +116,7 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
   Widget _buildFats(){
     return TextFormField(
       initialValue: _fats.toString(),
-      decoration: InputDecoration(
-        labelText: 'Fats (g)',
-        labelStyle: TextStyle(fontSize: 25),
-      ),
+      decoration: inputDecoration('Fats (g)'),
       keyboardType: TextInputType.number,
       style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
       validator: (String value) {
@@ -119,10 +135,7 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
   Widget _buildProtein(){
     return TextFormField(
       initialValue: _protein.toString(),
-      decoration: InputDecoration(
-        labelText: 'Protein (g)',
-        labelStyle: TextStyle(fontSize: 25),
-      ),
+      decoration: inputDecoration('Protein (g)'),
       keyboardType: TextInputType.number,
       style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
       validator: (String value) {
@@ -141,10 +154,7 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
   Widget _buildCarbohydrates(){
     return TextFormField(
       initialValue: _carbohydrates.toString(),
-      decoration: InputDecoration(
-        labelText: 'Carbohydrates (g)',
-        labelStyle: TextStyle(fontSize: 25),
-      ),
+      decoration: inputDecoration('Carbohydrates (g)'),
       keyboardType: TextInputType.number,
       style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
       validator: (String value) {
@@ -163,10 +173,7 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
   Widget _buildServingSizeQty(){
     return TextFormField(
       initialValue: _servingSizeQty.toString(),
-      decoration: InputDecoration(
-        labelText: 'Serving Size Qty',
-        labelStyle: TextStyle(fontSize: 25),
-      ),
+      decoration: inputDecoration('Serving Size Qty'),
       keyboardType: TextInputType.number,
       style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
       validator: (String value) {
@@ -185,10 +192,7 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
   Widget _buildServingSizeUnit(){
     return TextFormField(
       initialValue: _servingSizeUnit,
-      decoration: InputDecoration(
-        labelText: 'Serving Size Unit',
-        labelStyle: TextStyle(fontSize: 25),
-      ),
+      decoration: inputDecoration('Serving Size Unit'),
       keyboardType: TextInputType.name,
       style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
       validator: (String value) {
@@ -207,7 +211,8 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
     return Column(
       children: <Widget>[
         Container(
-          margin: EdgeInsets.fromLTRB(0, 20, MediaQuery.of(context).size.width/21.6, 0),
+          //MediaQuery.of(context).size.width/35
+          margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
           width: MediaQuery.of(context).size.width*0.44,
           height: MediaQuery.of(context).size.width*0.44,
           clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -230,11 +235,13 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
                 alignment: Alignment.center,
                 margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                 width: MediaQuery.of(context).size.width*0.44,
-                child: ElevatedButton(
-                  child: Text(
+                child: GradientButton(
+                  extraPaddingHeight: 2.0,
+                  extraPaddingWidth: 5.0,
+                  label: Text(
                     'Select Image',
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 22,
                       fontWeight: FontWeight.w300
                     ),
                   ),
@@ -260,8 +267,8 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
         _fullUrl!=null?Container(
           margin: EdgeInsets.fromLTRB(0, 0, 20, 0),
           width: MediaQuery.of(context).size.width*0.44,
-          child: ElevatedButton(
-            child: Text(
+          child: GradientButton(
+            label: Text(
               'Change Image',
               style: TextStyle(
                 fontSize: 20,
@@ -290,13 +297,19 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
   }
   Widget _buildSubmitButton(BuildContext context2){
     final user = Provider.of<User>(context2);
-    return Builder(builder: (context) => ElevatedButton(
-      child: Text(
+    return Builder(builder: (context) => GradientButton(
+      label: Text(
         'Submit',
         style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),
       ),
+      extraPaddingWidth: 10.0,
+      extraPaddingHeight: 2.0,
       onPressed: () async {
         if (!_formKey.currentState.validate()) {
+          return;
+        }
+        if(_thumbnailUrl==null){
+          ScaffoldMessenger.of(context).showSnackBar(showCustomSnackBar('Select an Image!'));
           return;
         }
         setState(() => isLoading=true);
@@ -348,74 +361,122 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
     );
   }
 
+
+  SnackBar showCustomSnackBar(String message){
+    return SnackBar(
+      content: Text(message),
+      action: SnackBarAction(
+        label: 'OK',
+        onPressed: () {},
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Container(
-        padding: EdgeInsets.all(13),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              _buildTitle(),
-              _buildName(),
-              SizedBox(height: 10),
-              _buildCalories(),
-              SizedBox(height: 10),
-              Row(
-                children: <Widget>[
-                  _buildFoodImage(),
-                  Column(
-                    children: <Widget>[
-                      Container(
-                        width: MediaQuery.of(context).size.width*0.45,
-                        child: _buildFats(),
-                      ),
-                      SizedBox(height: 10),
-                      Container(
-                        width: MediaQuery.of(context).size.width*0.45,
-                        child: _buildProtein(),
-                      ),
-                      SizedBox(height: 10),
-                      Container(
-                        width: MediaQuery.of(context).size.width*0.45,
-                        child: _buildCarbohydrates(),
-                      ),
-                    ],
-                  )
-                ],
+      body: Stack(
+        children: [
+          Card(
+            margin: EdgeInsets.zero,
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            shape: RoundedRectangleBorder(
+              borderRadius:  BorderRadius.vertical(bottom: Radius.elliptical(130, 40)),
+            ),
+            elevation: 8,
+            child: Container(
+              //height: searchHeight,
+              height: 250,
+              decoration: BoxDecoration(
+                gradient: customGradient,
               ),
-              SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
-                    width: MediaQuery.of(context).size.width*0.45,
-                    child: _buildServingSizeQty(),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width*0.45,
-                    child: _buildServingSizeUnit(),
-                  ),
-                ],
-              ),
-              SizedBox(height: 15),
-              !isLoading?_buildSubmitButton(context)
-                  :LoadingSmall(),
-              SizedBox(height: 10),
-              error!=''?Text(
-                'Something Went Wrong, Please Try Again',
-                style: TextStyle(
-                  color: Theme.of(context).errorColor,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w300
-                ),
-              ):SizedBox.shrink(),
-            ],
+            ),
           ),
-        ),
+          Container(
+            padding: EdgeInsets.all(13),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  _buildTitle(),
+                  Card(
+                    elevation: 5,
+                    margin: EdgeInsets.symmetric(horizontal: 0),
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    child: Container(
+                      //color: Colors.red,
+                      padding: EdgeInsets.symmetric(horizontal: 11, vertical: 15),
+                      child: Column(
+                        children: [
+                          _buildName(),
+                          SizedBox(height: 10),
+                          _buildCalories(),
+                          SizedBox(height: 10),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              _buildFoodImage(),
+                              Column(
+                                children: <Widget>[
+                                  Container(
+                                    width: MediaQuery.of(context).size.width*0.42,
+                                    child: _buildFats(),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Container(
+                                    width: MediaQuery.of(context).size.width*0.42,
+                                    child: _buildProtein(),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Container(
+                                    width: MediaQuery.of(context).size.width*0.42,
+                                    child: _buildCarbohydrates(),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                          SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Container(
+                                width: MediaQuery.of(context).size.width*0.43,
+                                child: _buildServingSizeQty(),
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width*0.43,
+                                child: _buildServingSizeUnit(),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 15),
+                  !isLoading?_buildSubmitButton(context)
+                      :LoadingSmall(),
+                  SizedBox(height: 10),
+                  error!=''?Text(
+                    'Something Went Wrong, Please Try Again',
+                    style: TextStyle(
+                      color: Theme.of(context).errorColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w300
+                    ),
+                  ):SizedBox.shrink(),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
