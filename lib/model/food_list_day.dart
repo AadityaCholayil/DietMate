@@ -3,6 +3,9 @@ import 'package:dietmate/model/food.dart';
 
 class FoodListDay {
   int consumedCalories=0;
+  double totalFats=0;
+  double totalProtein=0;
+  double totalCarb=0;
   List<Food> list=[];
 
   FoodListDay({this.consumedCalories, this.list});
@@ -27,6 +30,9 @@ class FoodListDay {
         imageHeight: documents[i].data()['imageHeight'],
       ));
       consumedCalories=consumedCalories+documents[i].data()['calories'];
+      totalFats=totalFats+documents[i].data()['fats'];
+      totalProtein=totalProtein+documents[i].data()['protein'];
+      totalCarb=totalCarb+documents[i].data()['carbohydrates'];
       i++;
     }
   }
