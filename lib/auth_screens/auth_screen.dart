@@ -17,32 +17,45 @@ class _AuthScreenState extends State<AuthScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: EdgeInsets.fromLTRB(12, 0,0,5),
+              padding: EdgeInsets.fromLTRB(12, 0,0,70),
               child: GradientText(
                 'DietMate',
-                size:40.0,
+                size:50.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
 
             GradientButton(
-              label: 'Log In',
+              label: Text('Log In',
+                style: TextStyle(
+                  fontSize:25.0,
+                  fontWeight: FontWeight.w300,
+              ),
+              ),
               onPressed: (){
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (BuildContext context) => LoginScreen()),
                 );
               },
+              extraPaddingWidth: 108.0,
             ),
+            SizedBox(height:15),
             GradientButton(
-              label: 'Sign up',
+              label: Text('Sign up',
+                style: TextStyle(
+                  fontSize:25.0,
+                  fontWeight: FontWeight.w300,
+                ),
+              ),
               onPressed:(){
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (BuildContext context) => SignUpScreen()),
                 );
               },
-            )
+              extraPaddingWidth: 100.0,
+            ),
 
 
             // ElevatedButton(

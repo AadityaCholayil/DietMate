@@ -19,7 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String email = 'aadi1@xyz.com';
   String password = 'aadi123';
 
-  Widget _buildName(){
+  Widget _buildEmail(){
     return Card(
       elevation: 5,
       margin: EdgeInsets.zero,
@@ -43,7 +43,6 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             filled: true,
             fillColor: Theme.of(context).colorScheme.surface,
-            suffixIcon: Icon(Icons.search, size: 28),
             labelText: 'Email Id',
             labelStyle: TextStyle(fontSize: 25),
             floatingLabelBehavior: FloatingLabelBehavior.never
@@ -63,21 +62,76 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  Widget _buildPassword(){
+    return Card(
+      elevation: 5,
+      margin: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(
+        // side: BorderSide(
+        //   width: 2,
+        //   color: Theme.of(context).disabledColor
+        // ),
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+      child: TextFormField(
+        decoration: InputDecoration(
+            contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 18),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.transparent, width: 2, style: BorderStyle.solid, ),
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2, style: BorderStyle.solid, ),
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            ),
+            filled: true,
+            fillColor: Theme.of(context).colorScheme.surface,
+            labelText: 'Password',
+            labelStyle: TextStyle(fontSize: 25),
+            floatingLabelBehavior: FloatingLabelBehavior.never
+        ),
+        obscureText: true,
+        style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
+        validator: (String value) {
+          if (value.isEmpty) {
+            return 'Password cannot be empty';
+          }
+          return null;
+        },
+        onSaved: (String value) {
+          password= value;
+        },
+      ),
+    );
+  }
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: Container(
+        padding: EdgeInsets.all(20),
         child: Form(
           key: _formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                'Login Page',
-                style: TextStyle(
-                  fontSize: 40,
+              Container(
+                padding: EdgeInsets.all(20),
+                child: Text(
+                  'Login Page',
+                  style: TextStyle(
+                    fontSize: 40,
+                  ),
                 ),
               ),
+              SizedBox(height: 25),
+              _buildEmail(),
+              SizedBox(height: 10),
+              _buildPassword(),
+              SizedBox(height: 10),
               loading?LoadingSmall():ElevatedButton(
                 child:  Text(
                   'Login',
