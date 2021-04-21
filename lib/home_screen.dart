@@ -151,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
         //clipBehavior: Clip.antiAliasWithSaveLayer,
         shape: CircularNotchedRectangle(),
         notchMargin: 10,
-        elevation: 10,
+        elevation: 12,
       ),
     );
   }

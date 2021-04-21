@@ -28,6 +28,17 @@ class Food{
     printDetails();
   }
 
+  // Food.fromAPIData(var data, int hitNo){
+  //   this.name=data["foods"][hitNo]["food_name"];
+  //   this.calories=data["hits"][hitNo]["fields"]["nf_calories"].floor();
+  //   this.fats=data["hits"][hitNo]["fields"]["nf_total_fat"].floor();
+  //   this.carbohydrates=data["hits"][hitNo]["fields"]["nf_total_carbohydrate"].floor();
+  //   this.protein=data["hits"][hitNo]["fields"]["nf_protein"].floor();
+  //   this.servingSizeQty=data["hits"][hitNo]["fields"]["nf_serving_size_qty"].floor();
+  //   this.servingSizeUnit=data["hits"][hitNo]["fields"]["nf_serving_size_unit"];
+  //   printDetails();
+  // }
+
   void printDetails(){
     print('Name: $name, Calories: $calories, Fats: $fats, Carb: $carbohydrates,'
         'Protein: $protein, $servingSizeQty $servingSizeUnit ');

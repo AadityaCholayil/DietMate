@@ -217,8 +217,11 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
           height: MediaQuery.of(context).size.width*0.44,
           clipBehavior: Clip.antiAliasWithSaveLayer,
           decoration: BoxDecoration(
-              color: Colors.grey,
-              borderRadius: BorderRadius.circular(10)
+            color: Colors.grey,
+            borderRadius: BorderRadius.circular(10),
+            // border: Border.all(
+            //   color: Theme.of(context).accentColor,
+            // )
           ),
           child: Stack(
             fit: StackFit.expand,
@@ -265,9 +268,11 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
           ),
         ),
         _fullUrl!=null?Container(
-          margin: EdgeInsets.fromLTRB(0, 0, 20, 0),
+          alignment: Alignment.center,
+          margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
           width: MediaQuery.of(context).size.width*0.44,
           child: GradientButton(
+            expanded: true,
             label: Text(
               'Change Image',
               style: TextStyle(
@@ -364,9 +369,17 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
 
   SnackBar showCustomSnackBar(String message){
     return SnackBar(
-      content: Text(message),
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      content: Text(
+        message,
+        style: TextStyle(
+          fontSize: 15,
+          color: Theme.of(context).colorScheme.onSurface,
+        ),
+      ),
       action: SnackBarAction(
         label: 'OK',
+        textColor: Theme.of(context).accentColor,
         onPressed: () {},
       ),
     );
@@ -375,108 +388,118 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Stack(
-        children: [
-          Card(
-            margin: EdgeInsets.zero,
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            shape: RoundedRectangleBorder(
-              borderRadius:  BorderRadius.vertical(bottom: Radius.elliptical(130, 40)),
-            ),
-            elevation: 8,
-            child: Container(
-              //height: searchHeight,
-              height: 250,
-              decoration: BoxDecoration(
-                gradient: customGradient,
+      //resizeToAvoidBottomInset: false,
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        child: SingleChildScrollView(
+          child: Stack(
+            fit: StackFit.loose,
+            children: [
+              Card(
+                margin: EdgeInsets.zero,
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                shape: RoundedRectangleBorder(
+                  borderRadius:  BorderRadius.vertical(bottom: Radius.elliptical(130, 40)),
+                ),
+                elevation: 8,
+                child: Container(
+                  //height: searchHeight,
+                  height: 250,
+                  decoration: BoxDecoration(
+                    gradient: customGradient,
+                  ),
+                ),
               ),
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.all(13),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  _buildTitle(),
-                  Card(
-                    elevation: 5,
-                    margin: EdgeInsets.symmetric(horizontal: 0),
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: Container(
-                      //color: Colors.red,
-                      padding: EdgeInsets.symmetric(horizontal: 11, vertical: 15),
-                      child: Column(
-                        children: [
-                          _buildName(),
-                          SizedBox(height: 10),
-                          _buildCalories(),
-                          SizedBox(height: 10),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              _buildFoodImage(),
-                              Column(
+              Container(
+                height: MediaQuery.of(context).size.height,
+                padding: EdgeInsets.all(13),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      _buildTitle(),
+                      Card(
+                        elevation: 5,
+                        margin: EdgeInsets.symmetric(horizontal: 0),
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        child: Container(
+                          //color: Colors.red,
+                          padding: EdgeInsets.symmetric(horizontal: 11, vertical: 15),
+                          child: Column(
+                            children: [
+                              _buildName(),
+                              SizedBox(height: 10),
+                              _buildCalories(),
+                              SizedBox(height: 10),
+                              Padding(
+                                padding: _thumbnailUrl==null?EdgeInsets.zero:EdgeInsets.only(bottom: 8),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    _buildFoodImage(),
+                                    Column(
+                                      children: <Widget>[
+                                        Container(
+                                          width: MediaQuery.of(context).size.width*0.42,
+                                          child: _buildFats(),
+                                        ),
+                                        SizedBox(height: 10),
+                                        Container(
+                                          width: MediaQuery.of(context).size.width*0.42,
+                                          child: _buildProtein(),
+                                        ),
+                                        SizedBox(height: 10),
+                                        Container(
+                                          width: MediaQuery.of(context).size.width*0.42,
+                                          child: _buildCarbohydrates(),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Container(
-                                    width: MediaQuery.of(context).size.width*0.42,
-                                    child: _buildFats(),
+                                    width: MediaQuery.of(context).size.width*0.43,
+                                    child: _buildServingSizeQty(),
                                   ),
-                                  SizedBox(height: 10),
                                   Container(
-                                    width: MediaQuery.of(context).size.width*0.42,
-                                    child: _buildProtein(),
-                                  ),
-                                  SizedBox(height: 10),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width*0.42,
-                                    child: _buildCarbohydrates(),
+                                    width: MediaQuery.of(context).size.width*0.43,
+                                    child: _buildServingSizeUnit(),
                                   ),
                                 ],
-                              )
-                            ],
-                          ),
-                          SizedBox(height: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Container(
-                                width: MediaQuery.of(context).size.width*0.43,
-                                child: _buildServingSizeQty(),
-                              ),
-                              Container(
-                                width: MediaQuery.of(context).size.width*0.43,
-                                child: _buildServingSizeUnit(),
                               ),
                             ],
                           ),
-                        ],
+                        ),
                       ),
-                    ),
+                      SizedBox(height: 15),
+                      !isLoading?_buildSubmitButton(context)
+                          :LoadingSmall(),
+                      SizedBox(height: 10),
+                      error!=''?Text(
+                        'Something Went Wrong, Please Try Again',
+                        style: TextStyle(
+                          color: Theme.of(context).errorColor,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w300
+                        ),
+                      ):SizedBox.shrink(),
+                    ],
                   ),
-                  SizedBox(height: 15),
-                  !isLoading?_buildSubmitButton(context)
-                      :LoadingSmall(),
-                  SizedBox(height: 10),
-                  error!=''?Text(
-                    'Something Went Wrong, Please Try Again',
-                    style: TextStyle(
-                      color: Theme.of(context).errorColor,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w300
-                    ),
-                  ):SizedBox.shrink(),
-                ],
+                ),
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
