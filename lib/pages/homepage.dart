@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietmate/form_pages/image_search_page.dart';
+import 'package:dietmate/model/food.dart';
 import 'package:dietmate/model/food_list_day.dart';
 import 'package:dietmate/model/user.dart';
 import 'package:dietmate/shared/gradient.dart';
 import 'package:dietmate/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
@@ -18,10 +21,14 @@ class _HomePageState extends State<HomePage> {
   FirebaseFirestore db = FirebaseFirestore.instance;
   String dateToday = '';
   double consumedCalories = 0.0;
-  double caloriesGoal =0.0;
+  double caloriesGoal = 0.0;
   double totalFats = 0.0;
   double totalProtein = 0.0;
   double totalCarb = 0.0;
+
+  //ScrollController controller = ScrollController();
+  //bool closeTopContainer = false;
+  //double topContainer = 0;
 
   Future<QuerySnapshot> getData(User user) async {
     return await db.collection('users').doc(user.uid).collection('foods')
@@ -48,9 +55,9 @@ class _HomePageState extends State<HomePage> {
         angleRange: 360,
         size: 300,
         customWidths: CustomSliderWidths(
-          trackWidth: 6.0,
-          progressBarWidth: 18.0,
-          handlerSize: 15.0,
+          trackWidth: 3.5,
+          progressBarWidth: 25.0,
+          handlerSize: 7.0,
         ),
         customColors: CustomSliderColors(
           progressBarColors: [
@@ -80,7 +87,7 @@ class _HomePageState extends State<HomePage> {
                   //padding: EdgeInsets.all(10.0),
                   child:Text("$consumedCalories" ,
                     style: TextStyle(
-                      fontSize: 50,
+                      fontSize: 62,
                       color: Colors.white,
                       fontStyle: FontStyle.normal,
                     ),
@@ -89,9 +96,9 @@ class _HomePageState extends State<HomePage> {
                 Container(
                   padding: EdgeInsets.fromLTRB(0,0,20,5),
                   child: Text(
-                    'of' ,
+                    '/1200' ,
                     style: TextStyle(
-                      fontSize: 30,
+                      fontSize: 29,
                       color: Colors.white,
                       fontStyle: FontStyle.normal,
                     ),
@@ -103,9 +110,9 @@ class _HomePageState extends State<HomePage> {
               margin: EdgeInsets.zero,
               //padding: EdgeInsets.all(5.0),
               child: Text(
-                '2200',
+                'KCal',
                 style: TextStyle(
-                  fontSize: 40,
+                  fontSize: 32,
                   color: Colors.white,
                   fontStyle: FontStyle.normal,
                 ),
@@ -118,25 +125,38 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget totalMetricInfo(String top, String bottom){
-    return Column(
-      children: [
-        Text(
-          top ,
-          style: TextStyle(
-            fontSize: 20,
-            color: Colors.white,
-            fontStyle: FontStyle.normal,
-          ),
+    return Card(
+      margin: EdgeInsets.zero,
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      shape: RoundedRectangleBorder(
+        borderRadius:  BorderRadius.circular(34),
+      ),
+
+      child: Container(
+        height: 80,
+        width: 117,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              top ,
+              style: TextStyle(
+                fontSize:19,
+                color: Colors.white,
+                fontStyle: FontStyle.normal,
+              ),
+            ),
+            Text(
+              bottom ,
+              style: TextStyle(
+                fontSize: 28,
+                color: Colors.white,
+                fontStyle: FontStyle.normal,
+              ),
+            ),
+          ],
         ),
-        Text(
-          bottom ,
-          style: TextStyle(
-            fontSize: 28,
-            color: Colors.white,
-            fontStyle: FontStyle.normal,
-          ),
-        ),
-      ],
+      ),
     );
   }
 
@@ -145,27 +165,15 @@ class _HomePageState extends State<HomePage> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children:<Widget>[
         Flexible(
-          child: Container(
-            alignment: Alignment.center,
-            //padding: EdgeInsets.all(0.0),
-            child: totalMetricInfo('Fats', '$totalFats'),
-          ),
+          child: totalMetricInfo('Fats', '$totalFats'),
         ),
         SizedBox(width: 20,),
         Flexible(
-          child: Container(
-            alignment: Alignment.center,
-            //padding: EdgeInsets.all(0.0),
-            child: totalMetricInfo('Protein', '$totalProtein'),
-          ),
+          child: totalMetricInfo('Protein', '$totalProtein'),
         ),
-        SizedBox(width: 20,),
+        SizedBox(width: 20),
         Flexible(
-          child: Container(
-            alignment: Alignment.center,
-            //padding: EdgeInsets.all(0.0),
-            child: totalMetricInfo('Carb', '$totalCarb'),
-          ),
+          child: totalMetricInfo('Carb', '$totalCarb'),
         ),
       ],
     );
@@ -201,79 +209,160 @@ class _HomePageState extends State<HomePage> {
               child: SizedBox(),
             ),
           ),
-          Container(
-            child: FutureBuilder<QuerySnapshot>(
-              future: getData(user),
-              builder: (context, snapshot){
-                if(snapshot.connectionState!=ConnectionState.done){
-                  //query in progress
-                  return Loading();
-                }
-                if(snapshot.hasError){
-                  return Container(
-                    child: Text(
-                      'Error occurred',
-                    ),
-                  );
-                }
-                if(snapshot.hasData) {
-                  FoodListDay foodList = FoodListDay.fromSnapshot(snapshot.data);
-                  consumedCalories=foodList.consumedCalories.toDouble();
-                  totalFats=foodList.totalFats;
-                  totalProtein=foodList.totalProtein;
-                  totalCarb=foodList.totalCarb;
-                  if(foodList.list.isEmpty){
-                    //query successful but is empty
+          SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal:27.0),
+              child: FutureBuilder<QuerySnapshot>(
+                future: getData(user),
+                builder: (context, snapshot){
+                  if(snapshot.connectionState!=ConnectionState.done){
+                    //query in progress
+                    return Loading();
+                  }
+                  if(snapshot.hasError){
                     return Container(
                       child: Text(
-                          'Empty'
+                        'Error occurred',
                       ),
                     );
                   }
-                  //TODO main code
-                  return Container(
-                    padding: EdgeInsets.all(15),
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.fromLTRB(22, 35, 0, 18),
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'DietMate',
-                            style: TextStyle(
-                                fontSize: 60,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white
+                  if(snapshot.hasData) {
+                    FoodListDay foodList = FoodListDay.fromSnapshot(snapshot.data);
+                    consumedCalories=foodList.consumedCalories.toDouble();
+                    totalFats=foodList.totalFats;
+                    totalProtein=foodList.totalProtein;
+                    totalCarb=foodList.totalCarb;
+                    // if(foodList.list.isEmpty){
+                    //   //query successful but is empty
+                    //   return Container(
+                    //     child: Text(
+                    //         'Empty'
+                    //     ),
+                    //   );
+                    // }
+                    //TODO main code
+                    return Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            padding: EdgeInsets.fromLTRB(20,47,0,16),
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Welcome, ${userData.name}',
+                              style: TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white
+                              ),
                             ),
                           ),
-                        ),
-                        Card(
-                          color: Color( 0xff303030 ),
-                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(15.0))
+                          Card(
+                            color: Theme.of(context).cardColor,
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(54.0))
+                            ),
+                            child: Container(
+                              height:370,
+                              alignment:Alignment.center,
+                              child: buildSleekCircularSlider()
+                            ),
                           ),
-                          child: Container(
-                              padding: EdgeInsets.fromLTRB(25.0,25.0, 25.0,25.0),
-                              child: Column(
-                                children: <Widget>[
-                                  buildSleekCircularSlider(),
-                                  SizedBox(height: 25,),
-                                  buildOtherMetrics()
-                                ],
-                              )
+                          SizedBox(height: 13),
+                          buildOtherMetrics(),
+                          SizedBox(height: 30),
+                          Padding(
+                            padding: EdgeInsets.only(left:25),
+                            child: Text(
+                              "Today's food",
+                              style: TextStyle(
+                                fontSize: 26,
+                                fontWeight: FontWeight.w300
+                              ),
+                            ),
                           ),
-                        ),
-                      ],
+                          SizedBox(height: 15),
+                          ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: foodList.list.length,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: (BuildContext context, int i){
+                              Food food = foodList.list[i];
+                              return Card(
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(34)
+                                ),
+                                margin: EdgeInsets.only(bottom: 13),
+                                child:Container(
+                                  padding: EdgeInsets.all(6),
+                                  height: 107,
+                                  color: Colors.white10,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      Container(
+                                        padding: EdgeInsets.only(left:16),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            Text(
+                                              '${food.name.length>20?food.name.substring(0,18)+"..":food.name}',
+                                              style: TextStyle(
+                                                  fontSize:26
+                                              ),
+                                            ),
+                                            SizedBox(height: 5),
+                                            Text(
+                                              'Calories: ${food.calories} Kcal',
+                                              style:TextStyle(
+                                                fontSize: 20
+                                              ),
+                                            ),
+                                            SizedBox(height: 5),
+                                            Text(
+                                              'Time: 10:00 AM',
+                                              style:TextStyle(
+                                                  fontSize: 20
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(34)
+                                        ),
+                                        height: 95,
+                                        width: 95,
+                                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                                        child: Image.network(
+                                          food.thumbnailUrl,
+                                          fit: BoxFit.cover,
+                                        ),
+
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                  return Container(
+                    child: Text(
+                        'Something went wrong'
                     ),
                   );
-                }
-                return Container(
-                  child: Text(
-                      'Something went wrong'
-                  ),
-                );
-              },
+
+                },
+              ),
             ),
           ),
         ],
