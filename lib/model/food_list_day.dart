@@ -16,7 +16,7 @@ class FoodListDay {
     for (DocumentSnapshot document in documents){
       list.add(Food(
         date: document.data()['date'],
-        week: document.data()['week'],
+        time: document.data()['week'],
         name: document.data()['name'],
         calories: document.data()['calories'],
         fats: document.data()['fats'],

@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
 class ImageSearch extends StatefulWidget {
-  // final String foodName;
-  // ImageSearch({this.foodName});
+  final String query;
+  ImageSearch({this.query});
   @override
   _ImageSearchState createState() => _ImageSearchState();
 }
@@ -21,6 +21,12 @@ class _ImageSearchState extends State<ImageSearch> {
   var searchResult;
   FoodImages foodImages;
   int selectedImage=10;
+
+  @override
+  void initState() {
+    super.initState();
+    foodName=widget.query;
+  }
 
   Future<dynamic> getImages(String query) async {
     Client _client = Client();
@@ -131,7 +137,11 @@ class _ImageSearchState extends State<ImageSearch> {
               child: ElevatedButton(
                 child: Text(
                   'Select',
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w300),
+                  style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w300,
+                      color: Colors.white
+                  ),
                 ),
                 onPressed: () {
                   Navigator.pop(context, image);
@@ -193,54 +203,82 @@ class _ImageSearchState extends State<ImageSearch> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Container(
-        padding: EdgeInsets.all(10),
-        child: Form(
-          key: _imgFormKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              _buildTitle(),
-              _buildSearchQuery(),
-              SizedBox(height: 15),
-              isSearching==true?Column(
-                children: [
-                  SizedBox(height: 20),
-                  LoadingSmall(),
-                  SizedBox(height: 20),
-                ],
-              ):SizedBox.shrink(),
-              searchDone==true?_buildImageList(foodImages):SizedBox.shrink(),
-              Builder(builder: (context) => ElevatedButton(
-                child: Text(
-                  'Search',
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),
-                ),
-                onPressed: () async {
-                  if (!_imgFormKey.currentState.validate()) {
-                    return;
-                  }
-                  setState(() {
-                    isSearching=true;
-                    searchDone=false;
-                    _imgFormKey.currentState.save();
-                  });
-                  searchResult=await getImages(searchQuery);
-                  if(searchResult=='No results'){
-                    foodImages=FoodImages(foodImageList: []);
-                  }else{
-                    foodImages=FoodImages.fromData(searchResult);
-                  }
-                  setState(() {
-                    isSearching=false;
-                    searchDone=true;
-                  });
-                },
-              )),
-              SizedBox(height: 40,)
-            ],
+      body: Stack(
+        children: [
+          Container(
+            height: 215,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.vertical(bottom: Radius.elliptical(130, 40)),
+              gradient: LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                // center: Alignment.topLeft,
+                // startAngle: 0,
+                // endAngle: 0.7,
+                // radius: 1.8,
+                // focalRadius: 100,
+                colors: [
+                  Colors.purpleAccent[100],
+                  Colors.purpleAccent[700],
+                  Colors.deepPurpleAccent[400],
+                  // Theme.of(context).canvasColor,
+                  // Theme.of(context).canvasColor,
+                  // Theme.of(context).canvasColor,
+                ]
+              )
+            ),
           ),
-        )
+          Container(
+            padding: EdgeInsets.all(15),
+            height: MediaQuery.of(context).size.height,
+            child: Form(
+              key: _imgFormKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  _buildTitle(),
+                  _buildSearchQuery(),
+                  SizedBox(height: 15),
+                  isSearching==true?Column(
+                    children: [
+                      SizedBox(height: 20),
+                      LoadingSmall(),
+                      SizedBox(height: 20),
+                    ],
+                  ):SizedBox.shrink(),
+                  searchDone==true?_buildImageList(foodImages):SizedBox.shrink(),
+                  Builder(builder: (context) => ElevatedButton(
+                    child: Text(
+                      'Search',
+                      style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),
+                    ),
+                    onPressed: () async {
+                      if (!_imgFormKey.currentState.validate()) {
+                        return;
+                      }
+                      setState(() {
+                        isSearching=true;
+                        searchDone=false;
+                        _imgFormKey.currentState.save();
+                      });
+                      searchResult=await getImages(searchQuery);
+                      if(searchResult=='No results'){
+                        foodImages=FoodImages(foodImageList: []);
+                      }else{
+                        foodImages=FoodImages.fromData(searchResult);
+                      }
+                      setState(() {
+                        isSearching=false;
+                        searchDone=true;
+                      });
+                    },
+                  )),
+                  SizedBox(height: 40,)
+                ],
+              ),
+            )
+          ),
+        ],
       ),
     );
   }

@@ -38,7 +38,7 @@ class _SettingsPageState extends State<SettingsPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Settings Page\n(Nupoor)',
+              'Settings Page',
               style: TextStyle(
                 fontSize: 40,
               ),

@@ -36,6 +36,12 @@ class _PlanScreenState extends State<PlanScreen> {
                 fontSize: 40,
               ),
             ),
+            Text(
+              'Calorie Goal: $_calorieGoal',
+              style: TextStyle(
+                fontSize: 25,
+              ),
+            ),
             loading?LoadingSmall():ElevatedButton(
               child:  Text(
                 'Submit',

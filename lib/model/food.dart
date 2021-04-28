@@ -1,6 +1,6 @@
 class Food{
   String date;
-  String week;
+  String time;
   String name;
   int calories;
   int fats;
@@ -13,7 +13,7 @@ class Food{
   int imageWidth;
   int imageHeight;
 
-  Food({this.date, this.week, this.name, this.calories, this.fats, this.carbohydrates,
+  Food({this.date, this.time, this.name, this.calories, this.fats, this.carbohydrates,
     this.protein, this.servingSizeQty, this.servingSizeUnit, this.fullUrl,
     this.thumbnailUrl, this.imageWidth, this.imageHeight});
 
@@ -45,7 +45,7 @@ class Food{
   }
 
   void printFullDetails(){
-    print('$week/$date Name: $name, Calories: $calories, Fats: $fats, Carb: $carbohydrates, '
+    print('$time/$date Name: $name, Calories: $calories, Fats: $fats, Carb: $carbohydrates, '
         'Protein: $protein, $servingSizeQty $servingSizeUnit, fullUrl: $fullUrl, '
         'Dim: $imageWidth x $imageHeight');
   }

@@ -18,10 +18,17 @@ class _AuthScreenState extends State<AuthScreen> {
           children: [
             Container(
               padding: EdgeInsets.fromLTRB(12, 0,0,70),
-              child: GradientText(
+              // child: GradientText(
+              //   'DietMate',
+              //   size:50.0,
+              //   fontWeight: FontWeight.bold,
+              // ),
+              child: Text(
                 'DietMate',
-                size:50.0,
-                fontWeight: FontWeight.bold,
+                style: TextStyle(
+                  fontSize: 50,
+                  fontWeight: FontWeight.bold
+                ),
               ),
             ),
 

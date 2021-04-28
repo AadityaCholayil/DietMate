@@ -15,7 +15,7 @@ class FoodForm extends StatefulWidget {
 
 class _FoodFormState extends State<FoodForm> {
 
-  String foodName='default';
+  String foodName='';
   var foodData;
   bool isSearching=false;
   bool searchDone=false;
@@ -51,27 +51,27 @@ class _FoodFormState extends State<FoodForm> {
   Future<dynamic> getData(String query) async {
     Client _client = Client();
     Response response = await _client
-        .post(Uri.https("trackapi.nutritionix.com", "/v2/natural/nutrients",
-        {
-          "fields": "item_name,item_id,brand_name,nf_calories,nf_total_fat,nf_total_carbohydrate,nf_protein",
-          "limit": "5"
-        }),
-        body: {
-          "query" : query,
-        },
+        .get(Uri.https("nutritionix-api.p.rapidapi.com", "/v1_1/search/$query",
+        {"fields": "item_name,item_id,brand_name,nf_calories,nf_total_fat,nf_total_carbohydrate,nf_protein",
+          "limit": "5"}),
         headers: {
-          "x-app-id": "df24937b",
-          "x-app-key": "cd83b97fdf4bd32131ddc36e97e0bf12",
-          "x-remote-user-id": "0",
+          "x-rapidapi-key": "9b837a32d8mshd72f108cc18a5ebp160760jsnc13d929cb7fd",
+          "x-rapidapi-host": "nutritionix-api.p.rapidapi.com",
         }
     );
     // Response response = await _client
-    //     .get(Uri.https("nutritionix-api.p.rapidapi.com", "/v1_1/search/$query",
-    //     {"fields": "item_name,item_id,brand_name,nf_calories,nf_total_fat,nf_total_carbohydrate,nf_protein",
-    //       "limit": "5"}),
+    //     .post(Uri.https("trackapi.nutritionix.com", "/v2/natural/nutrients",
+    //     {
+    //       "fields": "item_name,item_id,brand_name,nf_calories,nf_total_fat,nf_total_carbohydrate,nf_protein",
+    //       "limit": "5"
+    //     }),
+    //     body: {
+    //       "query" : query,
+    //     },
     //     headers: {
-    //       "x-rapidapi-key": "9b837a32d8mshd72f108cc18a5ebp160760jsnc13d929cb7fd",
-    //       "x-rapidapi-host": "nutritionix-api.p.rapidapi.com",
+    //       "x-app-id": "df24937b",
+    //       "x-app-key": "cd83b97fdf4bd32131ddc36e97e0bf12",
+    //       "x-remote-user-id": "0",
     //     }
     // );
     // Response response = await get("https://nutritionix-api.p.rapidapi.com/v1_1/search/$foodName?fields=item_name%2Citem_id%2Cbrand_name%2Cnf_calories%2Cnf_total_fat%2Cnf_total_carbohydrate%2Cnf_protein",
@@ -82,7 +82,7 @@ class _FoodFormState extends State<FoodForm> {
     // );
     Map data = jsonDecode(response.body);
     print(data);
-    print(data['foods'].length);
+    print(data['hits'].length);
     if(data['max_score']!=null && data['max_score']>2)
       return data;
     else
@@ -133,11 +133,19 @@ class _FoodFormState extends State<FoodForm> {
 
   Widget customFoodButton(){
     return TextButton(
-      child: GradientText(
+      // child: GradientText(
+      //   'Create a custom one',
+      //   size: 23.0,
+      //   underline: true,
+      //   fontWeight: FontWeight.w400,
+      // ),
+      child: Text(
         'Create a custom one',
-        size: 23.0,
-        underline: true,
-        fontWeight: FontWeight.w400,
+        style: TextStyle(
+          fontSize: 23,
+          decoration: TextDecoration.underline,
+          fontWeight: FontWeight.w400,
+        ),
       ),
       onPressed: (){
         Food food;
@@ -244,7 +252,7 @@ class _FoodFormState extends State<FoodForm> {
                       );
                     },
                     openBuilder: (context, closedBuilder){
-                      return FoodFormFinal(food: food);
+                      return FoodFormFinal(food: food, query: foodName);
                     },
                   );
                 },
@@ -282,7 +290,6 @@ class _FoodFormState extends State<FoodForm> {
           searchDone=false;
           noResults=false;
           _formKey.currentState.save();
-          updateHeight();
         });
         foodData = await getData(foodName);
         if(foodData=='No results'){

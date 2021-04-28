@@ -13,8 +13,8 @@ import 'package:provider/provider.dart';
 
 class FoodFormFinal extends StatefulWidget {
   final Food food;
-
-  FoodFormFinal({this.food, Key key}):super(key:key);
+  final String query;
+  FoodFormFinal({this.food, this.query, Key key}):super(key:key);
 
   @override
   _FoodFormFinalState createState() => _FoodFormFinalState();
@@ -24,6 +24,7 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
   Food _food;
   FoodImage _foodImage;
   String _name;
+  String _time;
   int _calories, _fats, _protein, _carbohydrates;
   int _servingSizeQty;
   String _servingSizeUnit;
@@ -245,13 +246,14 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
                     'Select Image',
                     style: TextStyle(
                       fontSize: 22,
-                      fontWeight: FontWeight.w300
+                      fontWeight: FontWeight.w300,
+                      color: Colors.white
                     ),
                   ),
                   onPressed: () async {
                     _foodImage = await Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (BuildContext context) => ImageSearch())
+                        MaterialPageRoute(builder: (BuildContext context) => ImageSearch(query: widget.query))
                     );
                     setState(() {
                       if(_foodImage!=null) {
@@ -277,7 +279,8 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
               'Change Image',
               style: TextStyle(
                 fontSize: 20,
-                fontWeight: FontWeight.w300
+                fontWeight: FontWeight.w300,
+                color: Colors.white,
               ),
             ),
             onPressed: () async {
@@ -305,7 +308,11 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
     return Builder(builder: (context) => GradientButton(
       label: Text(
         'Submit',
-        style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),
+        style: TextStyle(
+          fontSize: 25,
+          fontWeight: FontWeight.w300,
+          color: Colors.white
+        ),
       ),
       extraPaddingWidth: 10.0,
       extraPaddingHeight: 2.0,
@@ -320,10 +327,9 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
         setState(() => isLoading=true);
         DateTime now = DateTime.now();
         String _date = '${now.day}-${now.month}-${now.year}';
-        String _week = weekNumber(now);
         _food=Food(
           date: _date,
-          week: _week,
+          time: _time,
           name: _name,
           calories: _calories,
           fats: _fats,
@@ -359,7 +365,8 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
           'Enter Food',
           style: TextStyle(
             fontSize: 55,
-            fontWeight: FontWeight.bold
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
         ),
       ),

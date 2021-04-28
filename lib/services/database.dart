@@ -41,7 +41,7 @@ class DatabaseService{
   Future addFood(Food food) async {
     return await db.collection('users').doc(uid).collection('foods').add({
       'date': food.date,
-      'week': food.week,
+      'time': food.time,
       'name': food.name,
       'calories': food.calories,
       'fats': food.fats,

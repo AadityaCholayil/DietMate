@@ -6,4 +6,6 @@ class FoodListWeek{
   List<FoodListDay> weekList = [];
 
 
+
+
 }
