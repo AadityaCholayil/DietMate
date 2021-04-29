@@ -132,6 +132,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     weight: 1,
                     activityLevel: 1,
                     calorieGoal: 1,
+                    joinDate: '',
                   );
                   dynamic result = await _auth
                       .registerWithEmailAndPassword(email, password, userData);

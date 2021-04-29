@@ -20,11 +20,11 @@ class _HomePageState extends State<HomePage> {
 
   FirebaseFirestore db = FirebaseFirestore.instance;
   String dateToday = '';
-  double consumedCalories = 0.0;
-  double caloriesGoal = 0.0;
-  double totalFats = 0.0;
-  double totalProtein = 0.0;
-  double totalCarb = 0.0;
+  int consumedCalories = 0;
+  int caloriesGoal = 0;
+  int totalFats = 0;
+  int totalProtein = 0;
+  int totalCarb = 0;
 
   //ScrollController controller = ScrollController();
   //bool closeTopContainer = false;
@@ -45,12 +45,12 @@ class _HomePageState extends State<HomePage> {
   SleekCircularSlider buildSleekCircularSlider() {
     return SleekCircularSlider(
       min: 0,
-      max: caloriesGoal,
-      initialValue: consumedCalories,
+      max: caloriesGoal.toDouble(),
+      initialValue: consumedCalories.floorToDouble(),
       appearance: CircularSliderAppearance(
-        infoProperties: InfoProperties(
-          topLabelText: '1200',
-        ),
+        // infoProperties: InfoProperties(
+        //   topLabelText: '1200',
+        // ),
         startAngle: 270,
         angleRange: 360,
         size: 300,
@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
               children: <Widget>[
                 Container(
                   //padding: EdgeInsets.all(10.0),
-                  child:Text("$consumedCalories" ,
+                  child:Text("${consumedCalories.toInt()}" ,
                     style: TextStyle(
                       fontSize: 62,
                       color: Colors.white,
@@ -96,7 +96,7 @@ class _HomePageState extends State<HomePage> {
                 Container(
                   padding: EdgeInsets.fromLTRB(0,0,20,5),
                   child: Text(
-                    '/1200' ,
+                    '/${caloriesGoal.toInt()}' ,
                     style: TextStyle(
                       fontSize: 29,
                       color: Colors.white,
@@ -131,7 +131,6 @@ class _HomePageState extends State<HomePage> {
       shape: RoundedRectangleBorder(
         borderRadius:  BorderRadius.circular(34),
       ),
-
       child: Container(
         height: 80,
         width: 117,
@@ -186,7 +185,7 @@ class _HomePageState extends State<HomePage> {
 
     final user = Provider.of<User>(context);
     final userData = Provider.of<UserData>(context);
-    caloriesGoal=userData.calorieGoal.toDouble();
+    caloriesGoal=userData.calorieGoal;
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
@@ -228,7 +227,7 @@ class _HomePageState extends State<HomePage> {
                   }
                   if(snapshot.hasData) {
                     FoodListDay foodList = FoodListDay.fromSnapshot(snapshot.data);
-                    consumedCalories=foodList.consumedCalories.toDouble();
+                    consumedCalories=foodList.consumedCalories;
                     totalFats=foodList.totalFats;
                     totalProtein=foodList.totalProtein;
                     totalCarb=foodList.totalCarb;
@@ -324,7 +323,7 @@ class _HomePageState extends State<HomePage> {
                                             ),
                                             SizedBox(height: 5),
                                             Text(
-                                              'Time: 10:00 AM',
+                                              'Time: ${food.time}',
                                               style:TextStyle(
                                                   fontSize: 20
                                               ),
@@ -343,7 +342,6 @@ class _HomePageState extends State<HomePage> {
                                           food.thumbnailUrl,
                                           fit: BoxFit.cover,
                                         ),
-
                                       )
                                     ],
                                   ),

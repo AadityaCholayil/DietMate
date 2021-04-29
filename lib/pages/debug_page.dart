@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietmate/auth_screens/additional_details_screen.dart';
 import 'package:dietmate/auth_screens/login_screen.dart';
 import 'package:dietmate/auth_screens/plan_screen.dart';
@@ -5,20 +6,21 @@ import 'package:dietmate/auth_screens/signup_screen.dart';
 import 'package:dietmate/auth_screens/auth_screen.dart';
 import 'package:dietmate/model/user.dart';
 import 'package:dietmate/shared/loading.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class NeerajTemp extends StatefulWidget {
+class DebugPage extends StatefulWidget {
   @override
-  _NeerajTempState createState() => _NeerajTempState();
+  _DebugPageState createState() => _DebugPageState();
 }
 
-class _NeerajTempState extends State<NeerajTemp> {
+class _DebugPageState extends State<DebugPage> {
 
 
   @override
   Widget build(BuildContext context) {
-
+    final user = Provider.of<User>(context);
     final userData = Provider.of<UserData>(context);
 
     if(userData==null){
@@ -31,7 +33,7 @@ class _NeerajTempState extends State<NeerajTemp> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Auth Screens(Temporary)\n(Neeraj)\nGitHub branch',
+                'Debug Page',
                 style: TextStyle(
                   fontSize: 30,
                 ),
@@ -78,6 +80,14 @@ class _NeerajTempState extends State<NeerajTemp> {
                     context,
                     MaterialPageRoute(builder: (BuildContext context) => PlanScreen()),
                   );
+                },
+              ),
+              ElevatedButton(
+                child: Text('Firebase Query'),
+                onPressed: () async {
+                  FirebaseFirestore db = FirebaseFirestore.instance;
+                  var result = await db.collection('users').doc(user.uid).collection('foods').get();
+                  print(result.docs);
                 },
               ),
             ],

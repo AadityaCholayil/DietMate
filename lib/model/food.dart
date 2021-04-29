@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Food{
   String date;
   String time;
+  Timestamp timestamp;
   String name;
   int calories;
   int fats;
@@ -13,7 +16,7 @@ class Food{
   int imageWidth;
   int imageHeight;
 
-  Food({this.date, this.time, this.name, this.calories, this.fats, this.carbohydrates,
+  Food({this.date, this.time, this.timestamp, this.name, this.calories, this.fats, this.carbohydrates,
     this.protein, this.servingSizeQty, this.servingSizeUnit, this.fullUrl,
     this.thumbnailUrl, this.imageWidth, this.imageHeight});
 

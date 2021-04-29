@@ -1,4 +1,5 @@
 import 'package:dietmate/model/user.dart';
+import 'package:dietmate/pages/debug_page.dart';
 import 'package:dietmate/services/auth.dart';
 import 'package:dietmate/themes/custom_theme.dart';
 import 'package:dietmate/themes/dark_theme.dart';
@@ -45,7 +46,7 @@ class _SettingsPageState extends State<SettingsPage> {
               textAlign: TextAlign.center,
             ),
             Text(
-              'Name: ${userData.name}',
+              'Name: ${userData.name}, ${userData.joinDate}',
               style: TextStyle(
                 fontSize: 20,
               ),
@@ -59,6 +60,15 @@ class _SettingsPageState extends State<SettingsPage> {
                   _darkTheme=newValue;
                 });
                 onThemeChanged(newValue, themeNotifier);
+              },
+            ),
+            ElevatedButton(
+              child: Text('Debug Page'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (BuildContext context) => DebugPage()),
+                );
               },
             ),
             TextButton(

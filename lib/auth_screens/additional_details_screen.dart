@@ -18,6 +18,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
   int _weight;
   double _activityLevel = 1.5;
   String _activity = 'Sedentary: little or no exercise';
+  String _joinDate = '';
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   
   Widget _buildName(){
@@ -305,13 +306,16 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                       setState(() {
                         _formKey.currentState.save();
                       });
+                      DateTime now = DateTime.now();
+                      _joinDate='${now.day}-${now.month}-${now.year}';
                       UserData userData = UserData(
                         name: _name,
                         age: _age,
                         isMale: _isMale,
                         height: _height,
                         weight: _weight,
-                        activityLevel: _activityLevel
+                        activityLevel: _activityLevel,
+                        joinDate: _joinDate
                       );
                       Navigator.push(
                         context,

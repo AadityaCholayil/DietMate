@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietmate/model/food.dart';
 import 'package:dietmate/model/food_image.dart';
 import 'package:dietmate/form_pages/image_search_page.dart';
@@ -24,12 +25,15 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
   Food _food;
   FoodImage _foodImage;
   String _name;
-  String _time;
+  String _time = '1000';
   int _calories, _fats, _protein, _carbohydrates;
   int _servingSizeQty;
   String _servingSizeUnit;
   String _fullUrl, _thumbnailUrl;
   int _imageWidth, _imageHeight;
+  Timestamp _timestamp;
+
+  DateTime pickedTime;
 
   bool isLoading=false;
   String error='';
@@ -303,6 +307,28 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
       ],
     );
   }
+
+  Widget _buildTime(){
+    return ElevatedButton(
+      child: Text(
+        'Time',
+        style: TextStyle(
+            fontSize: 25,
+            fontWeight: FontWeight.w300,
+            color: Colors.white
+        ),
+      ),
+      onPressed: () async {
+        var time = await showTimePicker(
+          context: context,
+          initialTime: TimeOfDay.now(),
+
+        );
+      },
+
+    );
+  }
+
   Widget _buildSubmitButton(BuildContext context2){
     final user = Provider.of<User>(context2);
     return Builder(builder: (context) => GradientButton(
@@ -330,6 +356,7 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
         _food=Food(
           date: _date,
           time: _time,
+          timestamp: _timestamp,
           name: _name,
           calories: _calories,
           fats: _fats,
@@ -373,7 +400,6 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
     );
   }
 
-
   SnackBar showCustomSnackBar(String message){
     return SnackBar(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -402,21 +428,21 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
           child: Stack(
             fit: StackFit.loose,
             children: [
-              Card(
-                margin: EdgeInsets.zero,
-                clipBehavior: Clip.antiAliasWithSaveLayer,
-                shape: RoundedRectangleBorder(
-                  borderRadius:  BorderRadius.vertical(bottom: Radius.elliptical(130, 40)),
-                ),
-                elevation: 8,
-                child: Container(
-                  //height: searchHeight,
-                  height: 250,
-                  decoration: BoxDecoration(
-                    gradient: customGradient,
-                  ),
-                ),
-              ),
+              // Card(
+              //   margin: EdgeInsets.zero,
+              //   clipBehavior: Clip.antiAliasWithSaveLayer,
+              //   shape: RoundedRectangleBorder(
+              //     borderRadius:  BorderRadius.vertical(bottom: Radius.elliptical(130, 40)),
+              //   ),
+              //   elevation: 8,
+              //   child: Container(
+              //     //height: searchHeight,
+              //     height: 250,
+              //     decoration: BoxDecoration(
+              //       gradient: customGradient,
+              //     ),
+              //   ),
+              // ),
               Container(
                 height: MediaQuery.of(context).size.height,
                 padding: EdgeInsets.all(13),
@@ -426,66 +452,58 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       _buildTitle(),
-                      Card(
-                        elevation: 5,
-                        margin: EdgeInsets.symmetric(horizontal: 0),
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        child: Container(
-                          //color: Colors.red,
-                          padding: EdgeInsets.symmetric(horizontal: 11, vertical: 15),
-                          child: Column(
-                            children: [
-                              _buildName(),
-                              SizedBox(height: 10),
-                              _buildCalories(),
-                              SizedBox(height: 10),
-                              Padding(
-                                padding: _thumbnailUrl==null?EdgeInsets.zero:EdgeInsets.only(bottom: 8),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    _buildFoodImage(),
-                                    Column(
-                                      children: <Widget>[
-                                        Container(
-                                          width: MediaQuery.of(context).size.width*0.42,
-                                          child: _buildFats(),
-                                        ),
-                                        SizedBox(height: 10),
-                                        Container(
-                                          width: MediaQuery.of(context).size.width*0.42,
-                                          child: _buildProtein(),
-                                        ),
-                                        SizedBox(height: 10),
-                                        Container(
-                                          width: MediaQuery.of(context).size.width*0.42,
-                                          child: _buildCarbohydrates(),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: 10),
-                              Row(
+                      Container(
+                        //color: Colors.red,
+                        padding: EdgeInsets.symmetric(horizontal: 11, vertical: 15),
+                        child: Column(
+                          children: [
+                            _buildName(),
+                            SizedBox(height: 10),
+                            _buildCalories(),
+                            SizedBox(height: 10),
+                            Padding(
+                              padding: _thumbnailUrl==null?EdgeInsets.zero:EdgeInsets.only(bottom: 8),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  Container(
-                                    width: MediaQuery.of(context).size.width*0.43,
-                                    child: _buildServingSizeQty(),
-                                  ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width*0.43,
-                                    child: _buildServingSizeUnit(),
-                                  ),
+                                  _buildFoodImage(),
+                                  Column(
+                                    children: <Widget>[
+                                      Container(
+                                        width: MediaQuery.of(context).size.width*0.42,
+                                        child: _buildFats(),
+                                      ),
+                                      SizedBox(height: 10),
+                                      Container(
+                                        width: MediaQuery.of(context).size.width*0.42,
+                                        child: _buildProtein(),
+                                      ),
+                                      SizedBox(height: 10),
+                                      Container(
+                                        width: MediaQuery.of(context).size.width*0.42,
+                                        child: _buildCarbohydrates(),
+                                      ),
+                                    ],
+                                  )
                                 ],
                               ),
-                            ],
-                          ),
+                            ),
+                            SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Container(
+                                  width: MediaQuery.of(context).size.width*0.43,
+                                  child: _buildServingSizeQty(),
+                                ),
+                                Container(
+                                  width: MediaQuery.of(context).size.width*0.43,
+                                  child: _buildServingSizeUnit(),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
                       SizedBox(height: 15),

@@ -3,9 +3,9 @@ import 'package:dietmate/model/food.dart';
 
 class FoodListDay {
   int consumedCalories=0;
-  double totalFats=0;
-  double totalProtein=0;
-  double totalCarb=0;
+  int totalFats=0;
+  int totalProtein=0;
+  int totalCarb=0;
   List<Food> list=[];
 
   FoodListDay({this.consumedCalories, this.list});
@@ -14,9 +14,12 @@ class FoodListDay {
     final List<DocumentSnapshot> documents = snapshot.docs;
     int i=0;
     for (DocumentSnapshot document in documents){
+      // Timestamp timestamp = document.data()['time'];
+      // String time = timestamp.toDate().toString();
       list.add(Food(
         date: document.data()['date'],
-        time: document.data()['week'],
+        time: document.data()['time'],
+        timestamp: document.data()['timestamp'],
         name: document.data()['name'],
         calories: document.data()['calories'],
         fats: document.data()['fats'],

@@ -22,6 +22,7 @@ class DatabaseService{
       'weight': userData.weight,
       'activityLevel': userData.activityLevel,
       'calorieGoal': userData.calorieGoal,
+      'joinDate': userData.joinDate,
     });
   }
 
@@ -34,30 +35,8 @@ class DatabaseService{
       'weight': userData.weight,
       'activityLevel': userData.activityLevel,
       'calorieGoal': userData.calorieGoal,
+      'joinDate': userData.joinDate,
     }).then((value) => print('Updated!'));
-  }
-
-  //add food
-  Future addFood(Food food) async {
-    return await db.collection('users').doc(uid).collection('foods').add({
-      'date': food.date,
-      'time': food.time,
-      'name': food.name,
-      'calories': food.calories,
-      'fats': food.fats,
-      'protein': food.protein,
-      'carbohydrates': food.carbohydrates,
-      'servingSizeQty': food.servingSizeQty,
-      'servingSizeUnit': food.servingSizeUnit,
-      'fullUrl': food.fullUrl,
-      'thumbnailUrl': food.thumbnailUrl,
-      'imageWidth': food.imageWidth,
-      'imageHeight': food.imageHeight,
-    }).then((value) => print("Food Added"))
-      .catchError((error) {
-          print("Failed to add food: $error");
-          return 'error';
-      });
   }
 
   //user data from snapshots
@@ -71,6 +50,7 @@ class DatabaseService{
       weight: snapshot.data()['weight'],
       activityLevel: snapshot.data()['activityLevel'],
       calorieGoal: snapshot.data()['calorieGoal'],
+      joinDate: snapshot.data()['joinDate'],
     );
   }
 
@@ -79,4 +59,29 @@ class DatabaseService{
     return db.collection('users').doc(uid).snapshots()
       .map(_userDataFromSnapshot);
   }
+
+  //add food
+  Future addFood(Food food) async {
+    return await db.collection('users').doc(uid).collection('foods').add({
+      'date': food.date,
+      'time': food.time,
+      'timestamp': food.timestamp,
+      'name': food.name,
+      'calories': food.calories,
+      'fats': food.fats,
+      'protein': food.protein,
+      'carbohydrates': food.carbohydrates,
+      'servingSizeQty': food.servingSizeQty,
+      'servingSizeUnit': food.servingSizeUnit,
+      'fullUrl': food.fullUrl,
+      'thumbnailUrl': food.thumbnailUrl,
+      'imageWidth': food.imageWidth,
+      'imageHeight': food.imageHeight,
+    }).then((value) => print("Food Added"))
+        .catchError((error) {
+      print("Failed to add food: $error");
+      return 'error';
+    });
+  }
+
 }
