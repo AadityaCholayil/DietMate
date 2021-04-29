@@ -319,13 +319,18 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
         ),
       ),
       onPressed: () async {
-        var time = await showTimePicker(
+        TimeOfDay time = await showTimePicker(
           context: context,
           initialTime: TimeOfDay.now(),
-
         );
+        if (time!=null) {
+          DateTime now = DateTime.now();
+          pickedTime=DateTime(now.year, now.month, now.day, time.hour, time.minute);
+          _timestamp=Timestamp.fromDate(pickedTime);
+          _time=convertTo12Hr(pickedTime);
+          print(_time);
+        }
       },
-
     );
   }
 
@@ -348,6 +353,10 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
         }
         if(_thumbnailUrl==null){
           ScaffoldMessenger.of(context).showSnackBar(showCustomSnackBar('Select an Image!'));
+          return;
+        }
+        if(_timestamp==null){
+          ScaffoldMessenger.of(context).showSnackBar(showCustomSnackBar('Select time!'));
           return;
         }
         setState(() => isLoading=true);
@@ -506,6 +515,8 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
                           ],
                         ),
                       ),
+                      SizedBox(height: 15),
+                      _buildTime(),
                       SizedBox(height: 15),
                       !isLoading?_buildSubmitButton(context)
                           :LoadingSmall(),

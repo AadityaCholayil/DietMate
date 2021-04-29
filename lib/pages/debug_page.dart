@@ -85,9 +85,23 @@ class _DebugPageState extends State<DebugPage> {
               ElevatedButton(
                 child: Text('Firebase Query'),
                 onPressed: () async {
+                  DateTime now = DateTime.now();
+                  DateTime start = now.subtract(Duration(days: 7));
+                  start = DateTime(start.year, start.month, start.day, 0, 0);
+
                   FirebaseFirestore db = FirebaseFirestore.instance;
-                  var result = await db.collection('users').doc(user.uid).collection('foods').get();
-                  print(result.docs);
+                  var result = await db.collection('users').doc(user.uid)
+                      .collection('foods')
+                      .orderBy('timestamp')
+                      .startAt([Timestamp.fromDate(start)])
+                      .endAt([Timestamp.fromDate(now)])
+                      .get();
+
+                  int i=0;
+                  for(var doc in result.docs) {
+                    print('Document ${i++}');
+                    print(doc.data());
+                  }
                 },
               ),
             ],
