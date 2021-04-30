@@ -1,5 +1,6 @@
   import 'package:flutter/material.dart';
   final ThemeData lightTheme = ThemeData(
+    fontFamily: 'Quicksand',
     primarySwatch: MaterialColor(4287954195,{50: Color(0xfff4ffe6), 100: Color(0xffe8ffcc), 200: Color(0xffd1fe9a), 300: Color(0xffbafe67), 400: Color(0xffa3fd35), 500: Color(0xff8cfd02), 600: Color(0xff70ca02), 700: Color(0xff549801), 800: Color(0xff386501), 900: Color(0xff1c3300)}),
     brightness: Brightness.light,
     primaryColor: Color( 0xff94fd13 ),
