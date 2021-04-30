@@ -80,9 +80,9 @@ LinearGradient customGradient = LinearGradient(
   begin: Alignment.topLeft,
   end: Alignment.bottomRight,
   colors: [
-    Colors.purpleAccent[100],
-    Colors.purpleAccent[700],
-    Colors.deepPurpleAccent[400],
+    Color( 0xffB5FF48),
+    Color( 0xff94FC13),
+    Color(0xff05B54B),
     // Colors.indigoAccent[700],
   ],
 );

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietmate/model/food.dart';
 import 'package:dietmate/model/food_list_day.dart';
@@ -7,6 +9,7 @@ import 'package:dietmate/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:glass_kit/glass_kit.dart';
 import 'package:provider/provider.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
@@ -41,95 +44,90 @@ class _HomePageState extends State<HomePage> {
     dateToday='${now.day}-${now.month}-${now.year}';
   }
 
-  Card buildSleekCircularSlider() {
-    return Card(
-      color: Theme.of(context).cardColor,
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(54.0))
-      ),
-      child: Container(
-        height:370,
-        alignment:Alignment.center,
-        child: SleekCircularSlider(
-          min: 0,
-          max: caloriesGoal.toDouble(),
-          initialValue: consumedCalories.floorToDouble(),
-          appearance: CircularSliderAppearance(
-            // infoProperties: InfoProperties(
-            //   topLabelText: '1200',
-            // ),
-            startAngle: 270,
-            angleRange: 360,
-            size: 300,
-            customWidths: CustomSliderWidths(
-              trackWidth: 3.5,
-              progressBarWidth: 25.0,
-              handlerSize: 7.0,
-            ),
-            customColors: CustomSliderColors(
-              progressBarColors: [
-                Colors.purpleAccent[100],
-                Colors.deepPurpleAccent[700],
-                Colors.purple[700],
-                Colors.purpleAccent[400],
-                Colors.deepPurpleAccent[400],
-                Colors.purpleAccent[400],
-                Colors.purple[700],
-                Colors.purpleAccent[100],
-              ],
-              dynamicGradient: true,
-              trackColor: Colors.deepPurpleAccent[300],
-              hideShadow: true,
-            ),
+  Widget buildSleekCircularSlider() {
+    return GlassContainer(
+      borderRadius: BorderRadius.all(Radius.circular(54.0)),
+      color: Theme.of(context).colorScheme.surface.withOpacity(0.6),
+      borderColor: Theme.of(context).colorScheme.surface.withOpacity(0.0),
+      height:370,
+      width: MediaQuery.of(context).size.width,
+      isFrostedGlass: true,
+      frostedOpacity: 0.05,
+      blur: 12,
+      alignment:Alignment.center,
+      child: SleekCircularSlider(
+        min: 0,
+        max: caloriesGoal.toDouble(),
+        initialValue: consumedCalories.floorToDouble(),
+        appearance: CircularSliderAppearance(
+          // infoProperties: InfoProperties(
+          //   topLabelText: '1200',
+          // ),
+          startAngle: 270,
+          angleRange: 360,
+          size: 300,
+          customWidths: CustomSliderWidths(
+            trackWidth: 3.5,
+            progressBarWidth: 25.0,
+            handlerSize: 7.0,
           ),
-          innerWidget: (double value) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      //padding: EdgeInsets.all(10.0),
-                      child:Text("${consumedCalories.toInt()}" ,
-                        style: TextStyle(
-                          fontSize: 62,
-                          color: Theme.of(context).colorScheme.onSurface,
-                          fontStyle: FontStyle.normal,
-                        ),
+          customColors: CustomSliderColors(
+            progressBarColors: [
+              Color( 0xffB5FF48),
+              Color( 0xff94FC13),
+              Color(0xff05B54B),
+            ],
+            dynamicGradient: true,
+            trackColor: Color( 0xffD0EEAC),
+            hideShadow: true,
+          ),
+        ),
+        innerWidget: (double value) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    //padding: EdgeInsets.all(10.0),
+                    child:Text("${consumedCalories.toInt()}" ,
+                      style: TextStyle(
+                        fontSize: 62,
+                        color: Theme.of(context).colorScheme.onSurface,
+                        fontStyle: FontStyle.normal,
                       ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.fromLTRB(0,0,20,5),
-                      child: Text(
-                        '/${caloriesGoal.toInt()}' ,
-                        style: TextStyle(
-                          fontSize: 29,
-                          color: Theme.of(context).colorScheme.onSurface,
-                          fontStyle: FontStyle.normal,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Container(
-                  margin: EdgeInsets.zero,
-                  //padding: EdgeInsets.all(5.0),
-                  child: Text(
-                    'KCal',
-                    style: TextStyle(
-                      fontSize: 32,
-                      color: Theme.of(context).colorScheme.onSurface,
-                      fontStyle: FontStyle.normal,
                     ),
                   ),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(0,0,20,5),
+                    child: Text(
+                      '/${caloriesGoal.toInt()}' ,
+                      style: TextStyle(
+                        fontSize: 29,
+                        color: Theme.of(context).colorScheme.onSurface,
+                        fontStyle: FontStyle.normal,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                margin: EdgeInsets.zero,
+                //padding: EdgeInsets.all(5.0),
+                child: Text(
+                  'KCal',
+                  style: TextStyle(
+                    fontSize: 32,
+                    color: Theme.of(context).colorScheme.onSurface,
+                    fontStyle: FontStyle.normal,
+                  ),
                 ),
-              ],
-            );
-          },
-        ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -397,104 +395,90 @@ class _HomePageState extends State<HomePage> {
     double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      body: Stack(
-        children: [
-          Card(
-            margin: EdgeInsets.zero,
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            shape: RoundedRectangleBorder(
-                borderRadius:  BorderRadius.vertical(bottom: Radius.elliptical(90, 50)),
-            ),
-            elevation: 8,
-            child: Container(
-              height: height/3,
-              width: width,
-              decoration: BoxDecoration(
-                gradient: customGradient,
-              ),
-              child: SizedBox(),
-            ),
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/home_${Theme.of(context).brightness==Brightness.light?'light':'dark'}.jpg'),
+            fit: BoxFit.cover,
           ),
-          SingleChildScrollView(
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal:27.0),
-              child: FutureBuilder<QuerySnapshot>(
-                future: getData(user),
-                builder: (context, snapshot){
-                  if(snapshot.connectionState!=ConnectionState.done){
-                    //query in progress
-                    return Loading();
-                  }
-                  if(snapshot.hasError){
-                    return Container(
-                      child: Text(
-                        'Error occurred',
-                      ),
-                    );
-                  }
-                  if(snapshot.hasData) {
-                    FoodListDay foodList = FoodListDay.fromSnapshot(snapshot.data);
-                    consumedCalories=foodList.consumedCalories;
-                    totalFats=foodList.totalFats;
-                    totalProtein=foodList.totalProtein;
-                    totalCarb=foodList.totalCarbs;
-                    // if(foodList.list.isEmpty){
-                    //   //query successful but is empty
-                    //   return Container(
-                    //     child: Text(
-                    //         'Empty'
-                    //     ),
-                    //   );
-                    // }
-                    //TODO main code
-                    return Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.fromLTRB(20,47,0,16),
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Welcome, ${userData.name}',
-                              style: TextStyle(
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).colorScheme.onSurface,
-                              ),
-                            ),
+        ),
+        padding: EdgeInsets.symmetric(horizontal:27.0),
+        child: SingleChildScrollView(
+          child: FutureBuilder<QuerySnapshot>(
+            future: getData(user),
+            builder: (context, snapshot){
+              if(snapshot.connectionState!=ConnectionState.done){
+                //query in progress
+                return Loading();
+              }
+              if(snapshot.hasError){
+                return Container(
+                  child: Text(
+                    'Error occurred',
+                  ),
+                );
+              }
+              if(snapshot.hasData) {
+                FoodListDay foodList = FoodListDay.fromSnapshot(snapshot.data);
+                consumedCalories=foodList.consumedCalories;
+                totalFats=foodList.totalFats;
+                totalProtein=foodList.totalProtein;
+                totalCarb=foodList.totalCarbs;
+                // if(foodList.list.isEmpty){
+                //   //query successful but is empty
+                //   return Container(
+                //     child: Text(
+                //         'Empty'
+                //     ),
+                //   );
+                // }
+                //TODO main code
+                return Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.fromLTRB(20,47,0,16),
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Welcome, ${userData.name}',
+                          style: TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.onSurface,
                           ),
-                          buildSleekCircularSlider(),
-                          SizedBox(height: 13),
-                          buildOtherMetrics(),
-                          SizedBox(height: 30),
-                          Padding(
-                            padding: EdgeInsets.only(left:25),
-                            child: Text(
-                              "Today's food",
-                              style: TextStyle(
-                                fontSize: 26,
-                                fontWeight: FontWeight.w300
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 15),
-                          buildListView(foodList),
-                        ],
+                        ),
                       ),
-                    );
-                  }
-                  return Container(
-                    child: Text(
-                        'Something went wrong'
-                    ),
-                  );
+                      buildSleekCircularSlider(),
+                      SizedBox(height: 13),
+                      buildOtherMetrics(),
+                      SizedBox(height: 30),
+                      Padding(
+                        padding: EdgeInsets.only(left:25),
+                        child: Text(
+                          "Today's food",
+                          style: TextStyle(
+                            fontSize: 26,
+                            fontWeight: FontWeight.w300
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 15),
+                      buildListView(foodList),
+                    ],
+                  ),
+                );
+              }
+              return Container(
+                child: Text(
+                    'Something went wrong'
+                ),
+              );
 
-                },
-              ),
-            ),
+            },
           ),
-        ],
-
+        ),
       ),
     );
   }

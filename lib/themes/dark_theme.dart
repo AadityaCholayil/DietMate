@@ -11,23 +11,13 @@ final ThemeData darkTheme = ThemeData(
   //   , 800: Color( 0xff333333 )
   //   , 900: Color( 0xff191919 )
   // }),
-  primarySwatch: MaterialColor(0xffb82fd0,{50: Color( 0xfff8eafa )
-    , 100: Color( 0xfff1d5f6 )
-    , 200: Color( 0xffe3acec )
-    , 300: Color( 0xffd582e3 )
-    , 400: Color( 0xffc659d9 )
-    , 500: Color( 0xffb82fd0 )
-    , 600: Color( 0xff9326a6 )
-    , 700: Color( 0xff6f1c7d )
-    , 800: Color( 0xff4a1353 )
-    , 900: Color( 0xff25092a )
-  }),
+  primarySwatch: MaterialColor(4287954195,{50: Color(0xfff4ffe6), 100: Color(0xffe8ffcc), 200: Color(0xffd1fe9a), 300: Color(0xffbafe67), 400: Color(0xffa3fd35), 500: Color(0xff8cfd02), 600: Color(0xff70ca02), 700: Color(0xff549801), 800: Color(0xff386501), 900: Color(0xff1c3300)}),
   brightness: Brightness.dark,
-  primaryColor: Color( 0xff212121 ),
+  primaryColor: Color( 0xff94fd13 ),
   primaryColorBrightness: Brightness.dark,
-  primaryColorLight: Color( 0xffde9ee9 ),
+  primaryColorLight: Color( 0xffe8ffcc ),
   primaryColorDark: Color( 0xff000000 ),
-  accentColor: Color( 0xff9D06FF ),
+  accentColor: Color( 0xff8cfd02 ),
   accentColorBrightness: Brightness.light,
   // canvasColor: Color( 0xff303030 ),
   canvasColor: Color( 0xff191919 ),
@@ -41,21 +31,21 @@ final ThemeData darkTheme = ThemeData(
   unselectedWidgetColor: Color( 0xb3ffffff ),
   disabledColor: Color( 0x62ffffff ),
   buttonColor: Color( 0xff1e88e5 ),
-  toggleableActiveColor: Color( 0xff8C0EFF ),
+  toggleableActiveColor: Color( 0xff70ca02 ),
   secondaryHeaderColor: Color( 0xff616161 ),
   backgroundColor: Color( 0xff616161 ),
   dialogBackgroundColor: Color( 0xff424242 ),
-  indicatorColor: Color( 0xffb82fd0 ),
+  indicatorColor: Color( 0xff8cfd02 ),
   hintColor: Color( 0x80ffffff ),
   errorColor: Color( 0xffd32f2f ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      primary: Color( 0xff9D06FF ),
+      primary: Color( 0xff8cfd02 ),
     ),
   ),
   textButtonTheme: TextButtonThemeData(
     style: ElevatedButton.styleFrom(
-      onPrimary: Color( 0xff9D06FF ),
+      onPrimary: Color( 0xff8cfd02 ),
     ),
   ),
   buttonTheme: ButtonThemeData(
@@ -76,10 +66,10 @@ final ThemeData darkTheme = ThemeData(
     focusColor: Color( 0x1fffffff ),
     hoverColor: Color( 0x0affffff ),
     colorScheme: ColorScheme(
-      primary: Color( 0xffde9ee9 ),
-      primaryVariant: Color( 0xff6f1c7d ),
-      secondary: Color( 0xffb82fd0 ),
-      secondaryVariant: Color( 0xff6f1c7d ),
+      primary: Color( 0xffd1fe9a ),
+      primaryVariant: Color( 0xff549801 ),
+      secondary: Color( 0xff8cfd02 ),
+      secondaryVariant: Color( 0xff549801 ),
       surface: Color( 0xff303030 ),
       background: Color( 0xff616161 ),
       error: Color( 0xffd32f2f ),
@@ -147,7 +137,7 @@ final ThemeData darkTheme = ThemeData(
       borderRadius: BorderRadius.all(Radius.circular(15.0)),
     ),
     focusedBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: Color( 0xff9D06FF ), width: 2, style: BorderStyle.solid, ),
+      borderSide: BorderSide(color: Color( 0xff8cfd02 ), width: 2, style: BorderStyle.solid, ),
       borderRadius: BorderRadius.all(Radius.circular(15.0)),
     ),
     focusedErrorBorder: OutlineInputBorder(

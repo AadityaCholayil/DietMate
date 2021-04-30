@@ -34,7 +34,13 @@ class _SettingsPageState extends State<SettingsPage> {
 
     final userData = Provider.of<UserData>(context);
     return Scaffold(
-      body: Center(
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/setting_${Theme.of(context).brightness==Brightness.light?'light':'dark'}.jpg'),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

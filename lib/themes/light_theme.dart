@@ -26,6 +26,16 @@
     indicatorColor: Color( 0xff8cfd02 ),
     hintColor: Color( 0x8a000000 ),
     errorColor: Color( 0xffd32f2f ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        primary: Color( 0xff8cfd02 ),
+      ),
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        onPrimary: Color( 0xff8cfd02 ),
+      ),
+    ),
     buttonTheme: ButtonThemeData(
       textTheme: ButtonTextTheme.normal,
       minWidth: 88.0,
@@ -43,7 +53,7 @@
       splashColor: Color( 0x1f000000 ),
       colorScheme: ColorScheme(
         primary: Color( 0xff94fd13 ),
-        primaryVariant: Color( 0xff549801 ),
+        primaryVariant: Color( 0xff94fd13 ),
         secondary: Color( 0xff8cfd02 ),
         secondaryVariant: Color( 0xff549801 ),
         surface: Color( 0xffffffff ),
@@ -85,7 +95,7 @@
     errorMaxLines: null,
     floatingLabelBehavior: FloatingLabelBehavior.auto,
     isDense: false,
-    contentPadding: EdgeInsets.only(top:12.0,bottom:12.0,left:0.0, right:0.0),
+    contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 18),
     isCollapsed : false,
     prefixStyle: TextStyle(
       color: Color( 0xdd000000 ),

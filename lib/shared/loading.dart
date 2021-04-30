@@ -33,11 +33,11 @@ class LoadingSmall extends StatelessWidget {
                 trackWidth: 1
               ),
               customColors: CustomSliderColors(
-                  trackColor: Colors.purpleAccent[100],
+                  trackColor: Theme.of(context).primaryColorLight,
                   progressBarColors: [
-                    Colors.purpleAccent[100],
-                    Colors.purpleAccent[700],
-                    Colors.deepPurpleAccent[400],
+                    Color( 0xffB5FF48),
+                    Color( 0xff94FC13),
+                    Color(0xff05B54B),
                   ]
               )
             )
