@@ -148,9 +148,9 @@ class _ReportPageState extends State<ReportPage> {
     caloriesGoal=userData.calorieGoal;
 
     return Scaffold(
-        body: SingleChildScrollView(
-          child: Container(
-            height: MediaQuery.of(context).size.height,
+        body: Container(
+          height: MediaQuery.of(context).size.height,
+          child: SingleChildScrollView(
             child: FutureBuilder<QuerySnapshot>(
               future: getData(user),
               builder: (context, snapshot){
@@ -181,6 +181,7 @@ class _ReportPageState extends State<ReportPage> {
                   return Container(
                     padding: EdgeInsets.symmetric(horizontal: 26),
                     child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Container(
                           padding: EdgeInsets.only(top: 36, left: 38),
@@ -248,11 +249,59 @@ class _ReportPageState extends State<ReportPage> {
                               ),
                             )
                           ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          children: [
+                            Card(
+                              margin: EdgeInsets.zero,
+                              child: Container(
+                                padding: EdgeInsets.all(20),
+                                height:200,
+                                width: 300,
+                                child:BarChart(
+                                  BarChartData(
+                                    barGroups: [
+                                      BarChartGroupData(
+                                          x: 1,
+                                          barRods: [
+                                            BarChartRodData(y: 10)
+                                          ],
+                                      ),
+                                      BarChartGroupData(
+                                          x: 2,
+                                          barRods:[
+                                            BarChartRodData(y: 15)
+                                          ]
+                                      ),
+                                      BarChartGroupData(
+                                          x: 3,
+                                          barRods:[
+                                            BarChartRodData(y: 5)
+                                          ]
+                                      ),
+                                      BarChartGroupData(
+                                          x: 4,
+                                          barRods:[
+                                            BarChartRodData(y: 3)
+                                          ]
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                )
+                              ),
+                        ],
+                      ),
+                        SizedBox(
+                          height: 90,
                         )
-                      ],
-                    ),
-                  );
-                }
+                    ],
+                  ),
+                );
+              }
                 return Container(
                   child: Text(
                       'Something went wrong'
