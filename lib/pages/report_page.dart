@@ -24,7 +24,7 @@ class _ReportPageState extends State<ReportPage> {
 
   Future<QuerySnapshot> getData(User user) async {
     now = DateTime.now();
-    start = now.subtract(Duration(days: 7));
+    start = now.subtract(Duration(days: 6));
     now = DateTime(now.year, now.month, now.day, 23, 59);
     start = DateTime(start.year, start.month, start.day, 0, 0);
 
@@ -61,7 +61,6 @@ class _ReportPageState extends State<ReportPage> {
               LineChartData(
                 minX:0,
                 maxX:8,
-
                 minY: 0,
                 maxY: 12,
 
@@ -152,7 +151,6 @@ class _ReportPageState extends State<ReportPage> {
         body: SingleChildScrollView(
           child: Container(
             height: MediaQuery.of(context).size.height,
-
             child: FutureBuilder<QuerySnapshot>(
               future: getData(user),
               builder: (context, snapshot){
@@ -168,7 +166,7 @@ class _ReportPageState extends State<ReportPage> {
                   );
                 }
                 if(snapshot.hasData){
-                  FoodListWeek week = FoodListWeek.fromSnapshot(snapshot.data, start);
+                  FoodListWeek data = FoodListWeek.fromSnapshot(snapshot.data, start);
                   // if(foodList.list.isEmpty){
                   //   //query successful but is empty
                   //   return Container(
@@ -234,14 +232,14 @@ class _ReportPageState extends State<ReportPage> {
                                   PieChartData(
                                     sections:[
                                       PieChartSectionData(
-                                        value: 10,
+                                        value: data.totalFats.toDouble(),
                                       ),
                                       PieChartSectionData(
-                                        value:20,
+                                        value: data.totalCarbs.toDouble(),
                                         color: Colors.blueGrey,
                                       ),
                                       PieChartSectionData(
-                                        value:40,
+                                        value: data.totalProtein.toDouble(),
                                         color: Colors.green,
                                       )
                                     ]

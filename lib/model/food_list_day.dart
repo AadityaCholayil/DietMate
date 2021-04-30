@@ -8,7 +8,12 @@ class FoodListDay {
   int totalCarbs=0;
   List<Food> list=[];
 
-  FoodListDay({this.consumedCalories, this.list});
+  FoodListDay(){
+    this.list=[];
+    this.totalProtein=0;
+    this.totalCarbs=0;
+    this.totalFats=0;
+  }
 
   FoodListDay.fromSnapshot(QuerySnapshot snapshot){
     final List<DocumentSnapshot> documents = snapshot.docs;
