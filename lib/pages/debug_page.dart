@@ -4,6 +4,7 @@ import 'package:dietmate/auth_screens/login_screen.dart';
 import 'package:dietmate/auth_screens/plan_screen.dart';
 import 'package:dietmate/auth_screens/signup_screen.dart';
 import 'package:dietmate/auth_screens/auth_screen.dart';
+import 'package:dietmate/model/food_list_week.dart';
 import 'package:dietmate/model/user.dart';
 import 'package:dietmate/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -86,22 +87,19 @@ class _DebugPageState extends State<DebugPage> {
                 child: Text('Firebase Query'),
                 onPressed: () async {
                   DateTime now = DateTime.now();
-                  DateTime start = now.subtract(Duration(days: 7));
+                  DateTime start = now.subtract(Duration(days: 6));
+                  now = DateTime(now.year, now.month, now.day, 23, 59);
                   start = DateTime(start.year, start.month, start.day, 0, 0);
 
                   FirebaseFirestore db = FirebaseFirestore.instance;
-                  var result = await db.collection('users').doc(user.uid)
-                      .collection('foods')
-                      .orderBy('timestamp')
-                      .startAt([Timestamp.fromDate(start)])
-                      .endAt([Timestamp.fromDate(now)])
-                      .get();
-
-                  int i=0;
-                  for(var doc in result.docs) {
-                    print('Document ${i++}');
-                    print(doc.data());
-                  }
+                  QuerySnapshot result = await db.collection('users').doc(user.uid)
+                        .collection('foods')
+                        .orderBy('timestamp')
+                        .startAt([Timestamp.fromDate(start)])
+                        .endAt([Timestamp.fromDate(now)])
+                        .get();
+                  print(result.docs.length);
+                  FoodListWeek week = FoodListWeek.fromSnapshot(result, start);
                 },
               ),
             ],

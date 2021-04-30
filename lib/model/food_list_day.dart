@@ -5,7 +5,7 @@ class FoodListDay {
   int consumedCalories=0;
   int totalFats=0;
   int totalProtein=0;
-  int totalCarb=0;
+  int totalCarbs=0;
   List<Food> list=[];
 
   FoodListDay({this.consumedCalories, this.list});
@@ -14,8 +14,6 @@ class FoodListDay {
     final List<DocumentSnapshot> documents = snapshot.docs;
     int i=0;
     for (DocumentSnapshot document in documents){
-      // Timestamp timestamp = document.data()['time'];
-      // String time = timestamp.toDate().toString();
       list.add(Food(
         date: document.data()['date'],
         time: document.data()['time'],
@@ -35,7 +33,7 @@ class FoodListDay {
       consumedCalories=consumedCalories+documents[i].data()['calories'];
       totalFats=totalFats+documents[i].data()['fats'];
       totalProtein=totalProtein+documents[i].data()['protein'];
-      totalCarb=totalCarb+documents[i].data()['carbohydrates'];
+      totalCarbs=totalCarbs+documents[i].data()['carbohydrates'];
       i++;
     }
   }

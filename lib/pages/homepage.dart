@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietmate/form_pages/image_search_page.dart';
 import 'package:dietmate/model/food.dart';
 import 'package:dietmate/model/food_list_day.dart';
 import 'package:dietmate/model/user.dart';
@@ -309,7 +308,7 @@ class _HomePageState extends State<HomePage> {
                     consumedCalories=foodList.consumedCalories;
                     totalFats=foodList.totalFats;
                     totalProtein=foodList.totalProtein;
-                    totalCarb=foodList.totalCarb;
+                    totalCarb=foodList.totalCarbs;
                     // if(foodList.list.isEmpty){
                     //   //query successful but is empty
                     //   return Container(

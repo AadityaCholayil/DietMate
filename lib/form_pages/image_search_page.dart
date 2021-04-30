@@ -114,8 +114,8 @@ class _ImageSearchState extends State<ImageSearch> {
                   return loadingProgress==null? child :
                   Center(
                     child: SizedBox(
-                      height: 60,
-                      width: 60,
+                      height: 50,
+                      width: 50,
                       child: CircularProgressIndicator(
                         value: loadingProgress.expectedTotalBytes != null ?
                         loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes

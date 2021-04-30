@@ -13,12 +13,12 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
   String _name;
   int _age;
   bool _isMale = true;
-  String _gender;
   int _height;
   int _weight;
   double _activityLevel = 1.5;
   String _activity = 'Sedentary: little or no exercise';
   String _joinDate = '';
+  Map caloriePlan= {};
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   
   Widget _buildName(){
@@ -233,17 +233,23 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
             'Sedentary: little or no exercise',
             'Light: exercise 1-3 times/week',
             'Moderate: exercise 4-5 time/week',
-            'Active: daily exercise or intense            \nexercise 3-4 times/week',
-            'Very Active: intense exercise 6-7            \n times/week',
-            'Extra Active: very intense exercise          \ndaily, or physical job'
+            'Active: daily exercise or intense exercise 3-4 times/week',
+            'Very Active: intense exercise 6-7 times/week',
+            'Extra Active: very intense exercise daily, or physical job'
           ].map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,
-              child: Text(
-                value,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSurface,
-                  fontWeight: FontWeight.w300
+              child: Container(
+                alignment: Alignment.centerLeft,
+                width: MediaQuery.of(context).size.width*0.8,
+                padding: EdgeInsets.symmetric(vertical: 10),
+                child: Text(
+                  value,
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    fontWeight: FontWeight.w300
+                  ),
                 ),
               ),
             );
@@ -306,6 +312,48 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                       setState(() {
                         _formKey.currentState.save();
                       });
+                      switch (_activity){
+                        case 'Sedentary: little or no exercise' :{
+                          _activityLevel=1.2;
+                        }
+                        break;
+                        case 'Light: exercise 1-3 times/week':{
+                          _activityLevel=1.375;
+                        }
+                        break;
+                        case 'Moderate: exercise 4-5 time/week':{
+                          _activityLevel=1.465;
+                        }
+                        break;
+                        case 'Active: daily exercise or intense exercise 3-4 times/week':{
+                          _activityLevel=1.55;
+                        }
+                        break;
+                        case 'Very Active: intense exercise 6-7 times/week':{
+                          _activityLevel=1.725;
+                        }
+                        break;
+                        case 'Extra Active: very intense exercise daily, or physical job':{
+                          _activityLevel=1.9;
+                        }
+                        break;
+                        default:{
+                          _activityLevel=1;
+                        }
+                      }
+                      double bmr=0;
+                      if(_isMale){
+                        bmr=10*_weight+6.25*_height-5*_age+5;
+                      }
+                      else{
+                        bmr=10*_weight+6.25*_height-5*_age-161;
+                      }
+                      bmr=bmr*_activityLevel;
+                      caloriePlan['gain']=bmr*1.15;
+                      caloriePlan['maintain']=bmr;
+                      caloriePlan['mildLoss']=bmr*0.88;
+                      caloriePlan['weightLoss']=bmr*0.75;
+                      caloriePlan['extLoss']=bmr*0.5;
                       DateTime now = DateTime.now();
                       _joinDate='${now.day}-${now.month}-${now.year}';
                       UserData userData = UserData(
@@ -319,7 +367,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                       );
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (BuildContext context) => PlanScreen(userData: userData)),
+                        MaterialPageRoute(builder: (BuildContext context) => PlanScreen(userData: userData,caloriePlan: caloriePlan,)),
                       );
                     },
                   ),

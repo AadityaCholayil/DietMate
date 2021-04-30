@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietmate/model/food_list_day.dart';
+import 'package:dietmate/model/food_list_week.dart';
 import 'package:dietmate/model/user.dart';
-import 'package:dietmate/shared/conversion.dart';
 import 'package:dietmate/shared/gradient.dart';
 import 'package:dietmate/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,10 +19,22 @@ class _ReportPageState extends State<ReportPage> {
   FirebaseFirestore db = FirebaseFirestore.instance;
   String weekNo = '';
   int caloriesGoal=0;
+  DateTime now, start;
 
   Future<QuerySnapshot> getData(User user) async {
-    return await db.collection('users').doc(user.uid).collection('foods')
-        .where('week', isEqualTo: weekNo).get();
+    now = DateTime.now();
+    start = now.subtract(Duration(days: 7));
+    now = DateTime(now.year, now.month, now.day, 23, 59);
+    start = DateTime(start.year, start.month, start.day, 0, 0);
+
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    QuerySnapshot result = await db.collection('users').doc(user.uid)
+        .collection('foods')
+        .orderBy('timestamp')
+        .startAt([Timestamp.fromDate(start)])
+        .endAt([Timestamp.fromDate(now)])
+        .get();
+    return result;
   }
 
   @override
@@ -55,7 +66,7 @@ class _ReportPageState extends State<ReportPage> {
               );
             }
             if(snapshot.hasData){
-              FoodListDay foodList = FoodListDay.fromSnapshot(snapshot.data);
+              FoodListWeek week = FoodListWeek.fromSnapshot(snapshot.data, start);
               // if(foodList.list.isEmpty){
               //   //query successful but is empty
               //   return Container(
@@ -66,7 +77,7 @@ class _ReportPageState extends State<ReportPage> {
               // }
               //TODO main code
               List<FlSpot>spotList=[];
-              
+
               return Container(
                 padding: EdgeInsets.symmetric(horizontal: 26),
                 child: Stack(
