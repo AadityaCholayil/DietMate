@@ -97,7 +97,7 @@ class _HomePageState extends State<HomePage> {
                       child:Text("${consumedCalories.toInt()}" ,
                         style: TextStyle(
                           fontSize: 62,
-                          color: Colors.white,
+                          color: Theme.of(context).colorScheme.onSurface,
                           fontStyle: FontStyle.normal,
                         ),
                       ),
@@ -108,7 +108,7 @@ class _HomePageState extends State<HomePage> {
                         '/${caloriesGoal.toInt()}' ,
                         style: TextStyle(
                           fontSize: 29,
-                          color: Colors.white,
+                          color: Theme.of(context).colorScheme.onSurface,
                           fontStyle: FontStyle.normal,
                         ),
                       ),
@@ -122,7 +122,7 @@ class _HomePageState extends State<HomePage> {
                     'KCal',
                     style: TextStyle(
                       fontSize: 32,
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.onSurface,
                       fontStyle: FontStyle.normal,
                     ),
                   ),
@@ -152,7 +152,7 @@ class _HomePageState extends State<HomePage> {
               top ,
               style: TextStyle(
                 fontSize:19,
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.onSurface,
                 fontStyle: FontStyle.normal,
               ),
             ),
@@ -160,7 +160,7 @@ class _HomePageState extends State<HomePage> {
               bottom ,
               style: TextStyle(
                 fontSize: 28,
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.onSurface,
                 fontStyle: FontStyle.normal,
               ),
             ),
@@ -196,7 +196,17 @@ class _HomePageState extends State<HomePage> {
       physics: NeverScrollableScrollPhysics(),
       itemBuilder: (BuildContext context, int i){
         Food food = foodList.list[i];
-        return Card(
+        return buildCard(food);
+      },
+    );
+  }
+
+  InkWell buildCard(Food food) {
+    return InkWell(
+      onTap: () {
+        showDialog(context: context, builder: (BuildContext context) => foodInfoDialog(food));
+      },
+      child: Card(
           clipBehavior: Clip.antiAliasWithSaveLayer,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(34)
@@ -250,12 +260,131 @@ class _HomePageState extends State<HomePage> {
                     food.thumbnailUrl,
                     fit: BoxFit.cover,
                   ),
-                )
+                ),
               ],
             ),
           ),
-        );
-      },
+        ),
+    );
+  }
+
+  Widget foodInfoDialog(Food food){
+    return Dialog(
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+      insetPadding: EdgeInsets.zero,
+      child: Container(
+        height: 630,
+        width: MediaQuery.of(context).size.width*0.9,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              height: MediaQuery.of(context).size.width*0.9,
+              child: Image.network(
+                food.fullUrl,
+                fit: BoxFit.cover,
+              ),
+            ),
+            SizedBox(height:5),
+            Container(
+              padding: EdgeInsets.only(left:12,top: 5),
+              width: 400,
+              child:Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start ,
+                children: <Widget>[
+                  Text(
+                    '${food.name}',
+                    style: TextStyle(
+                      fontSize: 26,
+                    ),
+                  ),
+                  SizedBox(height:3),
+                  Text(
+                    'Calories: ${food.calories} Kcal',
+                    style: TextStyle(
+                      fontSize: 22,
+                    ),
+                  ),
+                  SizedBox(height:3),
+                  Text(
+                    'Time: ${food.time}',
+                    style: TextStyle(
+                      fontSize: 22,
+                    ),
+                  ),
+                  SizedBox(height:3),
+                  Text(
+                    'Protein: ${food.protein}g',
+                    style: TextStyle(
+                      fontSize: 22,
+                    ),
+                  ),
+                  SizedBox(height:3),
+                  Text(
+                    'Fats: ${food.fats}g',
+                    style: TextStyle(
+                      fontSize: 22,
+                    ),
+                  ),
+                  SizedBox(height:3),
+                  Text(
+                    'Carbohydrates: ${food.carbohydrates} Kcal',
+                    style: TextStyle(
+                      fontSize: 22,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Spacer(),
+            Container(
+              padding: EdgeInsets.only(bottom: 5,right: 12),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  TextButton(
+                    child: Text(
+                      'Update',
+                    style: TextStyle(
+                      fontSize:23,
+                     ),
+                    ),
+                    onPressed: () {
+                      print('Pressed');
+                    }
+
+                  ),
+                  TextButton(
+                    child: Text(
+                      'Delete',
+                      style: TextStyle(
+                          fontSize:23,
+                      ),
+                    ),
+                      onPressed: () {
+                      print('Pressed');
+                    }
+                  ),
+                  TextButton(
+                      child: Text(
+                        'Cancel',
+                        style: TextStyle(
+                          fontSize:23,
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                        print('Pressed');
+                      }
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -331,7 +460,7 @@ class _HomePageState extends State<HomePage> {
                               style: TextStyle(
                                   fontSize: 28,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.white
+                                  color: Theme.of(context).colorScheme.onSurface,
                               ),
                             ),
                           ),
