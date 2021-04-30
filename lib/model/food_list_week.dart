@@ -15,7 +15,7 @@ class FoodListWeek{
     int i=0;
     DateTime date = start;
     for(int j=0;j<7;j++){
-      weekList.add(FoodListDay(list: []));
+      weekList.add(FoodListDay());
     }
     for (DocumentSnapshot doc in documents){
       Food food = Food(
@@ -42,22 +42,25 @@ class FoodListWeek{
       }
       weekList[i].list.add(food);
     }
-    for(int i=0;i>7;i++){
-      for(Food food in weekList[i].list){
-        weekList[i].consumedCalories=weekList[i].consumedCalories+food.calories;
-        weekList[i].totalFats=weekList[i].totalFats+food.fats;
-        weekList[i].totalProtein=weekList[i].totalProtein+food.protein;
-        weekList[i].totalCarbs=weekList[i].totalCarbs+food.carbohydrates;
+    for(int i=0;i<7;i++){
+      if (weekList[i].list.isNotEmpty) {
+        for(Food food in weekList[i].list){
+          weekList[i].consumedCalories=weekList[i].consumedCalories+food.calories;
+          weekList[i].totalFats=weekList[i].totalFats+food.fats;
+          weekList[i].totalProtein=weekList[i].totalProtein+food.protein;
+          weekList[i].totalCarbs=weekList[i].totalCarbs+food.carbohydrates;
+        }
       }
-      consumedCalories=consumedCalories+weekList[i].consumedCalories;
-      totalFats=totalFats+weekList[i].totalFats;
-      totalProtein=totalProtein+weekList[i].totalProtein;
-      totalCarbs=totalCarbs+weekList[i].totalCarbs;
+      consumedCalories+=weekList[i].consumedCalories??0;
+      totalFats+=weekList[i].totalFats;
+      totalProtein+=weekList[i].totalProtein;
+      totalCarbs+=weekList[i].totalCarbs;
     }
     printDetails();
   }
 
   void printDetails(){
+    print('Fats: $totalFats, Carbs: $totalCarbs, Protein: $totalProtein');
     for(FoodListDay day in weekList){
       print('Day ${weekList.indexOf(day)+1}:');
       for(Food food in day.list){
