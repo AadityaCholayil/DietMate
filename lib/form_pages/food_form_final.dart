@@ -351,6 +351,9 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
         if (!_formKey.currentState.validate()) {
           return;
         }
+        setState(() {
+          _formKey.currentState.save();
+        });
         if(_thumbnailUrl==null){
           ScaffoldMessenger.of(context).showSnackBar(showCustomSnackBar('Select an Image!'));
           return;

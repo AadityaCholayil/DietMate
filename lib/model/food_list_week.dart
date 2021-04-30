@@ -42,6 +42,18 @@ class FoodListWeek{
       }
       weekList[i].list.add(food);
     }
+    for(int i=0;i>7;i++){
+      for(Food food in weekList[i].list){
+        weekList[i].consumedCalories=weekList[i].consumedCalories+food.calories;
+        weekList[i].totalFats=weekList[i].totalFats+food.fats;
+        weekList[i].totalProtein=weekList[i].totalProtein+food.protein;
+        weekList[i].totalCarbs=weekList[i].totalCarbs+food.carbohydrates;
+      }
+      consumedCalories=consumedCalories+weekList[i].consumedCalories;
+      totalFats=totalFats+weekList[i].totalFats;
+      totalProtein=totalProtein+weekList[i].totalProtein;
+      totalCarbs=totalCarbs+weekList[i].totalCarbs;
+    }
     printDetails();
   }
 
