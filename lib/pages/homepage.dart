@@ -97,7 +97,7 @@ class _HomePageState extends State<HomePage> {
                           fontSize: 62,
                           color: Theme.of(context).colorScheme.onSurface,
                           fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.bold
+                          fontWeight: FontWeight.w700
                         ),
                       ),
                     ),
@@ -228,21 +228,23 @@ class _HomePageState extends State<HomePage> {
                       Text(
                         '${food.name.length>20?food.name.substring(0,18)+"..":food.name}',
                         style: TextStyle(
-                            fontSize:26
+                          fontSize:26,
                         ),
                       ),
                       //SizedBox(height: 1),
                       Text(
                         'Calories: ${food.calories} Kcal',
                         style:TextStyle(
-                            fontSize: 20
+                          fontSize: 20,
+                          fontWeight: FontWeight.w300
                         ),
                       ),
                       //SizedBox(height: 1),
                       Text(
                         'Time: ${food.time}',
                         style:TextStyle(
-                            fontSize: 20
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500
                         ),
                       ),
                     ],
