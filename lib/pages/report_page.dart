@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:glass_kit/glass_kit.dart';
 import 'package:provider/provider.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'dart:ui';
@@ -37,102 +38,281 @@ class _ReportPageState extends State<ReportPage> {
         .get();
     return result;
   }
-  Card _buildLineChart() {
-    return Card(
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      elevation: 7,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(54)),
-      color: Colors.grey.shade100.withOpacity(0.1),
-      child: ClipRect(
-        child: BackdropFilter(
-          filter: ImageFilter.blur(
-            sigmaX: 10,
-            sigmaY: 10,
-          ),
-          child: Container(
-            height: 300 ,
-            padding: EdgeInsets.all(20),
-            margin: EdgeInsets.all(10),
-            width: double.infinity,
+
+  Widget _buildLineChart(FoodListWeek data) {
+    return GlassContainer(
+      borderRadius: BorderRadius.all(Radius.circular(54.0)),
+      color: Theme.of(context).cardColor.withOpacity(0.55),
+      borderColor: Theme.of(context).colorScheme.surface.withOpacity(0.0),
+      height:300,
+      width: MediaQuery.of(context).size.width,
+      //isFrostedGlass: true,
+      //frostedOpacity: 0.05,
+      blur: 12,
+
+      child: Container(
+        height: 400 ,
+        padding: EdgeInsets.all(20),
+        margin: EdgeInsets.all(10),
+        width: double.infinity,
 
 
-            child: LineChart(
+        child: LineChart(
 
-              LineChartData(
-                minX:0,
-                maxX:8,
-                minY: 0,
-                maxY: 12,
+          LineChartData(
 
-                borderData: FlBorderData(
-                    show: false,
+            borderData: FlBorderData(
+                show: true,
+            ),
+            titlesData: FlTitlesData(
+
+              leftTitles: SideTitles(
+                showTitles: true,
+                reservedSize: 15,
+                getTextStyles: (value) => const TextStyle(
+                  color: Colors.white,
+                )
+              ),
+              bottomTitles: SideTitles(
+                showTitles: true,
+                reservedSize: 5,
+                getTextStyles: (value) => const TextStyle(
+                  color: Colors.white,
+                )
+              )
+            ),
+            gridData: FlGridData(
+              drawHorizontalLine: true,
+              drawVerticalLine: true,
+            ),
+
+            // backgroundColor: Colors.blueGrey[200],
+
+
+
+            lineBarsData: [
+              LineChartBarData(
+
+                spots:[
+                  FlSpot(1, data.weekList[6].consumedCalories.toDouble()),
+                  FlSpot(2, data.weekList[5].consumedCalories.toDouble()),
+                  FlSpot(3, data.weekList[4].consumedCalories.toDouble()),
+                  FlSpot(4, data.weekList[3].consumedCalories.toDouble()),
+                  FlSpot(5, data.weekList[2].consumedCalories.toDouble()),
+                  FlSpot(6, data.weekList[1].consumedCalories.toDouble()),
+                  FlSpot(7, data.weekList[0].consumedCalories.toDouble()),
+
+                ] ,
+                // isCurved: true,
+                // curveSmoothness: 0.34,
+                barWidth: 5.5,
+                belowBarData: BarAreaData(
+                  show: true,
+                  colors:[
+                    Colors.purpleAccent[100],
+                    Colors.purpleAccent[200],
+                    Colors.purpleAccent[700],
+                  ]
                 ),
-                titlesData: FlTitlesData(
-
-                  leftTitles: SideTitles(
-                    showTitles: true,
-                    reservedSize: 15,
-                    getTextStyles: (value) => const TextStyle(
-                      color: Colors.white,
-                    )
-                  ),
-                  bottomTitles: SideTitles(
-                    showTitles: true,
-                    reservedSize: 5,
-                    getTextStyles: (value) => const TextStyle(
-                      color: Colors.white,
-                    )
-                  )
-                ),
-                gridData: FlGridData(
-                  drawHorizontalLine: true,
-                  drawVerticalLine: true,
-                ),
-
-                // backgroundColor: Colors.blueGrey[200],
-
-
-
-                lineBarsData: [
-                  LineChartBarData(
-
-                    spots:[
-                      FlSpot(0, 0),
-                      FlSpot(2, 5),
-                      FlSpot(3, 6),
-                      FlSpot(4, 8),
-                      FlSpot(5, 11),
-                      FlSpot(6, 4),
-                      FlSpot(7, 1),
-
-                    ] ,
-                    isCurved: true,
-                    curveSmoothness: 0.34,
-                    barWidth: 4,
-                    belowBarData: BarAreaData(
-                      show: true,
-                      colors:[
-                        Colors.purpleAccent[100],
-                        Colors.purpleAccent[700],
-                      ]
-                    ),
-                    colors: [
-                      Colors.purpleAccent,
-                    ],
-
-                  ),
+                colors: [
+                  Colors.purpleAccent,
                 ],
 
               ),
+            ],
 
-              swapAnimationDuration: Duration(seconds: 1),
-              swapAnimationCurve: Curves.linear,
-            ),
           ),
+
+          swapAnimationDuration: Duration(seconds: 1),
+          swapAnimationCurve: Curves.linear,
         ),
       ),
     );
   }
+  Widget _buildLegends() {
+    return GlassContainer(
+    borderRadius: BorderRadius.all(Radius.circular(31.0)),
+    color: Theme.of(context).colorScheme.surface.withOpacity(0.55),
+    borderColor: Theme.of(context).colorScheme.surface.withOpacity(0.0),
+    height:212,
+    width:144,
+    //isFrostedGlass: true,
+    //frostedOpacity: 0.05,
+    blur: 12,
+    margin: EdgeInsets.zero,
+    child: Container(
+      width: 144,
+      height: 212,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+              width: 10,
+              height: 10,
+              child: const DecoratedBox(
+                  decoration: const BoxDecoration(
+                    color: Colors.redAccent
+                  )),
+            ),
+              SizedBox(
+                width: 10,
+              ),
+              Text('Protein')
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+              width: 10,
+              height: 10,
+              child: const DecoratedBox(
+                  decoration: const BoxDecoration(
+                    color: Colors.blueGrey,
+                  )),
+            ),
+              SizedBox(
+                width: 10,
+              ),
+              Text('Carbohydrates')
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+              width: 10,
+              height: 10,
+              child: const DecoratedBox(
+                  decoration: const BoxDecoration(
+                    color: Colors.green
+                  )),
+            ),
+              SizedBox(
+                width: 10,
+              ),
+              Text(
+                  'Fats',
+              ),
+
+            ],
+          ),
+
+        ],
+      ),
+    ),
+  );
+  }
+  Widget _buildPieChart(FoodListWeek data) {
+      return GlassContainer(
+      borderRadius: BorderRadius.all(Radius.circular(31.0)),
+      color: Theme.of(context).colorScheme.surface.withOpacity(0.55),
+      borderColor: Theme.of(context).colorScheme.surface.withOpacity(0.0),
+      height:212,
+      width:222,
+      //isFrostedGlass: true,
+      //frostedOpacity: 0.05,
+      blur: 12,
+      margin: EdgeInsets.zero,
+      child: Container(
+          padding: EdgeInsets.symmetric(horizontal:21 ,vertical: 16),
+          height: 212,
+          width: 222,
+          child: PieChart(
+            PieChartData(
+              sections:[
+                PieChartSectionData(
+                  value: data.totalFats.toDouble(),
+                ),
+                PieChartSectionData(
+                  value: data.totalCarbs.toDouble(),
+                  color: Colors.blueGrey,
+                ),
+                PieChartSectionData(
+                  value: data.totalProtein.toDouble(),
+                  color: Colors.green,
+                )
+              ]
+            ),
+          ),
+        ),
+      );
+    }
+
+  Widget _buildBarChart() {
+    return GlassContainer(
+    borderRadius: BorderRadius.all(Radius.circular(31.0)),
+    color: Theme.of(context).colorScheme.surface.withOpacity(0.55),
+    borderColor: Theme.of(context).colorScheme.surface.withOpacity(0.0),
+    height:99,
+    width:180,
+    margin: EdgeInsets.zero,
+    child: Container(
+      alignment: Alignment.center,
+      margin: EdgeInsets.all(20),
+      height:99,
+      width: 180,
+      child:BarChart(
+        BarChartData(
+          borderData: FlBorderData(
+              show: false,
+          ),
+          titlesData: FlTitlesData(
+
+            leftTitles: SideTitles(
+              showTitles: true,
+              reservedSize: 10,
+              getTextStyles: (value) => const TextStyle(
+                color: Colors.white,
+              )
+            ),
+            bottomTitles: SideTitles(
+              showTitles: true,
+              reservedSize: 5,
+              getTextStyles: (value) => const TextStyle(
+                color: Colors.white,
+              )
+            )
+          ),
+          gridData: FlGridData(
+            drawHorizontalLine: true,
+          ),
+
+          barGroups: [
+            BarChartGroupData(
+                x: 1,
+                barRods: [
+                  BarChartRodData(y: 10)
+                ],
+            ),
+            BarChartGroupData(
+                x: 2,
+                barRods:[
+                  BarChartRodData(y: 15)
+                ]
+            ),
+            BarChartGroupData(
+                x: 3,
+                barRods:[
+                  BarChartRodData(y: 5)
+                ]
+            ),
+            BarChartGroupData(
+                x: 4,
+                barRods:[
+                  BarChartRodData(y: 3)
+                ]
+            ),
+          ],
+        ),
+      ),
+      )
+    );
+  }
+
 
   @override
   void initState() {
@@ -209,51 +389,20 @@ class _ReportPageState extends State<ReportPage> {
                             ),
                           ),
                         ),
-                        _buildLineChart(),
+                        _buildLineChart(data),
                         SizedBox(
                           height: 10,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Card(
-                              margin: EdgeInsets.zero,
-                              child: Container(
-                                width: 144,
-                                height: 212,
-                                // FOR LEGENDS
+                            _buildLegends(),
 
-                              ),
-                            ),
                             SizedBox(
                               width: 10,
                             ),
 
-                            Card(
-                              margin: EdgeInsets.zero,
-                              child: Container(
-                                padding: EdgeInsets.symmetric(horizontal:21 ,vertical: 16),
-                                height: 212,
-                                width: 222,
-                                child: PieChart(
-                                  PieChartData(
-                                    sections:[
-                                      PieChartSectionData(
-                                        value: data.totalFats.toDouble(),
-                                      ),
-                                      PieChartSectionData(
-                                        value: data.totalCarbs.toDouble(),
-                                        color: Colors.blueGrey,
-                                      ),
-                                      PieChartSectionData(
-                                        value: data.totalProtein.toDouble(),
-                                        color: Colors.green,
-                                      )
-                                    ]
-                                  ),
-                                ),
-                              ),
-                            )
+                            _buildPieChart(data)
                           ],
                         ),
                         SizedBox(
@@ -261,44 +410,7 @@ class _ReportPageState extends State<ReportPage> {
                         ),
                         Row(
                           children: [
-                            Card(
-                              margin: EdgeInsets.zero,
-                              child: Container(
-                                padding: EdgeInsets.all(20),
-                                height:200,
-                                width: 300,
-                                child:BarChart(
-                                  BarChartData(
-                                    barGroups: [
-                                      BarChartGroupData(
-                                          x: 1,
-                                          barRods: [
-                                            BarChartRodData(y: 10)
-                                          ],
-                                      ),
-                                      BarChartGroupData(
-                                          x: 2,
-                                          barRods:[
-                                            BarChartRodData(y: 15)
-                                          ]
-                                      ),
-                                      BarChartGroupData(
-                                          x: 3,
-                                          barRods:[
-                                            BarChartRodData(y: 5)
-                                          ]
-                                      ),
-                                      BarChartGroupData(
-                                          x: 4,
-                                          barRods:[
-                                            BarChartRodData(y: 3)
-                                          ]
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                )
-                              ),
+                            _buildBarChart(),
                         ],
                       ),
                         SizedBox(
@@ -319,6 +431,4 @@ class _ReportPageState extends State<ReportPage> {
         )
     );
   }
-
-
 }
