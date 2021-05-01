@@ -50,84 +50,86 @@ class _HomePageState extends State<HomePage> {
       borderColor: Theme.of(context).colorScheme.surface.withOpacity(0.0),
       height:370,
       width: MediaQuery.of(context).size.width,
-      isFrostedGlass: true,
-      frostedOpacity: 0.05,
+      //isFrostedGlass: true,
+      //frostedOpacity: 0.05,
       blur: 12,
-      alignment:Alignment.center,
-      child: SleekCircularSlider(
-        min: 0,
-        max: caloriesGoal.toDouble(),
-        initialValue: consumedCalories.floorToDouble(),
-        appearance: CircularSliderAppearance(
-          // infoProperties: InfoProperties(
-          //   topLabelText: '1200',
-          // ),
-          startAngle: 270,
-          angleRange: 360,
-          size: 300,
-          customWidths: CustomSliderWidths(
-            trackWidth: 3.5,
-            progressBarWidth: 25.0,
-            handlerSize: 7.0,
+      child: Container(
+        alignment:Alignment.center,
+        child: SleekCircularSlider(
+          min: 0,
+          max: caloriesGoal.toDouble(),
+          initialValue: consumedCalories.floorToDouble(),
+          appearance: CircularSliderAppearance(
+            // infoProperties: InfoProperties(
+            //   topLabelText: '1200',
+            // ),
+            startAngle: 270,
+            angleRange: 360,
+            size: 300,
+            customWidths: CustomSliderWidths(
+              trackWidth: 3.5,
+              progressBarWidth: 25.0,
+              handlerSize: 7.0,
+            ),
+            customColors: CustomSliderColors(
+              progressBarColors: [
+                Color( 0xffB5FF48),
+                Color( 0xff94FC13),
+                Color(0xff05B54B),
+              ],
+              dynamicGradient: true,
+              trackColor: Color( 0xffD0EEAC),
+              hideShadow: true,
+            ),
           ),
-          customColors: CustomSliderColors(
-            progressBarColors: [
-              Color( 0xffB5FF48),
-              Color( 0xff94FC13),
-              Color(0xff05B54B),
-            ],
-            dynamicGradient: true,
-            trackColor: Color( 0xffD0EEAC),
-            hideShadow: true,
-          ),
-        ),
-        innerWidget: (double value) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    //padding: EdgeInsets.all(10.0),
-                    child:Text("${consumedCalories.toInt()}" ,
-                      style: TextStyle(
-                        fontSize: 62,
-                        color: Theme.of(context).colorScheme.onSurface,
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.bold
+          innerWidget: (double value) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      //padding: EdgeInsets.all(10.0),
+                      child:Text("${consumedCalories.toInt()}" ,
+                        style: TextStyle(
+                          fontSize: 62,
+                          color: Theme.of(context).colorScheme.onSurface,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.bold
+                        ),
                       ),
                     ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.fromLTRB(0,0,20,5),
-                    child: Text(
-                      '/${caloriesGoal.toInt()}' ,
-                      style: TextStyle(
-                        fontSize: 29,
-                        color: Theme.of(context).colorScheme.onSurface,
-                        fontStyle: FontStyle.normal,
+                    Container(
+                      padding: EdgeInsets.fromLTRB(0,0,20,5),
+                      child: Text(
+                        '/${caloriesGoal.toInt()}' ,
+                        style: TextStyle(
+                          fontSize: 29,
+                          color: Theme.of(context).colorScheme.onSurface,
+                          fontStyle: FontStyle.normal,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              Container(
-                margin: EdgeInsets.zero,
-                //padding: EdgeInsets.all(5.0),
-                child: Text(
-                  'KCal',
-                  style: TextStyle(
-                    fontSize: 32,
-                    color: Theme.of(context).colorScheme.onSurface,
-                    fontStyle: FontStyle.normal,
+                  ],
+                ),
+                Container(
+                  margin: EdgeInsets.zero,
+                  //padding: EdgeInsets.all(5.0),
+                  child: Text(
+                    'KCal',
+                    style: TextStyle(
+                      fontSize: 32,
+                      color: Theme.of(context).colorScheme.onSurface,
+                      fontStyle: FontStyle.normal,
+                    ),
                   ),
                 ),
-              ),
-            ],
-          );
-        },
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -229,14 +231,14 @@ class _HomePageState extends State<HomePage> {
                             fontSize:26
                         ),
                       ),
-                      SizedBox(height: 5),
+                      //SizedBox(height: 1),
                       Text(
                         'Calories: ${food.calories} Kcal',
                         style:TextStyle(
                             fontSize: 20
                         ),
                       ),
-                      SizedBox(height: 5),
+                      //SizedBox(height: 1),
                       Text(
                         'Time: ${food.time}',
                         style:TextStyle(
@@ -297,39 +299,39 @@ class _HomePageState extends State<HomePage> {
                       fontSize: 26,
                     ),
                   ),
-                  SizedBox(height:3),
+                  SizedBox(height:1),
                   Text(
                     'Calories: ${food.calories} Kcal',
                     style: TextStyle(
-                      fontSize: 22,
+                      fontSize: 20,
                     ),
                   ),
-                  SizedBox(height:3),
+                  SizedBox(height:1),
                   Text(
                     'Time: ${food.time}',
                     style: TextStyle(
-                      fontSize: 22,
+                      fontSize: 20,
                     ),
                   ),
-                  SizedBox(height:3),
+                  SizedBox(height:1),
                   Text(
                     'Protein: ${food.protein}g',
                     style: TextStyle(
-                      fontSize: 22,
+                      fontSize: 20,
                     ),
                   ),
-                  SizedBox(height:3),
+                  SizedBox(height:1),
                   Text(
                     'Fats: ${food.fats}g',
                     style: TextStyle(
-                      fontSize: 22,
+                      fontSize: 20,
                     ),
                   ),
-                  SizedBox(height:3),
+                  SizedBox(height:1),
                   Text(
                     'Carbohydrates: ${food.carbohydrates} Kcal',
                     style: TextStyle(
-                      fontSize: 22,
+                      fontSize: 20,
                     ),
                   ),
                 ],

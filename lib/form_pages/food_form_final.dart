@@ -113,7 +113,8 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
         return null;
       },
       onSaved: (String value) {
-        _calories = int.tryParse(value);
+        print(value);
+        _calories = double.tryParse(value).floor();
       },
     );
   }
@@ -189,7 +190,7 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
         return null;
       },
       onSaved: (String value) {
-        _calories = int.tryParse(value);
+        _servingSizeQty = int.tryParse(value);
       },
     );
   }
@@ -353,6 +354,7 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
         }
         setState(() {
           _formKey.currentState.save();
+          print(_calories);
         });
         if(_thumbnailUrl==null){
           ScaffoldMessenger.of(context).showSnackBar(showCustomSnackBar('Select an Image!'));
