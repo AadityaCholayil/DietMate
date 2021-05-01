@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietmate/model/food_list_day.dart';
 import 'package:dietmate/model/food_list_week.dart';
 import 'package:dietmate/model/user.dart';
 import 'package:dietmate/shared/gradient.dart';
@@ -52,70 +53,62 @@ class _ReportPageState extends State<ReportPage> {
 
       child: Container(
         height: 400 ,
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.all(18),
         margin: EdgeInsets.all(10),
         width: double.infinity,
-
-
         child: LineChart(
-
           LineChartData(
-
+            maxY: data.maxCalOfDay().toDouble(),
+            maxX: 7,
             borderData: FlBorderData(
-                show: true,
+                show: false,
             ),
             titlesData: FlTitlesData(
-
               leftTitles: SideTitles(
                 showTitles: true,
-                reservedSize: 15,
-                getTextStyles: (value) => const TextStyle(
-                  color: Colors.white,
+                interval: double.tryParse((data.maxCalOfDay()/10).toStringAsPrecision(1)),
+                reservedSize: 30,
+                getTextStyles: (value) => TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
                 )
               ),
               bottomTitles: SideTitles(
                 showTitles: true,
                 reservedSize: 5,
-                getTextStyles: (value) => const TextStyle(
-                  color: Colors.white,
+                getTextStyles: (value) => TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
                 )
               )
             ),
             gridData: FlGridData(
-              drawHorizontalLine: true,
+              drawHorizontalLine: false,
               drawVerticalLine: true,
             ),
-
-            // backgroundColor: Colors.blueGrey[200],
-
-
-
+          // backgroundColor: Colors.blueGrey[200],
             lineBarsData: [
               LineChartBarData(
-
                 spots:[
-                  FlSpot(1, data.weekList[6].consumedCalories.toDouble()),
-                  FlSpot(2, data.weekList[5].consumedCalories.toDouble()),
-                  FlSpot(3, data.weekList[4].consumedCalories.toDouble()),
+                  FlSpot(1, data.weekList[0].consumedCalories.toDouble()),
+                  FlSpot(2, data.weekList[1].consumedCalories.toDouble()),
+                  FlSpot(3, data.weekList[2].consumedCalories.toDouble()),
                   FlSpot(4, data.weekList[3].consumedCalories.toDouble()),
-                  FlSpot(5, data.weekList[2].consumedCalories.toDouble()),
-                  FlSpot(6, data.weekList[1].consumedCalories.toDouble()),
-                  FlSpot(7, data.weekList[0].consumedCalories.toDouble()),
-
+                  FlSpot(5, data.weekList[4].consumedCalories.toDouble()),
+                  FlSpot(6, data.weekList[5].consumedCalories.toDouble()),
+                  FlSpot(7, data.weekList[6].consumedCalories.toDouble()),
                 ] ,
-                // isCurved: true,
-                // curveSmoothness: 0.34,
+                isCurved: true,
+                curveSmoothness: 0.123,
                 barWidth: 5.5,
-                belowBarData: BarAreaData(
-                  show: true,
-                  colors:[
-                    Colors.purpleAccent[100],
-                    Colors.purpleAccent[200],
-                    Colors.purpleAccent[700],
-                  ]
-                ),
+                // belowBarData: BarAreaData(
+                //   show: true,
+                //   colors:[
+                //     Colors.purpleAccent[100],
+                //     Colors.purpleAccent[200],
+                //     Colors.purpleAccent[700],
+                //   ]
+                // ),
                 colors: [
-                  Colors.purpleAccent,
+                  Theme.of(context).accentColor,
                 ],
 
               ),
@@ -129,7 +122,7 @@ class _ReportPageState extends State<ReportPage> {
       ),
     );
   }
-  Widget _buildLegends() {
+  Widget _buildLegends(FoodListWeek data) {
     return GlassContainer(
     borderRadius: BorderRadius.all(Radius.circular(31.0)),
     color: Theme.of(context).colorScheme.surface.withOpacity(0.55),
@@ -146,61 +139,97 @@ class _ReportPageState extends State<ReportPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-              width: 10,
-              height: 10,
-              child: const DecoratedBox(
-                  decoration: const BoxDecoration(
-                    color: Colors.redAccent
-                  )),
+          Text(
+            'Total Protein',
+            style: TextStyle(
+              fontSize: 17,
             ),
-              SizedBox(
-                width: 10,
-              ),
-              Text('Protein')
-            ],
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
-              width: 10,
-              height: 10,
-              child: const DecoratedBox(
-                  decoration: const BoxDecoration(
-                    color: Colors.blueGrey,
-                  )),
-            ),
-              SizedBox(
-                width: 10,
+                width: 18,
               ),
-              Text('Carbohydrates')
-            ],
+                SizedBox(
+                  width: 17,
+                  height: 16,
+                  child: const DecoratedBox(
+                        decoration: const BoxDecoration(
+                        color: Colors.redAccent
+                  )),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                    Text(
+                      '${data.totalProtein}g',
+                      style: TextStyle(
+                        fontSize: 26,
+                      ),
+                    ),
+                  ],
+                ),
+          Text(
+            'Total Carbs',
+            style: TextStyle(
+              fontSize: 17,
+            ),
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(
-              width: 10,
-              height: 10,
-              child: const DecoratedBox(
-                  decoration: const BoxDecoration(
-                    color: Colors.green
-                  )),
+               SizedBox(
+                width: 18,
+              ),
+                SizedBox(
+                width: 17,
+                height: 16,
+                child: const DecoratedBox(
+                    decoration: const BoxDecoration(
+                      color: Colors.blueGrey
+                    )),
+          ),
+          SizedBox(
+            width: 10,
+          ),
+              Text(
+                '${data.totalCarbs}g',
+                style: TextStyle(
+                  fontSize: 26,
+                ),
+              ),
+            ],
+          ),
+          Text(
+            'Total Fats',
+            style: TextStyle(
+              fontSize: 17,
             ),
+          ),
+          Row(
+
+            children: [
+               SizedBox(
+                width: 18,
+              ),
+              SizedBox(
+                width: 17,
+                height: 16,
+                child: const DecoratedBox(
+                      decoration: const BoxDecoration(
+                      color: Colors.green
+                    )),
+              ),
               SizedBox(
                 width: 10,
               ),
               Text(
-                  'Fats',
+                  '${data.totalFats}g',
+                  style: TextStyle(
+                  fontSize: 26,
+                ),
               ),
-
             ],
           ),
-
         ],
       ),
     ),
@@ -223,15 +252,35 @@ class _ReportPageState extends State<ReportPage> {
           width: 222,
           child: PieChart(
             PieChartData(
+              centerSpaceRadius: 0,
+              sectionsSpace: 1,
               sections:[
                 PieChartSectionData(
+                  title: '${data.totalFats}g' ,
+                  titleStyle: TextStyle(
+                    fontSize: 18,
+                  ),
+                  titlePositionPercentageOffset: 0.7,
+                  radius: 90,
                   value: data.totalFats.toDouble(),
                 ),
                 PieChartSectionData(
+                  title: '${data.totalCarbs}g',
+                  titleStyle: TextStyle(
+                    fontSize: 18,
+                  ),
+                  radius: 90,
+                  titlePositionPercentageOffset: 0.7,
                   value: data.totalCarbs.toDouble(),
                   color: Colors.blueGrey,
                 ),
                 PieChartSectionData(
+                  title: '${data.totalProtein}g',
+                  titleStyle: TextStyle(
+                    fontSize: 18,
+                  ),
+                  radius: 90,
+                  titlePositionPercentageOffset: 0.7,
                   value: data.totalProtein.toDouble(),
                   color: Colors.green,
                 )
@@ -241,14 +290,58 @@ class _ReportPageState extends State<ReportPage> {
         ),
       );
     }
-
-  Widget _buildBarChart() {
+  List <BarChartGroupData> generateBarData(FoodListWeek data, int type){
+    //1 for Fats 2 for Protein 3 for carbs
+    List <BarChartGroupData> list = [];
+    switch(type){
+      case 1:{
+        for(int i=0; i<7; i++){
+          var bar=BarChartGroupData(
+                x: i+1,
+                barRods: [
+                  BarChartRodData(y: data.weekList[i].totalFats.toDouble())
+                ],
+            );
+          list.add(bar);
+        }
+        return list;
+      }
+      break;
+       case 2:{
+        for(int i=0; i<7; i++){
+          var bar=BarChartGroupData(
+                x: i+1,
+                barRods: [
+                  BarChartRodData(y: data.weekList[i].totalProtein.toDouble())
+                ],
+            );
+          list.add(bar);
+        }
+        return list;
+      }
+      break;
+       case 3:{
+        for(int i=0; i<7; i++){
+          var bar=BarChartGroupData(
+                x: i+1,
+                barRods: [
+                  BarChartRodData(y: data.weekList[i].totalCarbs.toDouble())
+                ],
+            );
+          list.add(bar);
+        }
+        return list;
+      }
+      break;
+    }
+  }
+  Widget _buildBarChart(FoodListWeek data,int type) {
     return GlassContainer(
     borderRadius: BorderRadius.all(Radius.circular(31.0)),
     color: Theme.of(context).colorScheme.surface.withOpacity(0.55),
     borderColor: Theme.of(context).colorScheme.surface.withOpacity(0.0),
-    height:99,
-    width:180,
+    height:150,
+    width:MediaQuery.of(context).size.width*0.9,
     margin: EdgeInsets.zero,
     child: Container(
       alignment: Alignment.center,
@@ -281,32 +374,7 @@ class _ReportPageState extends State<ReportPage> {
             drawHorizontalLine: true,
           ),
 
-          barGroups: [
-            BarChartGroupData(
-                x: 1,
-                barRods: [
-                  BarChartRodData(y: 10)
-                ],
-            ),
-            BarChartGroupData(
-                x: 2,
-                barRods:[
-                  BarChartRodData(y: 15)
-                ]
-            ),
-            BarChartGroupData(
-                x: 3,
-                barRods:[
-                  BarChartRodData(y: 5)
-                ]
-            ),
-            BarChartGroupData(
-                x: 4,
-                barRods:[
-                  BarChartRodData(y: 3)
-                ]
-            ),
-          ],
+        barGroups: generateBarData(data, type)
         ),
       ),
       )
@@ -365,7 +433,7 @@ class _ReportPageState extends State<ReportPage> {
                   List<FlSpot>spotList=[];
 
                   return Container(
-                    padding: EdgeInsets.symmetric(horizontal: 26),
+                    padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.05),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -396,7 +464,7 @@ class _ReportPageState extends State<ReportPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            _buildLegends(),
+                            _buildLegends(data),
 
                             SizedBox(
                               width: 10,
@@ -408,11 +476,15 @@ class _ReportPageState extends State<ReportPage> {
                         SizedBox(
                           height: 10,
                         ),
-                        Row(
-                          children: [
-                            _buildBarChart(),
-                        ],
-                      ),
+                        _buildBarChart(data,1),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        _buildBarChart(data,2),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        _buildBarChart(data,3),
                         SizedBox(
                           height: 90,
                         )

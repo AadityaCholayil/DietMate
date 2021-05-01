@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietmate/model/food.dart';
 import 'package:dietmate/model/food_list_day.dart';
@@ -67,6 +69,15 @@ class FoodListWeek{
         food.printDetails();
       }
     }
+  }
+  int maxCalOfDay(){
+    int max=0;
+    for(int i = 0; i<7 ;i++){
+      if(weekList[i].consumedCalories>max){
+        max=weekList[i].consumedCalories;
+      }
+    }
+    return max;
   }
 
 }
