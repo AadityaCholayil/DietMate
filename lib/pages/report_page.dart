@@ -149,6 +149,12 @@ class _ReportPageState extends State<ReportPage> {
 
     return Scaffold(
         body: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/mid_${Theme.of(context).brightness==Brightness.light?'light':'dark'}.jpg'),
+              fit: BoxFit.cover,
+            ),
+          ),
           height: MediaQuery.of(context).size.height,
           child: SingleChildScrollView(
             child: FutureBuilder<QuerySnapshot>(

@@ -210,9 +210,9 @@
       shape: StadiumBorder( side: BorderSide(color: Color(0xff000000), width: 0.0, style: BorderStyle.none, ) ),
     ),
     dialogTheme: DialogTheme(
-      shape:     RoundedRectangleBorder(
-      side: BorderSide(color: Color(0xff000000), width: 0.0, style: BorderStyle.none, ),
-      borderRadius: BorderRadius.all(Radius.circular(0.0)),
+      shape: RoundedRectangleBorder(
+        side: BorderSide(color: Color(0xff000000), width: 0.0, style: BorderStyle.none, ),
+        borderRadius: BorderRadius.all(Radius.circular(0.0)),
     )
 
     ),

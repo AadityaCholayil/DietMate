@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietmate/model/food.dart';
 import 'package:dietmate/model/food_list_day.dart';
 import 'package:dietmate/model/user.dart';
-import 'package:dietmate/shared/gradient.dart';
 import 'package:dietmate/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -47,7 +46,7 @@ class _HomePageState extends State<HomePage> {
   Widget buildSleekCircularSlider() {
     return GlassContainer(
       borderRadius: BorderRadius.all(Radius.circular(54.0)),
-      color: Theme.of(context).colorScheme.surface.withOpacity(0.6),
+      color: Theme.of(context).cardColor.withOpacity(0.55),
       borderColor: Theme.of(context).colorScheme.surface.withOpacity(0.0),
       height:370,
       width: MediaQuery.of(context).size.width,
@@ -97,6 +96,7 @@ class _HomePageState extends State<HomePage> {
                         fontSize: 62,
                         color: Theme.of(context).colorScheme.onSurface,
                         fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.bold
                       ),
                     ),
                   ),
