@@ -109,6 +109,7 @@ class _HomePageState extends State<HomePage> {
                           fontSize: 29,
                           color: Theme.of(context).colorScheme.onSurface,
                           fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.w600
                         ),
                       ),
                     ),
@@ -123,6 +124,7 @@ class _HomePageState extends State<HomePage> {
                       fontSize: 32,
                       color: Theme.of(context).colorScheme.onSurface,
                       fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.w600
                     ),
                   ),
                 ),
@@ -135,12 +137,17 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget totalMetricInfo(String top, String bottom){
-    return Card(
+    return GlassContainer(
       margin: EdgeInsets.zero,
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      shape: RoundedRectangleBorder(
-        borderRadius:  BorderRadius.circular(34),
-      ),
+      borderRadius: BorderRadius.all(Radius.circular(34.0)),
+      color: Theme.of(context).cardColor.withOpacity(0.55),
+      borderColor: Theme.of(context).colorScheme.surface.withOpacity(0.0),
+      height:80,
+      width: 117,
+      //isFrostedGlass: true,
+      //frostedOpacity: 0.05,
+      blur: 11,
+
       child: Container(
         height: 80,
         width: 117,
@@ -153,6 +160,7 @@ class _HomePageState extends State<HomePage> {
                 fontSize:19,
                 color: Theme.of(context).colorScheme.onSurface,
                 fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.bold
               ),
             ),
             Text(
@@ -161,6 +169,7 @@ class _HomePageState extends State<HomePage> {
                 fontSize: 28,
                 color: Theme.of(context).colorScheme.onSurface,
                 fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.w400
               ),
             ),
           ],
@@ -205,16 +214,20 @@ class _HomePageState extends State<HomePage> {
       onTap: () {
         showDialog(context: context, builder: (BuildContext context) => foodInfoDialog(food));
       },
-      child: Card(
-          clipBehavior: Clip.antiAliasWithSaveLayer,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(34)
-          ),
+      child: GlassContainer(
+        borderRadius: BorderRadius.all(Radius.circular(34.0)),
+        color: Theme.of(context).cardColor.withOpacity(0.55),
+        borderColor: Theme.of(context).colorScheme.surface.withOpacity(0.0),
+        height:107,
+        width: MediaQuery.of(context).size.width,
+        //isFrostedGlass: true,
+        //frostedOpacity: 0.05,
+        blur: 5,
           margin: EdgeInsets.only(bottom: 13),
           child:Container(
             padding: EdgeInsets.all(6),
             height: 107,
-            color: Colors.white10,
+            //color: Colors.white10,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -229,6 +242,7 @@ class _HomePageState extends State<HomePage> {
                         '${food.name.length>20?food.name.substring(0,18)+"..":food.name}',
                         style: TextStyle(
                           fontSize:26,
+                            fontWeight: FontWeight.bold
                         ),
                       ),
                       //SizedBox(height: 1),
@@ -236,7 +250,7 @@ class _HomePageState extends State<HomePage> {
                         'Calories: ${food.calories} Kcal',
                         style:TextStyle(
                           fontSize: 20,
-                          fontWeight: FontWeight.w300
+                          fontWeight: FontWeight.w500
                         ),
                       ),
                       //SizedBox(height: 1),
@@ -284,7 +298,7 @@ class _HomePageState extends State<HomePage> {
               height: MediaQuery.of(context).size.width*0.9,
               child: Image.network(
                 food.fullUrl,
-                fit: BoxFit.cover,
+                fit: food.imageWidth>food.imageHeight? BoxFit.fitHeight : BoxFit.fitWidth,
               ),
             ),
             SizedBox(height:5),
@@ -299,6 +313,7 @@ class _HomePageState extends State<HomePage> {
                     '${food.name}',
                     style: TextStyle(
                       fontSize: 26,
+                        fontWeight: FontWeight.bold
                     ),
                   ),
                   SizedBox(height:1),
@@ -306,6 +321,7 @@ class _HomePageState extends State<HomePage> {
                     'Calories: ${food.calories} Kcal',
                     style: TextStyle(
                       fontSize: 20,
+                      fontWeight: FontWeight.w600
                     ),
                   ),
                   SizedBox(height:1),
@@ -313,6 +329,7 @@ class _HomePageState extends State<HomePage> {
                     'Time: ${food.time}',
                     style: TextStyle(
                       fontSize: 20,
+                      fontWeight: FontWeight.w600
                     ),
                   ),
                   SizedBox(height:1),
@@ -320,6 +337,7 @@ class _HomePageState extends State<HomePage> {
                     'Protein: ${food.protein}g',
                     style: TextStyle(
                       fontSize: 20,
+                      fontWeight: FontWeight.w600
                     ),
                   ),
                   SizedBox(height:1),
@@ -327,6 +345,7 @@ class _HomePageState extends State<HomePage> {
                     'Fats: ${food.fats}g',
                     style: TextStyle(
                       fontSize: 20,
+                      fontWeight: FontWeight.w600
                     ),
                   ),
                   SizedBox(height:1),
@@ -334,6 +353,7 @@ class _HomePageState extends State<HomePage> {
                     'Carbohydrates: ${food.carbohydrates} Kcal',
                     style: TextStyle(
                       fontSize: 20,
+                      fontWeight: FontWeight.w600
                     ),
                   ),
                 ],
@@ -350,6 +370,7 @@ class _HomePageState extends State<HomePage> {
                       'Update',
                     style: TextStyle(
                       fontSize:23,
+                        fontWeight: FontWeight.w600
                      ),
                     ),
                     onPressed: () {
@@ -362,6 +383,7 @@ class _HomePageState extends State<HomePage> {
                       'Delete',
                       style: TextStyle(
                           fontSize:23,
+                          fontWeight: FontWeight.w600
                       ),
                     ),
                       onPressed: () {
@@ -373,6 +395,7 @@ class _HomePageState extends State<HomePage> {
                         'Cancel',
                         style: TextStyle(
                           fontSize:23,
+                            fontWeight: FontWeight.w600
                         ),
                       ),
                       onPressed: () {
