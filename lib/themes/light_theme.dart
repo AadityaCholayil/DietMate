@@ -19,7 +19,7 @@
     selectedRowColor: Color( 0xfff5f5f5 ),
     unselectedWidgetColor: Color( 0x8a000000 ),
     disabledColor: Color( 0x61000000 ),
-    buttonColor: Color( 0xffe0e0e0 ),
+    buttonColor: Color( 0xFFE3E7EF ),
     toggleableActiveColor: Color( 0xff70ca02 ),
     secondaryHeaderColor: Color( 0xfff4ffe6 ),
     backgroundColor: Color( 0xffd1fe9a ),
@@ -116,31 +116,31 @@
       fontWeight: FontWeight.w400,
       fontStyle: FontStyle.normal,
     ),
-    filled: false,
+    filled: true,
     fillColor: Color( 0x00000000 ),
       errorBorder: OutlineInputBorder(
         borderSide: BorderSide(color: Color( 0xffd32f2f ), width: 2, style: BorderStyle.solid, ),
-        borderRadius: BorderRadius.all(Radius.circular(4.0)),
+        borderRadius: BorderRadius.all(Radius.circular(17.0)),
       ),
       focusedBorder: OutlineInputBorder(
         borderSide: BorderSide(color: Color( 0xff8cfd02 ), width: 2, style: BorderStyle.solid, ),
-        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+        borderRadius: BorderRadius.all(Radius.circular(17.0)),
       ),
       focusedErrorBorder: OutlineInputBorder(
         borderSide: BorderSide(color: Color( 0xffd32f2f ), width: 2, style: BorderStyle.solid, ),
-        borderRadius: BorderRadius.all(Radius.circular(4.0)),
+        borderRadius: BorderRadius.all(Radius.circular(17.0)),
       ),
       disabledBorder: OutlineInputBorder(
         borderSide: BorderSide(color: Color( 0xff000000 ), width: 2, style: BorderStyle.solid, ),
-        borderRadius: BorderRadius.all(Radius.circular(4.0)),
+        borderRadius: BorderRadius.all(Radius.circular(17.0)),
       ),
       enabledBorder: OutlineInputBorder(
         borderSide: BorderSide(color: Colors.transparent, width: 2, style: BorderStyle.solid, ),
-        borderRadius: BorderRadius.all(Radius.circular(4.0)),
+        borderRadius: BorderRadius.all(Radius.circular(17.0)),
       ),
       border: OutlineInputBorder(
         borderSide: BorderSide(color: Color( 0xff000000 ), width: 2, style: BorderStyle.solid, ),
-        borderRadius: BorderRadius.all(Radius.circular(4.0)),
+        borderRadius: BorderRadius.all(Radius.circular(17.0)),
       ),
     ),
     iconTheme: IconThemeData(

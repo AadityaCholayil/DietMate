@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietmate/model/food.dart';
 import 'package:dietmate/model/food_list_day.dart';
@@ -418,8 +417,6 @@ class _HomePageState extends State<HomePage> {
     final user = Provider.of<User>(context);
     final userData = Provider.of<UserData>(context);
     caloriesGoal=userData.calorieGoal;
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
       body: Container(

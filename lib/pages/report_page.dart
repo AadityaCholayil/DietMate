@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietmate/model/food_list_day.dart';
 import 'package:dietmate/model/food_list_week.dart';
 import 'package:dietmate/model/user.dart';
-import 'package:dietmate/shared/gradient.dart';
 import 'package:dietmate/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/animation.dart';
@@ -334,6 +332,7 @@ class _ReportPageState extends State<ReportPage> {
       }
       break;
     }
+    return list;
   }
   Widget _buildBarChart(FoodListWeek data,int type) {
     return GlassContainer(
@@ -385,7 +384,6 @@ class _ReportPageState extends State<ReportPage> {
   @override
   void initState() {
     super.initState();
-    DateTime now = DateTime.now();
   }
 
   @override
@@ -430,8 +428,6 @@ class _ReportPageState extends State<ReportPage> {
                   //   );
                   // }
                   //TODO main code
-                  List<FlSpot>spotList=[];
-
                   return Container(
                     padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.05),
                     child: Column(
@@ -488,10 +484,10 @@ class _ReportPageState extends State<ReportPage> {
                         SizedBox(
                           height: 90,
                         )
-                    ],
-                  ),
-                );
-              }
+                      ],
+                    ),
+                  );
+                }
                 return Container(
                   child: Text(
                       'Something went wrong'

@@ -51,24 +51,20 @@ class _ImageSearchState extends State<ImageSearch> {
     return TextFormField(
       initialValue: foodName,
       decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 18),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Theme.of(context).disabledColor, width: 2, style: BorderStyle.solid, ),
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2, style: BorderStyle.solid, ),
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          ),
+          contentPadding: EdgeInsets.fromLTRB(20, 18, 15, 18),
           filled: true,
-          fillColor: Theme.of(context).colorScheme.surface,
-          suffixIcon: Icon(Icons.search, size: 25),
+          fillColor: Theme.of(context).buttonColor,
           labelText: 'Food Name',
-          labelStyle: TextStyle(fontSize: 25),
+          labelStyle: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.w400,
+              color: Color(0xFF8C8C8C)
+          ),
+          suffixIcon: Icon(Icons.search, size: 28),
           floatingLabelBehavior: FloatingLabelBehavior.never
       ),
       keyboardType: TextInputType.name,
-      style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
+      style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w400),
       validator: (String value) {
         if (value.isEmpty ) {
           return 'It cannot be empty';
@@ -97,7 +93,7 @@ class _ImageSearchState extends State<ImageSearch> {
           children: [
             Center(
               child: SizedBox(
-                child: LoadingSmall(),
+                child: CircularProgressIndicator(),
                 height: 60,
                 width: 60,
               ),
@@ -110,20 +106,20 @@ class _ImageSearchState extends State<ImageSearch> {
                 image.fullUrl,
                 fit: image.width>image.height? BoxFit.fitHeight : BoxFit.fitWidth,
                 //fit: BoxFit.contain,
-                loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
-                  return loadingProgress==null? child :
-                  Center(
-                    child: SizedBox(
-                      height: 50,
-                      width: 50,
-                      child: CircularProgressIndicator(
-                        value: loadingProgress.expectedTotalBytes != null ?
-                        loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
-                            : null,
-                      ),
-                    ),
-                  );
-                },
+                // loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
+                //   return loadingProgress==null? child :
+                //   Center(
+                //     child: SizedBox(
+                //       height: 50,
+                //       width: 50,
+                //       child: CircularProgressIndicator(
+                //         value: loadingProgress.expectedTotalBytes != null ?
+                //         loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
+                //             : null,
+                //       ),
+                //     ),
+                //   );
+                // },
                 errorBuilder: (BuildContext context, Object exception, StackTrace stackTrace){
                   return Image.network(
                     'https://www.pacificfoodmachinery.com.au/media/catalog/product/placeholder/default/no-product-image-400x400.png',
@@ -186,13 +182,14 @@ class _ImageSearchState extends State<ImageSearch> {
   Widget _buildTitle(){
     return Center(
       child: Container(
-        padding: EdgeInsets.fromLTRB(22, 10, 0, 13),
+        padding: EdgeInsets.fromLTRB(22, 10, 0, 20),
         alignment: Alignment.centerLeft,
         child: Text(
           'Image Search',
           style: TextStyle(
-              fontSize: 50,
-              fontWeight: FontWeight.bold
+            fontSize: 50,
+            fontWeight: FontWeight.bold,
+            color: Color( 0xFF2ACD07),
           ),
         ),
       ),
@@ -203,82 +200,68 @@ class _ImageSearchState extends State<ImageSearch> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Stack(
-        children: [
-          Container(
-            height: 215,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.vertical(bottom: Radius.elliptical(130, 40)),
-              gradient: LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-                // center: Alignment.topLeft,
-                // startAngle: 0,
-                // endAngle: 0.7,
-                // radius: 1.8,
-                // focalRadius: 100,
-                colors: [
-                  Colors.purpleAccent[100],
-                  Colors.purpleAccent[700],
-                  Colors.deepPurpleAccent[400],
-                  // Theme.of(context).canvasColor,
-                  // Theme.of(context).canvasColor,
-                  // Theme.of(context).canvasColor,
-                ]
-              )
-            ),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/search_${Theme.of(context).brightness==Brightness.light?'light':'dark'}.jpg'),
+            fit: BoxFit.cover,
           ),
-          Container(
-            padding: EdgeInsets.all(15),
-            height: MediaQuery.of(context).size.height,
-            child: Form(
-              key: _imgFormKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  _buildTitle(),
-                  _buildSearchQuery(),
-                  SizedBox(height: 15),
-                  isSearching==true?Column(
-                    children: [
-                      SizedBox(height: 20),
-                      LoadingSmall(),
-                      SizedBox(height: 20),
-                    ],
-                  ):SizedBox.shrink(),
-                  searchDone==true?_buildImageList(foodImages):SizedBox.shrink(),
-                  Builder(builder: (context) => ElevatedButton(
-                    child: Text(
-                      'Search',
-                      style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),
-                    ),
-                    onPressed: () async {
-                      if (!_imgFormKey.currentState.validate()) {
-                        return;
-                      }
-                      setState(() {
-                        isSearching=true;
-                        searchDone=false;
-                        _imgFormKey.currentState.save();
-                      });
-                      searchResult=await getImages(searchQuery);
-                      if(searchResult=='No results'){
-                        foodImages=FoodImages(foodImageList: []);
-                      }else{
-                        foodImages=FoodImages.fromData(searchResult);
-                      }
-                      setState(() {
-                        isSearching=false;
-                        searchDone=true;
-                      });
-                    },
-                  )),
-                  SizedBox(height: 40,)
+        ),
+        padding: EdgeInsets.all(15),
+        height: MediaQuery.of(context).size.height,
+        child: Form(
+          key: _imgFormKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              _buildTitle(),
+              _buildSearchQuery(),
+              SizedBox(height: 20),
+              isSearching==true?Column(
+                children: [
+                  SizedBox(height: 20),
+                  LoadingSmall(color: Color( 0xFF2ACD07)),
+                  SizedBox(height: 20),
                 ],
-              ),
-            )
+              ):SizedBox.shrink(),
+              searchDone==true?_buildImageList(foodImages):SizedBox.shrink(),
+              Builder(builder: (context) => ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(vertical: 7, horizontal: 20),
+                    primary: Color(0xFF2ACD07),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15)
+                    )
+                ),
+                child: Text(
+                  'Search',
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400, color: Colors.white),
+                ),
+                onPressed: () async {
+                  if (!_imgFormKey.currentState.validate()) {
+                    return;
+                  }
+                  setState(() {
+                    isSearching=true;
+                    searchDone=false;
+                    _imgFormKey.currentState.save();
+                  });
+                  searchResult=await getImages(searchQuery);
+                  if(searchResult=='No results'){
+                    foodImages=FoodImages(foodImageList: []);
+                  }else{
+                    foodImages=FoodImages.fromData(searchResult);
+                  }
+                  setState(() {
+                    isSearching=false;
+                    searchDone=true;
+                  });
+                },
+              )),
+              SizedBox(height: 40,)
+            ],
           ),
-        ],
+        )
       ),
     );
   }
