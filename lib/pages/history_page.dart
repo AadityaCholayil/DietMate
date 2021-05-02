@@ -40,12 +40,14 @@ class _HistoryPageState extends State<HistoryPage> {
               borderRadius: BorderRadius.all(Radius.circular(34.0)),
               color: Theme.of(context).cardColor.withOpacity(0.6),
               borderColor: Theme.of(context).colorScheme.surface.withOpacity(0.0),
-              height: 425,
+              height: format == CalendarFormat.month?425:format == CalendarFormat.week?170:250,
               width: 360,
               //isFrostedGlass: true,
               //frostedOpacity: 0.05,
               blur: 15,
-              child: Container(
+              child: AnimatedContainer(
+                duration: Duration(milliseconds: 300),
+                height: format == CalendarFormat.month?425:format == CalendarFormat.week?170:250,
                 padding: EdgeInsets.all(15),
                 child: TableCalendar(
                   //calendarController: _controller,
@@ -56,6 +58,7 @@ class _HistoryPageState extends State<HistoryPage> {
                   onFormatChanged: (CalendarFormat _format) {
                     setState(() {
                       format = _format;
+                      print(format);
                     });
                   },
                   startingDayOfWeek: StartingDayOfWeek.sunday,
