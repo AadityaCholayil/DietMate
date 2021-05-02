@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietmate/model/food.dart';
 import 'package:dietmate/model/food_list_day.dart';
 import 'package:dietmate/model/user.dart';
+import 'package:dietmate/shared/food_list.dart';
 import 'package:dietmate/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -194,92 +195,6 @@ class _HomePageState extends State<HomePage> {
           child: totalMetricInfo('Carb', '$totalCarb'),
         ),
       ],
-    );
-  }
-
-  ListView buildListView(FoodListDay foodList) {
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: foodList.list.length,
-      physics: NeverScrollableScrollPhysics(),
-      itemBuilder: (BuildContext context, int i){
-        Food food = foodList.list[i];
-        return buildCard(food);
-      },
-    );
-  }
-
-  InkWell buildCard(Food food) {
-    return InkWell(
-      onTap: () {
-        showDialog(context: context, builder: (BuildContext context) => foodInfoDialog(food));
-      },
-      child: GlassContainer(
-        borderRadius: BorderRadius.all(Radius.circular(34.0)),
-        color: Theme.of(context).cardColor.withOpacity(0.55),
-        borderColor: Theme.of(context).colorScheme.surface.withOpacity(0.0),
-        height:107,
-        width: MediaQuery.of(context).size.width,
-        //isFrostedGlass: true,
-        //frostedOpacity: 0.05,
-        blur: 5,
-          margin: EdgeInsets.only(bottom: 13),
-          child:Container(
-            padding: EdgeInsets.all(6),
-            height: 107,
-            //color: Colors.white10,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.only(left:16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        '${food.name.length>20?food.name.substring(0,18)+"..":food.name}',
-                        style: TextStyle(
-                          fontSize:26,
-                            fontWeight: FontWeight.bold
-                        ),
-                      ),
-                      //SizedBox(height: 1),
-                      Text(
-                        'Calories: ${food.calories} Kcal',
-                        style:TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500
-                        ),
-                      ),
-                      //SizedBox(height: 1),
-                      Text(
-                        'Time: ${food.time}',
-                        style:TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(34)
-                  ),
-                  height: 95,
-                  width: 95,
-                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                  child: Image.network(
-                    food.thumbnailUrl,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
     );
   }
 
@@ -492,7 +407,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       SizedBox(height: 15),
-                      buildListView(foodList),
+                      buildListView(foodList, context),
                     ],
                   ),
                 );

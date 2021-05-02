@@ -1,5 +1,7 @@
+import 'package:dietmate/model/user.dart';
 import 'package:flutter/material.dart';
 import 'package:glass_kit/glass_kit.dart';
+import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class HistoryPage extends StatefulWidget {
@@ -8,11 +10,18 @@ class HistoryPage extends StatefulWidget {
 }
 
 class _HistoryPageState extends State<HistoryPage> {
-  CalendarFormat format = CalendarFormat.month;
-  DateTime selectedDay = DateTime.now();
-  DateTime focusedDay = DateTime.now();
+  CalendarFormat _format = CalendarFormat.month;
+  DateTime now = DateTime.now();
+  DateTime _selectedDay = DateTime.now();
+  DateTime _focusedDay = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
+
+    UserData userData = Provider.of<UserData>(context);
+    DateTime joinDate = DateTime(int.tryParse(userData.joinDate.substring(6,10)),
+                                int.tryParse(userData.joinDate.substring(3,5)),
+                                int.tryParse(userData.joinDate.substring(0,2)));
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -38,27 +47,25 @@ class _HistoryPageState extends State<HistoryPage> {
             ),
             GlassContainer(
               borderRadius: BorderRadius.all(Radius.circular(34.0)),
-              color: Theme.of(context).cardColor.withOpacity(0.6),
+              color: Theme.of(context).cardColor.withOpacity(0.5),
               borderColor: Theme.of(context).colorScheme.surface.withOpacity(0.0),
-              height: format == CalendarFormat.month?425:format == CalendarFormat.week?170:250,
+              height: _format == CalendarFormat.month?425:_format == CalendarFormat.week?160:220,
               width: 360,
-              //isFrostedGlass: true,
-              //frostedOpacity: 0.05,
+              isFrostedGlass: true,
+              frostedOpacity: 0.01,
               blur: 15,
-              child: AnimatedContainer(
-                duration: Duration(milliseconds: 300),
-                height: format == CalendarFormat.month?425:format == CalendarFormat.week?170:250,
-                padding: EdgeInsets.all(15),
+              child: Container(
+                // duration: Duration(milliseconds: 300),
+                //height: _format == CalendarFormat.month?425:_format == CalendarFormat.week?170:250,
+                padding: EdgeInsets.fromLTRB(15,5,15,15),
                 child: TableCalendar(
-                  //calendarController: _controller,
-                  focusedDay: DateTime.now(),
-                  firstDay: DateTime(2000),
-                  lastDay: DateTime(2030),
-                  calendarFormat: format,
-                  onFormatChanged: (CalendarFormat _format) {
+                  focusedDay: _focusedDay,
+                  firstDay: joinDate,
+                  lastDay: now,
+                  calendarFormat: _format,
+                  onFormatChanged: (CalendarFormat format) {
                     setState(() {
-                      format = _format;
-                      print(format);
+                      _format = format;
                     });
                   },
                   startingDayOfWeek: StartingDayOfWeek.sunday,
@@ -66,14 +73,16 @@ class _HistoryPageState extends State<HistoryPage> {
 
                   //Day Changed
                   onDaySelected: (DateTime selectDay, DateTime focusDay) {
-                    setState(() {
-                      selectedDay = selectDay;
-                      focusedDay = focusDay;
-                    });
-                    print(focusedDay);
+                    if (!isSameDay(_selectedDay, selectDay)) {
+                      setState(() {
+                        _selectedDay = selectDay;
+                        _focusedDay = selectDay;
+                      });
+                      print('$_focusedDay, $_selectedDay');
+                    }
                   },
                   selectedDayPredicate: (DateTime date) {
-                    return isSameDay(selectedDay, date);
+                    return isSameDay(_selectedDay, date);
                   },
                   availableGestures: AvailableGestures.horizontalSwipe,
                   //headerVisible: false,
@@ -81,39 +90,39 @@ class _HistoryPageState extends State<HistoryPage> {
                     isTodayHighlighted: true,
                     selectedDecoration: BoxDecoration(
                       color: Colors.lightGreen[600],
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.circular(5.0),
+                      shape: BoxShape.circle,
+                      //borderRadius: BorderRadius.circular(5.0),
                     ),
                     selectedTextStyle: TextStyle(color: Colors.white),
                     todayDecoration: BoxDecoration(
                       color: Colors.green[700],
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.circular(5.0),
+                      shape: BoxShape.circle,
+                      //borderRadius: BorderRadius.circular(5.0),
                     ),
                     defaultDecoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.circular(5.0),
+                      shape: BoxShape.circle,
+                      //borderRadius: BorderRadius.circular(5.0),
                     ),
                     weekendDecoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                   ),
-                    headerStyle: HeaderStyle(
-                      formatButtonVisible: true,
-                      titleCentered: true,
-                      formatButtonShowsNext: false,
-                      formatButtonDecoration: BoxDecoration(
-                        color: Colors.lightGreen[600],
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      formatButtonTextStyle: TextStyle(
-                        color: Colors.white,
-                      ),
+                      shape: BoxShape.circle,
+                      //borderRadius: BorderRadius.circular(5.0),
                     ),
                   ),
-                 ),
+                  headerStyle: HeaderStyle(
+                    formatButtonVisible: true,
+                    titleCentered: true,
+                    formatButtonShowsNext: false,
+                    formatButtonDecoration: BoxDecoration(
+                      color: Colors.lightGreen[600],
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    formatButtonTextStyle: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
+              ),
+            ),
           ],
         ),
       ),

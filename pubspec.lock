@@ -15,13 +15,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.5.0"
-  blurrycontainer:
-    dependency: "direct main"
-    description:
-      name: blurrycontainer
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.1"
   boolean_selector:
     dependency: transitive
     description:
@@ -191,6 +184,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
+  glassmorphism:
+    dependency: "direct main"
+    description:
+      name: glassmorphism
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.1"
   gradient_input_border:
     dependency: "direct main"
     description:
