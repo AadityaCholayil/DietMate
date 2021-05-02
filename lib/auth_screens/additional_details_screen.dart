@@ -221,6 +221,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
             fontWeight: FontWeight.w300,
           ),
           underline: Container(
+            width: MediaQuery.of(context).size.width,
             height: 3,
             //color: HexColor(color3),
           ),
