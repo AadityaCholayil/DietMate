@@ -70,6 +70,18 @@ class _HistoryPageState extends State<HistoryPage> {
                   },
                   startingDayOfWeek: StartingDayOfWeek.sunday,
                   daysOfWeekVisible: true,
+                  daysOfWeekHeight: 22,
+                  daysOfWeekStyle: DaysOfWeekStyle(
+                    weekdayStyle: TextStyle(
+                      fontSize: 20,
+                        color: Theme.of(context).colorScheme.onSurface,fontWeight: FontWeight.w500
+                    ),
+                    weekendStyle: TextStyle(
+                    fontSize: 20,
+                    color: Colors.red,fontWeight: FontWeight.w500
+                  )
+                  ),
+
 
                   //Day Changed
                   onDaySelected: (DateTime selectDay, DateTime focusDay) {
@@ -88,12 +100,22 @@ class _HistoryPageState extends State<HistoryPage> {
                   //headerVisible: false,
                   calendarStyle: CalendarStyle(
                     isTodayHighlighted: true,
+                    defaultTextStyle: TextStyle(fontSize: 20,color: Theme.of(context).colorScheme.onSurface,fontWeight: FontWeight.w500 ),
+                    todayTextStyle:TextStyle(fontSize: 20,color: Theme.of(context).colorScheme.onSurface,fontWeight: FontWeight.w600 ),
+                    selectedTextStyle: TextStyle(fontSize: 20,color: Theme.of(context).colorScheme.onSurface,fontWeight: FontWeight.w600 ),
+                    //rangeStartTextStyle:TextStyle(fontSize: 20,color: Colors.red ),
+                    //rangeEndTextStyle: TextStyle(fontSize: 20,color: Colors.red),
+                    outsideTextStyle: TextStyle(fontSize: 20,color: Theme.of(context).colorScheme.onSurface ),
+                    disabledTextStyle: TextStyle(fontSize: 20,color: Theme.of(context).disabledColor,fontWeight: FontWeight.w600),
+                    holidayTextStyle: TextStyle(fontSize: 20,color: Colors.red ),
+                    weekendTextStyle: TextStyle(fontSize: 20,color: Colors.red ),
+                    withinRangeTextStyle: TextStyle(fontSize: 20,color: Theme.of(context).colorScheme.onSurface,fontWeight: FontWeight.w600 ),
                     selectedDecoration: BoxDecoration(
                       color: Colors.lightGreen[600],
                       shape: BoxShape.circle,
+
                       //borderRadius: BorderRadius.circular(5.0),
                     ),
-                    selectedTextStyle: TextStyle(color: Colors.white),
                     todayDecoration: BoxDecoration(
                       color: Colors.green[700],
                       shape: BoxShape.circle,
@@ -112,13 +134,12 @@ class _HistoryPageState extends State<HistoryPage> {
                     formatButtonVisible: true,
                     titleCentered: true,
                     formatButtonShowsNext: false,
+                    titleTextStyle: TextStyle(fontSize: 25,color: Theme.of(context).colorScheme.onSurface,fontWeight: FontWeight.w500),
                     formatButtonDecoration: BoxDecoration(
                       color: Colors.lightGreen[600],
                       borderRadius: BorderRadius.circular(5.0),
                     ),
-                    formatButtonTextStyle: TextStyle(
-                      color: Colors.white,
-                    ),
+                    formatButtonTextStyle: TextStyle(fontSize: 20,color: Theme.of(context).colorScheme.onSurface,fontWeight: FontWeight.w500),
                   ),
                 ),
               ),
