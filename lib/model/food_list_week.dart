@@ -79,5 +79,32 @@ class FoodListWeek{
     }
     return max;
   }
+  int maxProteinOfDay(){
+    int max=0;
+    for(int i = 0; i<7 ;i++){
+      if(weekList[i].totalProtein>max){
+        max=weekList[i].totalProtein;
+      }
+    }
+    return max;
+  }
+  int maxFatsOfDay(){
+    int max=0;
+    for(int i = 0; i<7 ;i++){
+      if(weekList[i].totalFats>max){
+        max=weekList[i].totalFats;
+      }
+    }
+    return max;
+  }
+  int maxCarbOfDay(){
+    int max=0;
+    for(int i = 0; i<7 ;i++){
+      if(weekList[i].totalCarbs>max){
+        max=weekList[i].totalFats;
+      }
+    }
+    return max;
+  }
 
 }
