@@ -200,6 +200,20 @@ class _ImageSearchState extends State<ImageSearch> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+          backgroundColor: Colors.transparent.withOpacity(0),
+          elevation: 0,
+          leading: IconButton(
+              padding: EdgeInsets.only(left: 1),
+              icon: Icon(
+                Icons.arrow_back,
+                size: 30,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              }
+          )
+      ),
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(

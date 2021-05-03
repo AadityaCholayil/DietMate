@@ -31,7 +31,7 @@ final ThemeData darkTheme = ThemeData(
   selectedRowColor: Color( 0xfff5f5f5 ),
   unselectedWidgetColor: Color( 0xb3ffffff ),
   disabledColor: Color( 0x62ffffff ),
-  buttonColor: Color( 0xff29292C ),
+  buttonColor: Color( 0xff1F1F1F ),
   toggleableActiveColor: Color( 0xff70ca02 ),
   secondaryHeaderColor: Color( 0xff616161 ),
   backgroundColor: Color( 0xff616161 ),

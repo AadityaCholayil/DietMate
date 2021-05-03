@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietmate/model/food.dart';
 import 'package:dietmate/model/food_list_day.dart';
 import 'package:dietmate/model/user.dart';
+import 'package:dietmate/shared/conversion.dart';
 import 'package:dietmate/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -39,7 +40,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     DateTime now = DateTime.now();
-    dateToday='${now.day}-${now.month}-${now.year}';
+    dateToday=dateToString(now);
   }
 
   Widget buildSleekCircularSlider() {
@@ -146,7 +147,6 @@ class _HomePageState extends State<HomePage> {
       //isFrostedGlass: true,
       //frostedOpacity: 0.05,
       blur: 11,
-
       child: Container(
         height: 80,
         width: 117,
@@ -159,7 +159,7 @@ class _HomePageState extends State<HomePage> {
                 fontSize:19,
                 color: Theme.of(context).colorScheme.onSurface,
                 fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.bold
+                  fontWeight: FontWeight.w400
               ),
             ),
             Text(
@@ -168,7 +168,7 @@ class _HomePageState extends State<HomePage> {
                 fontSize: 28,
                 color: Theme.of(context).colorScheme.onSurface,
                 fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.w400
+                  fontWeight: FontWeight.w600
               ),
             ),
           ],
@@ -238,7 +238,7 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        '${food.name.length>20?food.name.substring(0,18)+"..":food.name}',
+                        '${food.name.length>16?food.name.substring(0,15)+"..":food.name}',
                         style: TextStyle(
                           fontSize:26,
                             fontWeight: FontWeight.bold
@@ -484,7 +484,7 @@ class _HomePageState extends State<HomePage> {
                           "Today's food",
                           style: TextStyle(
                             fontSize: 26,
-                            fontWeight: FontWeight.w300
+                            fontWeight: FontWeight.w500
                           ),
                         ),
                       ),

@@ -4,6 +4,7 @@ import 'package:dietmate/form_pages/food_form_final.dart';
 import 'package:dietmate/shared/loading.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:glass_kit/glass_kit.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 
@@ -174,81 +175,97 @@ class _FoodFormState extends State<FoodForm> {
         ],
       );
     }
-    return Card(
-      elevation: 5,
-      margin: EdgeInsets.symmetric(horizontal: 1),
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0),
-      ),
-      child: Container(
-        alignment: Alignment.center,
-        height: MediaQuery.of(context).size.height*0.55,
-        padding: EdgeInsets.symmetric(horizontal: 12),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              SizedBox(height: 5,),
-              ListView.separated(
-                padding: EdgeInsets.zero,
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemBuilder: (BuildContext context, int index){
-                  Food food=foodList.list[index];
-                  return OpenContainer(
-                    closedElevation: 0,
-                    closedColor: Theme.of(context).cardColor,
-                    openColor: Theme.of(context).canvasColor,
-                    transitionDuration: Duration(milliseconds: 500),
-                    closedBuilder: (context, openBuilder){
-                      return InkWell(
-                        child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                            color: Theme.of(context).cardColor,
-                            width: double.infinity,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '${food.name}',
-                                  style: TextStyle(
-                                    fontSize: 23,
-                                    fontWeight: FontWeight.w300
-                                  ),
-                                ),
-                                SizedBox(height: 5,),
-                                Text(
-                                  'Calories: ${food.calories} KCal',
-                                  style: TextStyle(
-                                    fontSize: 19,
-                                    fontWeight: FontWeight.w300
-                                  ),
-                                ),
-                              ],
-                            )
-                        ),
-                        onTap: (){
-                          openBuilder();
+    return GlassContainer(
+      alignment: Alignment.center,
+      height: MediaQuery.of(context).size.height*0.6,
+      borderRadius: BorderRadius.all(Radius.circular(17.0)),
+      color: Theme.of(context).cardColor.withOpacity(0.55),
+      borderColor: Theme.of(context).colorScheme.surface.withOpacity(0.0),
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+        children: [
+          Container(
+            alignment: Alignment.center,
+            height: MediaQuery.of(context).size.height*0.51,
+            padding: EdgeInsets.symmetric(horizontal: 12),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  SizedBox(height: 5,),
+                  ListView.separated(
+                    padding: EdgeInsets.zero,
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemBuilder: (BuildContext context, int index){
+                      Food food=foodList.list[index];
+                      return OpenContainer(
+                        closedElevation: 0,
+                        closedColor: Theme.of(context).cardColor.withOpacity(0),
+                        openColor: Theme.of(context).canvasColor.withOpacity(0),
+                        transitionDuration: Duration(milliseconds: 500),
+                        closedBuilder: (context, openBuilder){
+                          return InkWell(
+                            child: Container(
+                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                                width: double.infinity,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '${food.name}',
+                                      style: TextStyle(
+                                        fontSize: 23,
+                                        fontWeight: FontWeight.w300
+                                      ),
+                                    ),
+                                    SizedBox(height: 5,),
+                                    Text(
+                                      'Calories: ${food.calories} KCal',
+                                      style: TextStyle(
+                                        fontSize: 19,
+                                        fontWeight: FontWeight.w300
+                                      ),
+                                    ),
+                                  ],
+                                )
+                            ),
+                            onTap: (){
+                              openBuilder();
+                            },
+                          );
+                        },
+                        openBuilder: (context, closedBuilder){
+                          return FoodFormFinal(food: food, query: foodName);
                         },
                       );
                     },
-                    openBuilder: (context, closedBuilder){
-                      return FoodFormFinal(food: food, query: foodName);
-                    },
-                  );
-                },
-                itemCount: foodList.list.length,
-                separatorBuilder: (BuildContext context, int index) =>
-                    Divider(thickness: 1, color: Theme.of(context).primaryColor,),
+                    itemCount: foodList.list.length,
+                    separatorBuilder: (BuildContext context, int index) =>
+                        Divider(thickness: 1, color: Theme.of(context).primaryColor,),
+                  ),
+                  SizedBox(height: 10,)
+                  //Divider(thickness: 1, color: Theme.of(context).primaryColor,),
+                ],
               ),
-              SizedBox(height: 10,)
-              //Divider(thickness: 1, color: Theme.of(context).primaryColor,),
-            ],
+            ),
           ),
-        ),
+          Divider(thickness: 1, color: Theme.of(context).primaryColor,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'or ',
+                style: TextStyle(
+                  fontSize: 23,
+                ),
+              ),
+              customFoodButton(),
+            ],
+          )
+        ],
       ),
     );
   }
@@ -347,11 +364,11 @@ class _FoodFormState extends State<FoodForm> {
               searchDone?
               _buildList(foodList)
                   :SizedBox.shrink(),
-              SizedBox(height: 36),
+              SizedBox(height: !searchDone?36:10),
               _buildSearchButton(),
               SizedBox(height: searchDone?1:32),
               noResults?SizedBox.shrink():
-              Row(
+              searchDone?SizedBox.shrink():Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(

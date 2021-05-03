@@ -19,7 +19,9 @@ class FoodListDay {
     final List<DocumentSnapshot> documents = snapshot.docs;
     int i=0;
     for (DocumentSnapshot document in documents){
+      print(document.id);
       list.add(Food(
+        uid: document.id,
         date: document.data()['date'],
         time: document.data()['time'],
         timestamp: document.data()['timestamp'],
@@ -41,6 +43,7 @@ class FoodListDay {
       totalCarbs=totalCarbs+documents[i].data()['carbohydrates'];
       i++;
     }
+
   }
 
 

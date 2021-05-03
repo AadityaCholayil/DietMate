@@ -55,6 +55,10 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
     _carbohydrates = widget.food.carbohydrates;
     _servingSizeQty = widget.food.servingSizeQty;
     _servingSizeUnit = widget.food.servingSizeUnit;
+    DateTime now = DateTime.now();
+    pickedTime=DateTime(now.year, now.month, now.day, now.hour, now.minute);
+    _timestamp=Timestamp.fromDate(pickedTime);
+    _time=convertTo12Hr(pickedTime);
   }
 
   InputDecoration _inputDecoration(String label){
@@ -395,13 +399,13 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
           ScaffoldMessenger.of(context).showSnackBar(showCustomSnackBar('Select an Image!'));
           return;
         }
-        if(_timestamp==null){
-          ScaffoldMessenger.of(context).showSnackBar(showCustomSnackBar('Select time!'));
-          return;
-        }
+        // if(_timestamp==null){
+        //   ScaffoldMessenger.of(context).showSnackBar(showCustomSnackBar('Select time!'));
+        //   return;
+        // }
         setState(() => isLoading=true);
         DateTime now = DateTime.now();
-        String _date = '${now.day}-${now.month}-${now.year}';
+        String _date = dateToString(now);
         _food=Food(
           date: _date,
           time: _time,
@@ -523,6 +527,21 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent.withOpacity(0),
+        elevation: 0,
+        leading: IconButton(
+          padding: EdgeInsets.only(left: 1),
+          icon: Icon(
+            Icons.arrow_back,
+            size: 30,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          }
+        )
+      ),
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(

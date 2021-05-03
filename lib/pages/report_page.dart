@@ -407,7 +407,7 @@ class _ReportPageState extends State<ReportPage> {
 
     String label='';
     double maximumY = 0;
-    Color titleColor ;
+    // Color titleColor ;
     //1 for Fats 2 for Protein 3 for carbs
     switch(type){
       case 1:{
@@ -424,7 +424,7 @@ class _ReportPageState extends State<ReportPage> {
       break;
       case 3:{
         label = 'Total Carbs';
-        maximumY = double.tryParse((data.maxCarbOfDay()/4).toStringAsPrecision(1));
+        maximumY = double.tryParse((data.maxCarbOfDay()/0.7).toStringAsPrecision(1));
         // titleColor = Color(0xFF176607);
       }
       break;
@@ -495,7 +495,7 @@ class _ReportPageState extends State<ReportPage> {
                 reservedSize: 10,
                 getTextStyles: (value) => TextStyle(
                   color: Theme.of(context).colorScheme.onSurface,
-                )
+                ),
               ),
               bottomTitles: SideTitles(
                 showTitles: true,
