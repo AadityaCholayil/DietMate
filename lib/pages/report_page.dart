@@ -22,20 +22,21 @@ class _ReportPageState extends State<ReportPage> {
   FirebaseFirestore db = FirebaseFirestore.instance;
   String weekNo = '';
   int caloriesGoal=0;
-  DateTime now, start;
+  DateTime now, start, end;
 
   Future<QuerySnapshot> getData(User user) async {
     now = DateTime.now();
-    start = now.subtract(Duration(days: 6));
-    now = DateTime(now.year, now.month, now.day, 23, 59);
-    start = DateTime(start.year, start.month, start.day, 0, 0);
-
+    if (start==null) {
+      start = now.subtract(Duration(days: 6));
+      start = DateTime(start.year, start.month, start.day, 0, 0);
+      end = DateTime(now.year, now.month, now.day, 23, 59);
+    }
     FirebaseFirestore db = FirebaseFirestore.instance;
     QuerySnapshot result = await db.collection('users').doc(user.uid)
         .collection('foods')
         .orderBy('timestamp')
         .startAt([Timestamp.fromDate(start)])
-        .endAt([Timestamp.fromDate(now)])
+        .endAt([Timestamp.fromDate(end)])
         .get();
     return result;
   }
@@ -228,17 +229,18 @@ class _ReportPageState extends State<ReportPage> {
                SizedBox(
                 width: 18,
               ),
-                SizedBox(
+              SizedBox(
                 width: 17,
                 height: 16,
                 child: const DecoratedBox(
-                    decoration: const BoxDecoration(
-                      color: Color(0xFF22A806),
-                    )),
-          ),
-          SizedBox(
-            width: 10,
-          ),
+                  decoration: const BoxDecoration(
+                    color: Color(0xFF22A806),
+                  )
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
               Text(
                 '${data.totalProtein}g',
                 style: TextStyle(
@@ -256,7 +258,6 @@ class _ReportPageState extends State<ReportPage> {
             ),
           ),
           Row(
-
             children: [
                SizedBox(
                 width: 18,
@@ -493,7 +494,7 @@ class _ReportPageState extends State<ReportPage> {
               leftTitles: SideTitles(
                 interval: maximumY.toDouble(),
                 showTitles: true,
-                reservedSize: 10,
+                reservedSize: 15,
                 getTextStyles: (value) => TextStyle(
                   color: Theme.of(context).colorScheme.onSurface,
                 )
@@ -572,27 +573,91 @@ class _ReportPageState extends State<ReportPage> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Container(
-                          padding: EdgeInsets.only(top: 36, left: 38),
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Report',
-                            style: TextStyle(
-                              fontSize: 30,
-                              color: Theme.of(context).colorScheme.onSurface,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Container(
+                              alignment: Alignment.center,
+                              padding: EdgeInsets.only(left: 7),
+                              margin: EdgeInsets.only(bottom: 5, left: 5),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.white,
+                              ),
+                              child: IconButton(
+                                // padding: EdgeInsets.only(bottom: 10, left: 5),
+                                icon: Icon(Icons.arrow_back_ios),
+                                iconSize: 25,
+                                color: Colors.black,
+                                onPressed: () {
+                                  //DateTime joinDate = dateToS(userData.joinDate)
+                                  if(joinDate.isBefore(end.add(Duration(days: 6)))){
+                                    setState(() {
+                                      start=start.add(Duration(days: 6));
+                                      end=end.add(Duration(days: 6));
+                                    });
+                                  }
+                                },
+                              ),
                             ),
-                          ),
+                            Column(
+                              // crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.only(top: 36),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    'Report',
+                                    style: TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context).colorScheme.onSurface,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  // padding: EdgeInsets.only(top: 38),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    '1st May - 7th May',
+                                    style: TextStyle(
+                                      fontSize: 19,
+                                      fontWeight: FontWeight.w500,
+                                      color: Theme.of(context).colorScheme.onSurface,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            // Spacer(),
+                            Container(
+                              alignment: Alignment.center,
+                              // padding: EdgeInsets.only(right: 5),
+                              margin: EdgeInsets.only(bottom: 5, right: 5,),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.white,
+                              ),
+                              child: IconButton(
+                                // padding: EdgeInsets.only(bottom: 10, left: 5),
+                                icon: Icon(Icons.arrow_forward_ios),
+                                iconSize: 25,
+                                color: Colors.black,
+                                onPressed: () {
+                                  if(now.isBefore(end.add(Duration(days: 6)))){
+                                    setState(() {
+                                      start=start.add(Duration(days: 6));
+                                      end=end.add(Duration(days: 6));
+                                    });
+                                  }
+                                },
+                              ),
+                            ),
+                          ],
                         ),
-                        Container(
-                          padding: EdgeInsets.only(left: 38),
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'of the past 7 days',
-                            style: TextStyle(
-                              fontSize: 19,
-                              color: Theme.of(context).colorScheme.onSurface,
-                            ),
-                          ),
+                        SizedBox(
+                          height: 10,
                         ),
                         _buildLineChart(data),
                         SizedBox(
