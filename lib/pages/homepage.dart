@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietmate/form_pages/food_form_final.dart';
 import 'package:dietmate/model/food.dart';
 import 'package:dietmate/model/food_list_day.dart';
 import 'package:dietmate/model/user.dart';
@@ -44,17 +45,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget buildSleekCircularSlider() {
-    return GlassContainer(
-      borderRadius: BorderRadius.all(Radius.circular(54.0)),
-      color: Theme.of(context).cardColor.withOpacity(0.55),
-      borderColor: Theme.of(context).colorScheme.surface.withOpacity(0.0),
-      height:370,
-      width: MediaQuery.of(context).size.width,
-      //isFrostedGlass: true,
-      //frostedOpacity: 0.05,
-      blur: 12,
+    return Card(
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      elevation: 7,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(54)),
       child: Container(
         alignment:Alignment.center,
+        height:370,
         child: SleekCircularSlider(
           min: 0,
           max: caloriesGoal.toDouble(),
@@ -67,7 +64,7 @@ class _HomePageState extends State<HomePage> {
             angleRange: 360,
             size: 300,
             customWidths: CustomSliderWidths(
-              trackWidth: 3.5,
+              trackWidth: 25.0,
               progressBarWidth: 25.0,
               handlerSize: 7.0,
             ),
@@ -78,7 +75,7 @@ class _HomePageState extends State<HomePage> {
                 Color(0xff05B54B),
               ],
               dynamicGradient: true,
-              trackColor: Color( 0xffD0EEAC),
+              trackColor: Color( 0xffDBFFAF),
               hideShadow: true,
             ),
           ),
@@ -137,16 +134,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget totalMetricInfo(String top, String bottom){
-    return GlassContainer(
-      margin: EdgeInsets.zero,
-      borderRadius: BorderRadius.all(Radius.circular(34.0)),
-      color: Theme.of(context).cardColor.withOpacity(0.55),
-      borderColor: Theme.of(context).colorScheme.surface.withOpacity(0.0),
-      height:80,
-      width: 117,
-      //isFrostedGlass: true,
-      //frostedOpacity: 0.05,
-      blur: 11,
+    return Card(
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      elevation: 7,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(34)),
       child: Container(
         height: 80,
         width: 117,
@@ -213,72 +204,65 @@ class _HomePageState extends State<HomePage> {
       onTap: () {
         showDialog(context: context, builder: (BuildContext context) => foodInfoDialog(food));
       },
-      child: GlassContainer(
-        borderRadius: BorderRadius.all(Radius.circular(34.0)),
-        color: Theme.of(context).cardColor.withOpacity(0.55),
-        borderColor: Theme.of(context).colorScheme.surface.withOpacity(0.0),
-        height:107,
-        width: MediaQuery.of(context).size.width,
-        //isFrostedGlass: true,
-        //frostedOpacity: 0.05,
-        blur: 5,
-          margin: EdgeInsets.only(bottom: 13),
-          child:Container(
-            padding: EdgeInsets.all(6),
-            height: 107,
-            //color: Colors.white10,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.only(left:16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        '${food.name.length>16?food.name.substring(0,15)+"..":food.name}',
-                        style: TextStyle(
-                          fontSize:26,
-                            fontWeight: FontWeight.bold
-                        ),
+      child: Card(
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        elevation: 7,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(34)),
+        child: Container(
+          padding: EdgeInsets.all(6),
+          height: 107,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.only(left:16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      '${food.name.length>16?food.name.substring(0,15)+"..":food.name}',
+                      style: TextStyle(
+                        fontSize:26,
+                          fontWeight: FontWeight.bold
                       ),
-                      //SizedBox(height: 1),
-                      Text(
-                        'Calories: ${food.calories} Kcal',
-                        style:TextStyle(
+                    ),
+                    //SizedBox(height: 1),
+                    Text(
+                      'Calories: ${food.calories} Kcal',
+                      style:TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500
+                      ),
+                    ),
+                    //SizedBox(height: 1),
+                    Text(
+                      'Time: ${food.time}',
+                      style:TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w500
-                        ),
                       ),
-                      //SizedBox(height: 1),
-                      Text(
-                        'Time: ${food.time}',
-                        style:TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(34)
-                  ),
-                  height: 95,
-                  width: 95,
-                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                  child: Image.network(
-                    food.thumbnailUrl,
-                    fit: BoxFit.cover,
-                  ),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(34)
                 ),
-              ],
-            ),
+                height: 95,
+                width: 95,
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                child: Image.network(
+                  food.thumbnailUrl,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ],
           ),
         ),
+      ),
     );
   }
 
@@ -295,6 +279,7 @@ class _HomePageState extends State<HomePage> {
           children: <Widget>[
             Container(
               height: MediaQuery.of(context).size.width*0.9,
+              width: MediaQuery.of(context).size.width*0.9,
               child: Image.network(
                 food.fullUrl,
                 fit: food.imageWidth>food.imageHeight? BoxFit.fitHeight : BoxFit.fitWidth,
@@ -373,7 +358,12 @@ class _HomePageState extends State<HomePage> {
                      ),
                     ),
                     onPressed: () {
-                      print('Pressed');
+                      setState(() {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => FoodFormFinal(food: food))
+                        );
+                      });
                     }
 
                   ),
@@ -417,90 +407,106 @@ class _HomePageState extends State<HomePage> {
     final user = Provider.of<User>(context);
     final userData = Provider.of<UserData>(context);
     caloriesGoal=userData.calorieGoal;
+    Size size = MediaQuery.of(context).size;
 
     return Scaffold(
       body: Container(
-        height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/home_${Theme.of(context).brightness==Brightness.light?'light':'dark'}.jpg'),
-            fit: BoxFit.cover,
-          ),
-        ),
-        padding: EdgeInsets.symmetric(horizontal:27.0),
+        height: size.height,
         child: SingleChildScrollView(
-          child: FutureBuilder<QuerySnapshot>(
-            future: getData(user),
-            builder: (context, snapshot){
-              if(snapshot.connectionState!=ConnectionState.done){
-                //query in progress
-                return Loading();
-              }
-              if(snapshot.hasError){
-                return Container(
-                  child: Text(
-                    'Error occurred',
-                  ),
-                );
-              }
-              if(snapshot.hasData) {
-                FoodListDay foodList = FoodListDay.fromSnapshot(snapshot.data);
-                consumedCalories=foodList.consumedCalories;
-                totalFats=foodList.totalFats;
-                totalProtein=foodList.totalProtein;
-                totalCarb=foodList.totalCarbs;
-                // if(foodList.list.isEmpty){
-                //   //query successful but is empty
-                //   return Container(
-                //     child: Text(
-                //         'Empty'
-                //     ),
-                //   );
-                // }
-                //TODO main code
-                return Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.fromLTRB(20,47,0,16),
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Welcome, ${userData.name}',
-                          style: TextStyle(
-                              fontSize: 28,
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).colorScheme.onSurface,
-                          ),
-                        ),
-                      ),
-                      buildSleekCircularSlider(),
-                      SizedBox(height: 13),
-                      buildOtherMetrics(),
-                      SizedBox(height: 30),
-                      Padding(
-                        padding: EdgeInsets.only(left:25),
-                        child: Text(
-                          "Today's food",
-                          style: TextStyle(
-                            fontSize: 26,
-                            fontWeight: FontWeight.w500
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 15),
-                      buildListView(foodList),
-                    ],
-                  ),
-                );
-              }
-              return Container(
-                child: Text(
-                    'Something went wrong'
+          child: Stack(
+            children: [
+              Card(
+                margin: EdgeInsets.zero,
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                shape: RoundedRectangleBorder(
+                  borderRadius:  BorderRadius.vertical(bottom: Radius.elliptical(90, 40)),
                 ),
-              );
+                elevation: 8,
+                child: Container(
+                  height: size.height*0.4,
+                  width: size.width,
+                  color: Theme.of(context).accentColor,
+                  child: SizedBox(),
+                ),
+              ),
+              Container(
+                // color: ,
+                padding: EdgeInsets.symmetric(horizontal:27.0),
+                child: FutureBuilder<QuerySnapshot>(
+                  future: getData(user),
+                  builder: (context, snapshot){
+                    if(snapshot.connectionState!=ConnectionState.done){
+                      //query in progress
+                      return Loading();
+                    }
+                    if(snapshot.hasError){
+                      return Container(
+                        child: Text(
+                          'Error occurred',
+                        ),
+                      );
+                    }
+                    if(snapshot.hasData) {
+                      FoodListDay foodList = FoodListDay.fromSnapshot(snapshot.data);
+                      consumedCalories=foodList.consumedCalories;
+                      totalFats=foodList.totalFats;
+                      totalProtein=foodList.totalProtein;
+                      totalCarb=foodList.totalCarbs;
+                      // if(foodList.list.isEmpty){
+                      //   //query successful but is empty
+                      //   return Container(
+                      //     child: Text(
+                      //         'Empty'
+                      //     ),
+                      //   );
+                      // }
+                      //TODO main code
+                      return Container(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              padding: EdgeInsets.fromLTRB(20,47,0,11),
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                'Hello, ${userData.name}',
+                                style: TextStyle(
+                                    fontSize: 32,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xff176607),
+                                ),
+                              ),
+                            ),
+                            buildSleekCircularSlider(),
+                            SizedBox(height: 10),
+                            buildOtherMetrics(),
+                            SizedBox(height: 25),
+                            Padding(
+                              padding: EdgeInsets.only(left:25),
+                              child: Text(
+                                "Today's Food",
+                                style: TextStyle(
+                                  fontSize: 26,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 8),
+                            buildListView(foodList),
+                          ],
+                        ),
+                      );
+                    }
+                    return Container(
+                      child: Text(
+                          'Something went wrong'
+                      ),
+                    );
 
-            },
+                  },
+                ),
+              ),
+            ],
           ),
         ),
       ),

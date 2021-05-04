@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietmate/form_pages/food_form_final.dart';
 import 'package:dietmate/model/food.dart';
 import 'package:dietmate/model/food_list_day.dart';
 import 'package:dietmate/model/user.dart';
@@ -130,6 +131,7 @@ class _HistoryPageState extends State<HistoryPage> {
           children: <Widget>[
             Container(
               height: MediaQuery.of(context).size.width*0.9,
+              width: MediaQuery.of(context).size.width*0.9,
               child: Image.network(
                 food.fullUrl,
                 fit: food.imageWidth>food.imageHeight? BoxFit.fitHeight : BoxFit.fitWidth,
@@ -208,7 +210,12 @@ class _HistoryPageState extends State<HistoryPage> {
                         ),
                       ),
                       onPressed: () {
-                        print('Pressed');
+                        setState(() {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => FoodFormFinal(food: food))
+                          );
+                        });
                       }
 
                   ),
@@ -344,7 +351,6 @@ class _HistoryPageState extends State<HistoryPage> {
                       selectedDecoration: BoxDecoration(
                         color: Colors.lightGreen[600],
                         shape: BoxShape.circle,
-
                         //borderRadius: BorderRadius.circular(5.0),
                       ),
                       todayDecoration: BoxDecoration(

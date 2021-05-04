@@ -21,6 +21,7 @@ class FoodFormFinal extends StatefulWidget {
 }
 
 class _FoodFormFinalState extends State<FoodFormFinal> {
+  String _uid;
   Food _food;
   FoodImage _foodImage;
   String _name;
@@ -42,7 +43,8 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
   @override
   void initState() {
     super.initState();
-    if(widget.food.thumbnailUrl!=null){
+    if(widget.food.uid!=null){
+      _uid=widget.food.uid;
       _fullUrl = widget.food.fullUrl;
       _thumbnailUrl =  widget.food.thumbnailUrl;
       _imageHeight =  widget.food.imageHeight;
@@ -55,10 +57,16 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
     _carbohydrates = widget.food.carbohydrates;
     _servingSizeQty = widget.food.servingSizeQty;
     _servingSizeUnit = widget.food.servingSizeUnit;
-    DateTime now = DateTime.now();
-    pickedTime=DateTime(now.year, now.month, now.day, now.hour, now.minute);
-    _timestamp=Timestamp.fromDate(pickedTime);
-    _time=convertTo12Hr(pickedTime);
+    if (widget.food.uid==null) {
+      DateTime now = DateTime.now();
+      pickedTime=DateTime(now.year, now.month, now.day, now.hour, now.minute);
+      _timestamp=Timestamp.fromDate(pickedTime);
+      _time=convertTo12Hr(pickedTime);
+    } else {
+      pickedTime = widget.food.timestamp.toDate();
+      _timestamp = widget.food.timestamp;
+      _time = convertTo12Hr(pickedTime);
+    }
   }
 
   InputDecoration _inputDecoration(String label){
@@ -358,8 +366,12 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
                   );
                   if (time!=null) {
                     setState(() {
-                      DateTime now = DateTime.now();
-                      pickedTime=DateTime(now.year, now.month, now.day, time.hour, time.minute);
+                      if (widget.food.uid==null) {
+                        DateTime now = DateTime.now();
+                        pickedTime=DateTime(now.year, now.month, now.day, time.hour, time.minute);
+                      } else {
+                        pickedTime=DateTime(pickedTime.year, pickedTime.month, pickedTime.day, time.hour, time.minute);
+                      }
                       _timestamp=Timestamp.fromDate(pickedTime);
                       _time=convertTo12Hr(pickedTime);
                       print(_time);
@@ -376,12 +388,13 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
 
   Widget _buildSubmitButton(BuildContext context2){
     final user = Provider.of<User>(context2);
+    String type = widget.food.uid==null?'Submit':'Update';
     return GradientButton(
       label: Text(
-        'Submit',
+        type,
         style: TextStyle(
           fontSize: 25,
-          fontWeight: FontWeight.w300,
+          fontWeight: FontWeight.w400,
           color: Colors.white
         ),
       ),
@@ -393,7 +406,6 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
         }
         setState(() {
           _formKey.currentState.save();
-          print(_calories);
         });
         if(_thumbnailUrl==null){
           ScaffoldMessenger.of(context).showSnackBar(showCustomSnackBar('Select an Image!'));
@@ -404,8 +416,13 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
         //   return;
         // }
         setState(() => isLoading=true);
-        DateTime now = DateTime.now();
-        String _date = dateToString(now);
+        String _date;
+        if (widget.food.uid==null) {
+          DateTime now = DateTime.now();
+          _date = dateToString(now);
+        } else {
+          _date = dateToString(widget.food.timestamp.toDate());
+        }
         _food=Food(
           date: _date,
           time: _time,
@@ -423,7 +440,13 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
           imageHeight: _imageHeight,
         );
         _food.printFullDetails();
-        dynamic result = await DatabaseService(uid: user.uid).addFood(_food);
+        dynamic result;
+        if (widget.food.uid==null) {
+          result = await DatabaseService(uid: user.uid).addFood(_food);
+        } else {
+          _food.uid=_uid;
+          result = await DatabaseService(uid: user.uid).updateFood(_food);
+        }
         if (result=='error'){
           setState(() {
             error='error';

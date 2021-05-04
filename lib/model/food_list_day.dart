@@ -19,9 +19,9 @@ class FoodListDay {
     final List<DocumentSnapshot> documents = snapshot.docs;
     int i=0;
     for (DocumentSnapshot document in documents){
-      print(document.id);
+      print(document.reference.id);
       list.add(Food(
-        uid: document.id,
+        uid: document.reference.id,
         date: document.data()['date'],
         time: document.data()['time'],
         timestamp: document.data()['timestamp'],

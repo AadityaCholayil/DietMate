@@ -103,7 +103,7 @@ class DatabaseService{
       'imageHeight': food.imageHeight,
     }).then((value) => print("Food Updated"))
         .catchError((error) {
-      print("Failed to add food: $error");
+      print("Failed to update food: $error");
       return 'error';
     });
   }
