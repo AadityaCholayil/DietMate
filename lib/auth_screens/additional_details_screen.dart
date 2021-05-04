@@ -18,9 +18,76 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
   double _activityLevel = 1.5;
   String _activity = 'Sedentary: little or no exercise';
   String _joinDate = '';
+  String _profileUrl = 'https://rpgplanner.com/wp-content/uploads/2020/06/no-photo-available.png';
+  String defaultUrl = 'https://rpgplanner.com/wp-content/uploads/2020/06/no-photo-available.png';
   Map caloriePlan= {};
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  
+
+  Widget _buildImagePicker(BuildContext context){
+    return Container(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ListTile(
+            leading: Icon(Icons.camera),
+            title: Text('Camera'),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.photo),
+            title: Text('Gallery'),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProfile(BuildContext context){
+    return Container(
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+      ),
+      alignment: Alignment.center,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(70),
+        onTap: () {
+          showModalBottomSheet(
+            context: context,
+            builder:(context){
+              return _buildImagePicker(context);
+            }
+          );
+        },
+        child: CircleAvatar(
+          backgroundImage: NetworkImage(_profileUrl),
+          radius: 70,
+          child: Column(
+            children: [
+              Expanded(
+                flex: 2,
+                child: Container(),
+              ),
+              _profileUrl==defaultUrl?Expanded(
+                flex: 1,
+                child: Container(
+                  alignment: Alignment.center,
+                  color: Colors.black87.withOpacity(0.5),
+                  child: Icon(Icons.camera_alt_outlined, size: 35,color: Theme.of(context).accentColor)
+                ),
+              ):SizedBox.shrink(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildName(){
     return TextFormField(
       decoration: InputDecoration(
@@ -284,6 +351,9 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                     textAlign: TextAlign.center,
                   ),
                 ),
+                SizedBox(height: 5),
+                _buildProfile(context),
+                SizedBox(height: 15),
                 _buildName(),
                 SizedBox(height: 10,),
                 _buildAge(),

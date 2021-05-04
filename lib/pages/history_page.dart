@@ -49,20 +49,13 @@ class _HistoryPageState extends State<HistoryPage> {
       onTap: () {
         showDialog(context: context, builder: (BuildContext context) => foodInfoDialog(food));
       },
-      child: GlassContainer(
-        borderRadius: BorderRadius.all(Radius.circular(34.0)),
-        color: Theme.of(context).cardColor.withOpacity(0.55),
-        borderColor: Theme.of(context).colorScheme.surface.withOpacity(0.0),
-        height:107,
-        width: MediaQuery.of(context).size.width,
-        //isFrostedGlass: true,
-        //frostedOpacity: 0.05,
-        blur: 5,
-        margin: EdgeInsets.only(bottom: 13),
-        child:Container(
+      child: Card(
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        elevation: 7,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(34)),
+        child: Container(
           padding: EdgeInsets.all(6),
           height: 107,
-          //color: Colors.white10,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -74,10 +67,10 @@ class _HistoryPageState extends State<HistoryPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      '${food.name.length>20?food.name.substring(0,16)+"..":food.name}',
+                      '${food.name.length>16?food.name.substring(0,15)+"..":food.name}',
                       style: TextStyle(
                           fontSize:26,
-                          fontWeight: FontWeight.w500
+                          fontWeight: FontWeight.bold
                       ),
                     ),
                     //SizedBox(height: 1),
@@ -85,7 +78,7 @@ class _HistoryPageState extends State<HistoryPage> {
                       'Calories: ${food.calories} Kcal',
                       style:TextStyle(
                           fontSize: 20,
-                          fontWeight: FontWeight.w400
+                          fontWeight: FontWeight.w500
                       ),
                     ),
                     //SizedBox(height: 1),
@@ -93,7 +86,7 @@ class _HistoryPageState extends State<HistoryPage> {
                       'Time: ${food.time}',
                       style:TextStyle(
                           fontSize: 20,
-                          fontWeight: FontWeight.w400
+                          fontWeight: FontWeight.w500
                       ),
                     ),
                   ],
@@ -101,7 +94,7 @@ class _HistoryPageState extends State<HistoryPage> {
               ),
               Container(
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(34)
+                  borderRadius: BorderRadius.circular(34)
                 ),
                 height: 95,
                 width: 95,
@@ -202,47 +195,46 @@ class _HistoryPageState extends State<HistoryPage> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   TextButton(
-                      child: Text(
-                        'Update',
-                        style: TextStyle(
-                            fontSize:23,
-                            fontWeight: FontWeight.w600
-                        ),
+                    child: Text(
+                      'Update',
+                      style: TextStyle(
+                          fontSize:23,
+                          fontWeight: FontWeight.w600
                       ),
-                      onPressed: () {
-                        setState(() {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => FoodFormFinal(food: food))
-                          );
-                        });
-                      }
-
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => FoodFormFinal(food: food))
+                        );
+                      });
+                    }
                   ),
                   TextButton(
-                      child: Text(
-                        'Delete',
-                        style: TextStyle(
-                            fontSize:23,
-                            fontWeight: FontWeight.w600
-                        ),
+                    child: Text(
+                      'Delete',
+                      style: TextStyle(
+                          fontSize:23,
+                          fontWeight: FontWeight.w600
                       ),
-                      onPressed: () {
-                        print('Pressed');
-                      }
+                    ),
+                    onPressed: () {
+                      print('Pressed');
+                    }
                   ),
                   TextButton(
-                      child: Text(
-                        'Cancel',
-                        style: TextStyle(
-                            fontSize:23,
-                            fontWeight: FontWeight.w600
-                        ),
+                    child: Text(
+                      'Cancel',
+                      style: TextStyle(
+                          fontSize:23,
+                          fontWeight: FontWeight.w600
                       ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                        print('Pressed');
-                      }
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      print('Pressed');
+                    }
                   ),
                 ],
               ),
