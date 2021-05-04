@@ -48,3 +48,16 @@ String convertTo12Hr(DateTime time){
   return timeStr;
 }
 
+String dateToString (DateTime date) {
+  String day = date.day<10?'0${date.day}':'${date.day}';
+  String month = date.month<10?'0${date.month}':'${date.month}';
+  return '$day-$month-${date.year}';
+}
+
+DateTime stringToDate (String date) {
+  int day = int.tryParse(date.substring(0,2));
+  int month = int.tryParse(date.substring(3,5));
+  int year = int.tryParse(date.substring(6,10));
+  return DateTime(year, month, day);
+}
+

@@ -84,4 +84,28 @@ class DatabaseService{
     });
   }
 
+  //Update food
+  Future updateFood(Food food) async {
+    return await db.collection('users').doc(uid).collection('foods').doc(food.uid).update({
+      'date': food.date,
+      'time': food.time,
+      'timestamp': food.timestamp,
+      'name': food.name,
+      'calories': food.calories,
+      'fats': food.fats,
+      'protein': food.protein,
+      'carbohydrates': food.carbohydrates,
+      'servingSizeQty': food.servingSizeQty,
+      'servingSizeUnit': food.servingSizeUnit,
+      'fullUrl': food.fullUrl,
+      'thumbnailUrl': food.thumbnailUrl,
+      'imageWidth': food.imageWidth,
+      'imageHeight': food.imageHeight,
+    }).then((value) => print("Food Updated"))
+        .catchError((error) {
+      print("Failed to update food: $error");
+      return 'error';
+    });
+  }
+
 }

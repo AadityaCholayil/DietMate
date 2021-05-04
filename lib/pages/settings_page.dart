@@ -34,6 +34,23 @@ class _SettingsPageState extends State<SettingsPage> {
 
     final userData = Provider.of<UserData>(context);
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent.withOpacity(0),
+        elevation: 0,
+        actions: [
+          IconButton(
+            padding: EdgeInsets.only(right: 20),
+              icon: Icon(
+                Icons.menu,
+                size: 40,
+              ),
+              onPressed: () {
+
+              }
+          )
+        ],
+      ),
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(

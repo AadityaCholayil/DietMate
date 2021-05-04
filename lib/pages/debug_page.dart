@@ -100,6 +100,7 @@ class _DebugPageState extends State<DebugPage> {
                         .get();
                   print(result.docs.length);
                   FoodListWeek week = FoodListWeek.fromSnapshot(result, start);
+                  print(week);
                 },
               ),
             ],

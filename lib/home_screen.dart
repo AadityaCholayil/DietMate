@@ -1,6 +1,5 @@
 import 'package:dietmate/pages/history_page.dart';
 import 'package:dietmate/pages/homepage.dart';
-import 'package:dietmate/pages/debug_page.dart';
 import 'package:dietmate/pages/settings_page.dart';
 import 'package:dietmate/pages/report_page.dart';
 import 'package:dietmate/form_pages/food_form.dart';

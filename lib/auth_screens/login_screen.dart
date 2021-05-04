@@ -1,6 +1,7 @@
 import 'package:dietmate/services/auth.dart';
 import 'package:dietmate/shared/loading.dart';
 import 'package:flutter/material.dart';
+import 'package:glass_kit/glass_kit.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -21,68 +22,89 @@ class _LoginScreenState extends State<LoginScreen> {
   String password = '';
 
   Widget _buildEmail(){
-    return TextFormField(
-      decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 18),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.transparent, width: 2, style: BorderStyle.solid, ),
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2, style: BorderStyle.solid, ),
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          ),
-          filled: true,
-          fillColor: Theme.of(context).colorScheme.surface,
-          labelText: 'Email Id',
-          labelStyle: TextStyle(fontSize: 25),
-          floatingLabelBehavior: FloatingLabelBehavior.never
+    return GlassContainer(
+
+      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+      color: Theme.of(context).cardColor.withOpacity(0.55),
+      borderColor: Theme.of(context).colorScheme.surface.withOpacity(0.0),
+      height:60,
+      width: MediaQuery.of(context).size.width,
+      //isFrostedGlass: true,
+      //frostedOpacity: 0.05,
+      blur: 12,
+      child: TextFormField(
+        decoration: InputDecoration(
+            contentPadding: EdgeInsets.fromLTRB(15, 18,15, 18),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.transparent, width: 2, style: BorderStyle.solid, ),
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2, style: BorderStyle.solid, ),
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            ),
+            filled: true,
+            fillColor: Theme.of(context).colorScheme.surface,
+            labelText: 'Email Id',
+            labelStyle: TextStyle(fontSize: 25),
+            floatingLabelBehavior: FloatingLabelBehavior.never
+        ),
+        keyboardType: TextInputType.emailAddress,
+        style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
+        validator: (String value) {
+          if (value.isEmpty) {
+            return 'Invalid Email Id';
+          }
+          // var email = "tony@starkindustries.com"
+          // bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
+          return null;
+        },
+        onSaved: (String value) {
+          email= value;
+        },
       ),
-      keyboardType: TextInputType.emailAddress,
-      style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
-      validator: (String value) {
-        if (value.isEmpty) {
-          return 'Invalid Email Id';
-        }
-        // var email = "tony@starkindustries.com"
-        // bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
-        return null;
-      },
-      onSaved: (String value) {
-        email= value;
-      },
     );
   }
 
   Widget _buildPassword(){
-    return TextFormField(
-      decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 18),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.transparent, width: 2, style: BorderStyle.solid, ),
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2, style: BorderStyle.solid, ),
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          ),
-          filled: true,
-          fillColor: Theme.of(context).colorScheme.surface,
-          labelText: 'Password',
-          labelStyle: TextStyle(fontSize: 25),
-          floatingLabelBehavior: FloatingLabelBehavior.never
+    return GlassContainer(
+      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+      color: Theme.of(context).cardColor.withOpacity(0.55),
+      borderColor: Theme.of(context).colorScheme.surface.withOpacity(0.0),
+      height:65,
+      width: MediaQuery.of(context).size.width,
+      //isFrostedGlass: true,
+      //frostedOpacity: 0.05,
+      blur: 12,
+      child: TextFormField(
+        decoration: InputDecoration(
+            contentPadding: EdgeInsets.fromLTRB(15, 18,15, 18),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.transparent, width: 2, style: BorderStyle.solid, ),
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2, style: BorderStyle.solid, ),
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            ),
+            filled: true,
+            fillColor: Theme.of(context).colorScheme.surface,
+            labelText: 'Password',
+            labelStyle: TextStyle(fontSize: 25),
+            floatingLabelBehavior: FloatingLabelBehavior.never
+        ),
+        obscureText: true,
+        style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
+        validator: (String value) {
+          if (value.isEmpty) {
+            return 'Password cannot be empty';
+          }
+          return null;
+        },
+        onSaved: (String value) {
+          password= value;
+        },
       ),
-      obscureText: true,
-      style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
-      validator: (String value) {
-        if (value.isEmpty) {
-          return 'Password cannot be empty';
-        }
-        return null;
-      },
-      onSaved: (String value) {
-        password= value;
-      },
     );
   }
 
@@ -94,6 +116,13 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: Container(
         padding: EdgeInsets.all(20),
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/Auth1_${Theme.of(context).brightness==Brightness.light?'light':'dark'}.jpg'),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: Form(
           key: _formKey,
           child: Column(
