@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietmate/model/food_list_week.dart';
 import 'package:dietmate/model/user.dart';
+import 'package:dietmate/shared/conversion.dart';
 import 'package:dietmate/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/animation.dart';
@@ -40,21 +41,17 @@ class _ReportPageState extends State<ReportPage> {
   }
 
   Widget _buildLineChart(FoodListWeek data) {
-    return GlassContainer(
-      borderRadius: BorderRadius.all(Radius.circular(54.0)),
-      color: Theme.of(context).cardColor.withOpacity(0.6),
-      borderColor: Theme.of(context).colorScheme.surface.withOpacity(0.0),
-      height:300,
-      width: MediaQuery.of(context).size.width,
-      isFrostedGlass: true,
-      frostedOpacity: 0.05,
-      blur: 15,
-
+    return Card(
+      margin: EdgeInsets.zero,
+      color: Theme.of(context).cardColor,
+      shape:RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(54))
+      ),
       child: Container(
-        height: 400 ,
+        height: 300 ,
+        width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(5, 25, 35, 10),
         margin: EdgeInsets.all(10),
-        width: double.infinity,
         child: LineChart(
           LineChartData(
             maxY: data.maxCalOfDay().toDouble(),
@@ -167,17 +164,13 @@ class _ReportPageState extends State<ReportPage> {
   }
 
   Widget _buildLegends(FoodListWeek data) {
-    return GlassContainer(
-    borderRadius: BorderRadius.all(Radius.circular(31.0)),
-    color: Theme.of(context).colorScheme.surface.withOpacity(0.7),
-    borderColor: Theme.of(context).colorScheme.surface.withOpacity(0.0),
-    height:212,
-    width:144,
-    isFrostedGlass: true,
-    frostedOpacity: 0.05,
-    blur: 12,
-    margin: EdgeInsets.zero,
-    child: Container(
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(31))
+      ),
+      color: Theme.of(context).cardColor,
+      margin: EdgeInsets.zero,
+      child: Container(
       width: 144,
       height: 212,
       child: Column(
@@ -215,6 +208,9 @@ class _ReportPageState extends State<ReportPage> {
                     ),
                   ],
                 ),
+          SizedBox(
+                height: 10,
+              ),
           Text(
             'Total Protein',
             style: TextStyle(
@@ -248,6 +244,9 @@ class _ReportPageState extends State<ReportPage> {
               ),
             ],
           ),
+          SizedBox(
+                height: 10,
+              ),
           Text(
             'Total Carbs',
             style: TextStyle(
@@ -288,17 +287,13 @@ class _ReportPageState extends State<ReportPage> {
   }
 
   Widget _buildPieChart(FoodListWeek data) {
-      return GlassContainer(
-      borderRadius: BorderRadius.all(Radius.circular(31.0)),
-      color: Theme.of(context).colorScheme.surface.withOpacity(0.7),
-      borderColor: Theme.of(context).colorScheme.surface.withOpacity(0.0),
-      height:212,
-      width:222,
-      isFrostedGlass: true,
-      frostedOpacity: 0.05,
-      blur: 12,
-      margin: EdgeInsets.zero,
-      child: Container(
+      return Card(
+          shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(31)) ,
+        ),
+        color: Theme.of(context).cardColor,
+        margin: EdgeInsets.zero,
+        child: Container(
           padding: EdgeInsets.symmetric(horizontal:21 ,vertical: 16),
           height: 212,
           width: 222,
@@ -431,21 +426,18 @@ class _ReportPageState extends State<ReportPage> {
       break;
     }
 
-    return GlassContainer(
-      borderRadius: BorderRadius.all(Radius.circular(31.0)),
-      color: Theme.of(context).colorScheme.surface.withOpacity(0.7),
-      borderColor: Theme.of(context).colorScheme.surface.withOpacity(0.0),
-      height:170,
-      width:MediaQuery.of(context).size.width*0.9,
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(31))
+      ),
       margin: EdgeInsets.zero,
-      isFrostedGlass: true,
-      frostedOpacity: 0.05,
+      color: Theme.of(context).cardColor,
       child: Container(
         padding: EdgeInsets.fromLTRB(0, 25, 30, 5),
         alignment: Alignment.center,
         margin: EdgeInsets.all(10),
-        height:99,
-        width: 180,
+        height:170,
+        width: MediaQuery.of(context).size.width*0.9,
         child:BarChart(
           BarChartData(
             borderData: FlBorderData(
@@ -468,7 +460,6 @@ class _ReportPageState extends State<ReportPage> {
 
                 )
             ),
-
 
             axisTitleData: FlAxisTitleData(
               show: true,
@@ -531,12 +522,6 @@ class _ReportPageState extends State<ReportPage> {
 
     return Scaffold(
         body: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/mid_${Theme.of(context).brightness==Brightness.light?'light':'dark'}.jpg'),
-              fit: BoxFit.cover,
-            ),
-          ),
           height: MediaQuery.of(context).size.height,
           child: SingleChildScrollView(
             child: FutureBuilder<QuerySnapshot>(
@@ -564,130 +549,148 @@ class _ReportPageState extends State<ReportPage> {
                   //   );
                   // }
                   //TODO main code
-                  return Container(
-                    padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.05),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.end,
+                  return Stack(
+                    children: [
+                      Card(
+                        margin: EdgeInsets.zero,
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        shape: RoundedRectangleBorder(
+                          borderRadius:  BorderRadius.vertical(bottom: Radius.elliptical(90, 40)),
+                        ),
+                        elevation: 8,
+                        child: Container(
+                          height: MediaQuery.of(context).size.height*0.4,
+                          width: MediaQuery.of(context).size.width,
+                          color: Theme.of(context).accentColor,
+                          child: SizedBox(),
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.05),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            Container(
-                              alignment: Alignment.center,
-                              padding: EdgeInsets.only(left: 7),
-                              margin: EdgeInsets.only(bottom: 5, left: 5),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white,
-                              ),
-                              child: IconButton(
-                                // padding: EdgeInsets.only(bottom: 10, left: 5),
-                                icon: Icon(Icons.arrow_back_ios),
-                                iconSize: 25,
-                                color: Colors.black,
-                                onPressed: () {
-                                  //DateTime joinDate = dateToS(userData.joinDate)
-                                  if(joinDate.isBefore(end.add(Duration(days: 6)))){
-                                    setState(() {
-                                      start=start.add(Duration(days: 6));
-                                      end=end.add(Duration(days: 6));
-                                    });
-                                  }
-                                },
-                              ),
-                            ),
-                            Column(
-                              // crossAxisAlignment: CrossAxisAlignment.start,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Container(
-                                  padding: EdgeInsets.only(top: 36),
                                   alignment: Alignment.center,
-                                  child: Text(
-                                    'Report',
-                                    style: TextStyle(
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.bold,
-                                      color: Theme.of(context).colorScheme.onSurface,
-                                    ),
+                                  padding: EdgeInsets.only(left: 7),
+                                  margin: EdgeInsets.only(bottom: 5, left: 5),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white,
+                                  ),
+                                  child: IconButton(
+                                    // padding: EdgeInsets.only(bottom: 10, left: 5),
+                                    icon: Icon(Icons.arrow_back_ios),
+                                    iconSize: 25,
+                                    color: Colors.black,
+                                    onPressed: () {
+                                      DateTime joinDate = stringToDate(userData.joinDate);
+                                      if(joinDate.isBefore(start.subtract(Duration(days: 7)))){
+                                        setState(() {
+                                          start=start.subtract(Duration(days: 7));
+                                          end=end.subtract(Duration(days: 7));
+                                        });
+                                      }
+                                    },
                                   ),
                                 ),
-                                Container(
-                                  // padding: EdgeInsets.only(top: 38),
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    '1st May - 7th May',
-                                    style: TextStyle(
-                                      fontSize: 19,
-                                      fontWeight: FontWeight.w500,
-                                      color: Theme.of(context).colorScheme.onSurface,
+                                Column(
+                                  // crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.only(top: 36),
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        'Report',
+                                        style: TextStyle(
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.bold,
+                                          color: Theme.of(context).colorScheme.onSurface,
+                                        ),
+                                      ),
                                     ),
+                                    Container(
+                                      // padding: EdgeInsets.only(top: 38),
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        '${dateToString(start)} - ${dateToString(end)}',
+                                        style: TextStyle(
+                                          fontSize: 19,
+                                          fontWeight: FontWeight.w500,
+                                          color: Theme.of(context).colorScheme.onSurface,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                // Spacer(),
+                                Container(
+                                  alignment: Alignment.center,
+                                  // padding: EdgeInsets.only(right: 5),
+                                  margin: EdgeInsets.only(bottom: 5, right: 5,),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white,
+                                  ),
+                                  child: IconButton(
+                                    // padding: EdgeInsets.only(bottom: 10, left: 5),
+                                    icon: Icon(Icons.arrow_forward_ios),
+                                    iconSize: 25,
+                                    color: Colors.black,
+                                    onPressed: () {
+                                      if(now.isAfter(end.add(Duration(days: 6)))){
+                                        setState(() {
+                                          start=start.add(Duration(days: 7));
+                                          end=end.add(Duration(days: 7));
+                                        });
+                                      }
+                                    },
                                   ),
                                 ),
                               ],
                             ),
-                            // Spacer(),
-                            Container(
-                              alignment: Alignment.center,
-                              // padding: EdgeInsets.only(right: 5),
-                              margin: EdgeInsets.only(bottom: 5, right: 5,),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white,
-                              ),
-                              child: IconButton(
-                                // padding: EdgeInsets.only(bottom: 10, left: 5),
-                                icon: Icon(Icons.arrow_forward_ios),
-                                iconSize: 25,
-                                color: Colors.black,
-                                onPressed: () {
-                                  if(now.isBefore(end.add(Duration(days: 6)))){
-                                    setState(() {
-                                      start=start.add(Duration(days: 6));
-                                      end=end.add(Duration(days: 6));
-                                    });
-                                  }
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        _buildLineChart(data),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            _buildLegends(data),
-
                             SizedBox(
-                              width: 10,
+                              height: 10,
                             ),
-
-                            _buildPieChart(data)
+                            _buildLineChart(data),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                _buildLegends(data),
+  
+                                SizedBox(
+                                  width: 10,
+                                ),
+  
+                                _buildPieChart(data)
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            _buildBarChart(data,1), //Fats Bar Chart
+                            SizedBox(
+                              height: 10,
+                            ),
+                            _buildBarChart(data,2), //Protein Bar Chart
+                            SizedBox(
+                              height: 10,
+                            ),
+                            _buildBarChart(data,3), //Carbs Bar Chart
+                            SizedBox(
+                              height: 90,
+                            )
                           ],
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        _buildBarChart(data,1), //Fats Bar Chart
-                        SizedBox(
-                          height: 10,
-                        ),
-                        _buildBarChart(data,2), //Protein Bar Chart
-                        SizedBox(
-                          height: 10,
-                        ),
-                        _buildBarChart(data,3), //Carbs Bar Chart
-                        SizedBox(
-                          height: 90,
-                        )
-                      ],
-                    ),
+                      ),
+                    ]
                   );
                 }
                 return Container(
