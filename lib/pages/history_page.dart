@@ -257,6 +257,7 @@ class _HistoryPageState extends State<HistoryPage> {
     User user = Provider.of<User>(context);
     UserData userData = Provider.of<UserData>(context);
     DateTime joinDate = stringToDate(userData.joinDate);
+    var uHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Stack(
         children:[
@@ -268,7 +269,7 @@ class _HistoryPageState extends State<HistoryPage> {
           ),
           elevation: 8,
         child: Container(
-          height: MediaQuery.of(context).size.height*0.4,
+          height: _format == CalendarFormat.month ? uHeight*0.4 :( _format == CalendarFormat.twoWeeks ? uHeight*0.25 : uHeight*0.22),
           width: MediaQuery.of(context).size.width,
           color: Theme.of(context).accentColor,
           child: SizedBox(),
@@ -390,7 +391,7 @@ class _HistoryPageState extends State<HistoryPage> {
                   Padding(
                     padding: EdgeInsets.only(left:25, top: 13, bottom: 10),
                     child: Text(
-                      "${dateToString(_selectedDay)}'s food",
+                      "${formattedDate(_selectedDay)}'s food",
                       style: TextStyle(
                           fontSize: 26,
                           fontWeight: FontWeight.w400

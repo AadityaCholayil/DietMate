@@ -40,6 +40,7 @@ class _ReportPageState extends State<ReportPage> {
     return result;
   }
 
+
   Widget _buildLineChart(FoodListWeek data) {
     return Card(
       margin: EdgeInsets.zero,
@@ -97,6 +98,10 @@ class _ReportPageState extends State<ReportPage> {
               ),
               bottomTitles: SideTitles(
                 showTitles: true,
+                getTitles: (i){
+                  i--;
+                  return (start.add(Duration(days: i.toInt())).day).toString();
+                },
                 reservedSize: 5,
                 getTextStyles: (value) => TextStyle(
                   color: Theme.of(context).colorScheme.onSurface,
@@ -115,7 +120,7 @@ class _ReportPageState extends State<ReportPage> {
               ),
               bottomTitle: AxisTitle(
                 showTitle: true,
-                titleText: 'Days',
+                titleText: 'Dates',
                 margin: 15,
                 textStyle: TextStyle(
                   fontSize: 18,
@@ -473,7 +478,7 @@ class _ReportPageState extends State<ReportPage> {
               ),
               bottomTitle: AxisTitle(
                 showTitle: true,
-                titleText: 'Days',
+                titleText: 'Dates',
                 margin:10,
                 textStyle: TextStyle(
                   color: Theme.of(context).colorScheme.onSurface,
@@ -490,6 +495,10 @@ class _ReportPageState extends State<ReportPage> {
                 ),
               ),
               bottomTitles: SideTitles(
+                getTitles: (i){
+                  i--;
+                  return (start.add(Duration(days: i.toInt())).day).toString();
+                },
                 showTitles: true,
                 reservedSize: 5,
                 getTextStyles: (value) => TextStyle(
@@ -617,7 +626,7 @@ class _ReportPageState extends State<ReportPage> {
                                       // padding: EdgeInsets.only(top: 38),
                                       alignment: Alignment.center,
                                       child: Text(
-                                        '${dateToString(start)} - ${dateToString(end)}',
+                                        '${ formattedDate(start)} - ${formattedDate(end)}',
                                         style: TextStyle(
                                           fontSize: 19,
                                           fontWeight: FontWeight.w500,
