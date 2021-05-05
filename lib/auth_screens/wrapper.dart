@@ -39,7 +39,7 @@ class Wrapper extends StatelessWidget {
             return MaterialApp(
                 debugShowCheckedModeBanner: false,
                 theme: themeNotifier.getTheme(),
-                home: Loading()
+                home: Scaffold(body: Loading()),
             );
           }
         },

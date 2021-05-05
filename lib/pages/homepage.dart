@@ -4,6 +4,7 @@ import 'package:dietmate/form_pages/food_form_final.dart';
 import 'package:dietmate/model/food.dart';
 import 'package:dietmate/model/food_list_day.dart';
 import 'package:dietmate/model/user.dart';
+import 'package:dietmate/services/database.dart';
 import 'package:dietmate/shared/conversion.dart';
 import 'package:dietmate/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -54,7 +55,7 @@ class _HomePageState extends State<HomePage> {
         child: SleekCircularSlider(
           min: 0,
           max: caloriesGoal.toDouble(),
-          initialValue: consumedCalories.floorToDouble(),
+          initialValue: consumedCalories<=caloriesGoal?consumedCalories.floorToDouble():caloriesGoal.toDouble(),
           appearance: CircularSliderAppearance(
             // infoProperties: InfoProperties(
             //   topLabelText: '1200',
@@ -68,6 +69,8 @@ class _HomePageState extends State<HomePage> {
               handlerSize: 7.0,
             ),
             customColors: CustomSliderColors(
+              gradientStartAngle: 180,
+              gradientEndAngle: 190,
               progressBarColors: [
                 Color( 0xffB5FF48),
                 Color( 0xff94FC13),
@@ -90,7 +93,7 @@ class _HomePageState extends State<HomePage> {
                       //padding: EdgeInsets.all(10.0),
                       child:Text("${consumedCalories.toInt()}" ,
                         style: TextStyle(
-                          fontSize: 62,
+                          fontSize: 60,
                           color: Theme.of(context).colorScheme.onSurface,
                           fontStyle: FontStyle.normal,
                           fontWeight: FontWeight.w700
@@ -98,7 +101,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.fromLTRB(0,0,20,5),
+                      padding: EdgeInsets.fromLTRB(0,0,0,7),
                       child: Text(
                         '/${caloriesGoal.toInt()}' ,
                         style: TextStyle(
@@ -186,22 +189,22 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  ListView buildListView(FoodListDay foodList) {
+  ListView buildListView(FoodListDay foodList, User user) {
     return ListView.builder(
       shrinkWrap: true,
       itemCount: foodList.list.length,
       physics: NeverScrollableScrollPhysics(),
       itemBuilder: (BuildContext context, int i){
         Food food = foodList.list[i];
-        return buildCard(food);
+        return buildCard(food, user);
       },
     );
   }
 
-  InkWell buildCard(Food food) {
+  InkWell buildCard(Food food, User user) {
     return InkWell(
       onTap: () {
-        showDialog(context: context, builder: (BuildContext context) => foodInfoDialog(food));
+        showDialog(context: context, builder: (BuildContext context) => foodInfoDialog(food, user));
       },
       child: Card(
         clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -265,7 +268,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget foodInfoDialog(Food food){
+  Widget foodInfoDialog(Food food, User user){
     return Dialog(
       clipBehavior: Clip.antiAliasWithSaveLayer,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
@@ -364,7 +367,6 @@ class _HomePageState extends State<HomePage> {
                         );
                       });
                     }
-
                   ),
                   TextButton(
                     child: Text(
@@ -374,8 +376,9 @@ class _HomePageState extends State<HomePage> {
                           fontWeight: FontWeight.w600
                       ),
                     ),
-                      onPressed: () {
-                      print('Pressed');
+                    onPressed: () async {
+                      await DatabaseService(uid: user.uid).deleteFood(food);
+                      Navigator.pop(context);
                     }
                   ),
                   TextButton(
@@ -407,6 +410,7 @@ class _HomePageState extends State<HomePage> {
     final userData = Provider.of<UserData>(context);
     caloriesGoal=userData.calorieGoal;
     Size size = MediaQuery.of(context).size;
+    print(MediaQuery.of(context).size.width);
 
     return Scaffold(
       body: Container(
@@ -429,8 +433,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               Container(
-                // color: ,
-                padding: EdgeInsets.symmetric(horizontal:27.0),
+                padding: EdgeInsets.symmetric(horizontal: size.width*0.0625),
                 child: FutureBuilder<QuerySnapshot>(
                   future: getData(user),
                   builder: (context, snapshot){
@@ -491,7 +494,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                             SizedBox(height: 8),
-                            buildListView(foodList),
+                            buildListView(foodList, user),
                           ],
                         ),
                       );

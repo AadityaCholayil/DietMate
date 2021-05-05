@@ -134,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(width: 15,),
               IconButton(
                 icon: Icon(
-                  Icons.settings,
+                  Icons.person,
                   color: pageNo==3?Theme.of(context).toggleableActiveColor:Theme.of(context).colorScheme.onSurface,
                   size: 30.0,
                 ),

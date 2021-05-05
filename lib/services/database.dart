@@ -111,4 +111,17 @@ class DatabaseService{
     });
   }
 
+  Future deleteFood(Food food) async {
+    return await db.collection('users')
+        .doc(uid)
+        .collection('foods')
+        .doc(food.uid)
+        .delete()
+        .then((value) => print("Food Deleted"))
+        .catchError((error) {
+          print("Failed to delete food: $error");
+          return 'error';
+        });
+  }
+
 }

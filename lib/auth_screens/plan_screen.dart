@@ -293,6 +293,7 @@ class _PlanScreenState extends State<PlanScreen> {
                       ),
                       onPressed: () async {
                         UserData newUserData = widget.userData;
+                        print("url: ${newUserData.userProfileUrl}");
                         newUserData.calorieGoal=_customCalorieGoal??_calorieGoal;
                         setState(() => loading = true);
                         await DatabaseService(uid: user.uid).updateUserData(newUserData);

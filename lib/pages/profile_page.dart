@@ -34,7 +34,7 @@ class _ProfilePageState extends State<ProfilePage> {
       title: Text('Dark Theme',
         style: TextStyle(
           fontSize: 25,
-          fontWeight: FontWeight.w800
+          fontWeight: FontWeight.w400
         ),
       ),
       value: _darkTheme,
@@ -77,6 +77,47 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  Row _buildRow(String left, String right) {
+    return Row(
+      children: [
+        Expanded(
+          flex: 1,
+          child: Text(
+            left,
+            style: TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.w400
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 1,
+          child: Text(
+            right,
+            style: TextStyle(
+                fontSize: 25,
+              fontWeight: FontWeight.w600
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Container buildHeader(BuildContext context, String header) {
+    return Container(
+      padding: EdgeInsets.all(10),
+      width: MediaQuery.of(context).size.width,
+      color:Theme.of(context).highlightColor.withOpacity(0.2),
+      child: Text(
+        header,
+        style: TextStyle(
+          fontSize: 18,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -92,34 +133,33 @@ class _ProfilePageState extends State<ProfilePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                padding: EdgeInsets.fromLTRB(40,30,0,16),
+                padding: EdgeInsets.fromLTRB(25,25,0,30),
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  'Profile',
+                  'Your Profile',
                   style: TextStyle(
-                    fontSize: 42,
+                    fontSize: 35,
                     fontWeight: FontWeight.bold,
                     color: Color(0xff176607),
                   ),
                 ),
               ),
               Container(
+                alignment: Alignment.center,
                 clipBehavior: Clip.antiAliasWithSaveLayer,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: Colors.black54
                 ),
-                  width: MediaQuery.of(context).size.width,
-                  height:180.0,
                 child: CircleAvatar(
+                  backgroundImage: NetworkImage(userData.userProfileUrl),
                   radius: 70,
                   backgroundColor: Colors.grey,
                 ),
-                ),
-                //alignment: Alignment.center,
+              ),
               SizedBox(height: 5),
               Container(
-                padding: EdgeInsets.only(left:125),
+                alignment: Alignment.center,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -147,184 +187,43 @@ class _ProfilePageState extends State<ProfilePage> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (BuildContext context) => AdditionalDetailsScreen()),
+                        MaterialPageRoute(builder: (BuildContext context) => AdditionalDetailsScreen(userData: userData,)),
                       );
                     },
                   ),
                 ),
               ),
-              SizedBox(height: 5),
+              SizedBox(height: 20),
               Container(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    buildHeader(context, 'DETAILS'),
                     Container(
-                      padding: EdgeInsets.all(10),
-                      width: MediaQuery.of(context).size.width,
-                      color:Theme.of(context).highlightColor.withOpacity(0.2),
-                      child: Text(
-                        'DETAILS',
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                    Container(
-                    padding: EdgeInsets.only(left: 20,top: 10),
-                    child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
+                      padding: EdgeInsets.only(left: 20,top: 10),
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'Age',
-                            style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.w800
-                            ),
-                          ),
-                          SizedBox(width: 150),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '${userData.age.toString()}',
-                                style: TextStyle(
-                                  fontSize: 25
-                                ),
-                              ),
-                            ],
-                          ),
+                          _buildRow('Age', '${userData.age}'),
+                          SizedBox(height:10),
+                          _buildRow('Height', '${userData.height}'),
+                          SizedBox(height:10),
+                          _buildRow('Weight', '${userData.weight}'),
+                          SizedBox(height:10),
+                          _buildRow('Gender', '${userData.isMale?'Male':'Female'}'),
+                          SizedBox(height:10),
+                          _buildRow('Joining Date', '${userData.joinDate}'),
                         ],
                       ),
-                      SizedBox(height:10),
-                      Row(
-                        children: [
-                          Text(
-                            'Height',
-                            style: TextStyle(
-                                fontSize: 25,
-                                fontWeight: FontWeight.w800
-                            ),
-                          ),
-                          SizedBox(width: 121),
-                          Row(
-                            //crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '${userData.height.toString()} cm',
-                                style: TextStyle(
-                                    fontSize: 25
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(height:10),
-                      Row(
-                        children: [
-                          Text(
-                            'Gender',
-                            style: TextStyle(
-                                fontSize: 25,
-                                fontWeight: FontWeight.w800
-                            ),
-                          ),
-                          SizedBox(width: 115),
-                          Row(
-                            //crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '${userData.isMale?'Male':'Female'}',
-                                style: TextStyle(
-                                    fontSize: 25
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(height:10),
-                      Row(
-                        children: [
-                          Text(
-                            'Activity Level',
-                            style: TextStyle(
-                                fontSize: 25,
-                                fontWeight: FontWeight.w800
-                            ),
-                          ),
-                          SizedBox(width: 50),
-                          Row(
-                            //crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '${userData.activityLevel}',
-                                style: TextStyle(
-                                    fontSize: 25
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(height:10),
-                      Row(
-                        children: [
-                          Text(
-                            'Joining Date',
-                            style: TextStyle(
-                                fontSize: 25,
-                                fontWeight: FontWeight.w800
-                            ),
-                          ),
-                          SizedBox(width: 58),
-                          Row(
-                            //crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '${userData.joinDate}',
-                                style: TextStyle(
-                                    fontSize: 25
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                    ),
                     ),
                     SizedBox(height: 10),
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      width: MediaQuery.of(context).size.width,
-                      color:Theme.of(context).highlightColor.withOpacity(0.2),
-                      child: Text(
-                        'THEME',
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
+                    buildHeader(context, 'PREFERENCES'),
                   ],
                 ),
               ),
               _buildTheme(themeNotifier),
               SizedBox(height: 10),
-              Container(
-                padding: EdgeInsets.all(10),
-                width: MediaQuery.of(context).size.width,
-                color:Theme.of(context).highlightColor.withOpacity(0.2),
-                child: Text(
-                  'ACCOUNT ACTIONS',
-                  style: TextStyle(
-                    fontSize: 20,
-                  ),
-                ),
-              ),
+              buildHeader(context, 'ACCOUNT ACTIONS'),
               Padding(
                 padding: const EdgeInsets.only(left: 20),
                 child: _buildSignOut(),

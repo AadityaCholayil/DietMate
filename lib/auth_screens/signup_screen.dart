@@ -1,8 +1,8 @@
+import 'package:dietmate/auth_screens/login_screen.dart';
 import 'package:dietmate/model/user.dart';
 import 'package:dietmate/services/auth.dart';
 import 'package:dietmate/shared/loading.dart';
 import 'package:flutter/material.dart';
-import 'package:glass_kit/glass_kit.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -74,6 +74,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
+  Widget logInButton(){
+    return TextButton(
+      style: TextButton.styleFrom(
+          padding: EdgeInsets.only(bottom: 15),
+          primary: Color(0xFF2ACD07)
+      ),
+      child: Text(
+        'Login',
+        style: TextStyle(
+          fontSize: 20,
+          decoration: TextDecoration.underline,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+      onPressed: (){
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => LoginScreen()
+            )
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,11 +130,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
               SizedBox(height:10),
               _buildPassword(),
               SizedBox(height:10),
+              Container(
+                alignment: Alignment.topRight,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      "Already have an account?",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    logInButton(),
+                  ],
+                ),
+              ),
               loading?LoadingSmall():ElevatedButton(
                 child:  Text(
                   'SignUp',
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 25,
                   ),
                 ),
                 onPressed: () async {

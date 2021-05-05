@@ -10,6 +10,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class AdditionalDetailsScreen extends StatefulWidget {
+  final UserData userData;
+  AdditionalDetailsScreen({this.userData});
   @override
   _AdditionalDetailsScreenState createState() => _AdditionalDetailsScreenState();
 }
@@ -25,12 +27,29 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
   String _activity = 'Sedentary: little or no exercise';
   String _joinDate = '';
   String _profileUrl = 'https://rpgplanner.com/wp-content/uploads/2020/06/no-photo-available.png';
-  String defaultUrl = 'https://rpgplanner.com/wp-content/uploads/2020/06/no-photo-available.png';
   Map caloriePlan= {};
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  bool uploading=false;
+
   File _image;
   final picker = ImagePicker();
+
+
+  @override
+  void initState() {
+    super.initState();
+    if(widget.userData!=null){
+      _name=widget.userData.name;
+      _age=widget.userData.age;
+      _isMale=widget.userData.isMale;
+      _height=widget.userData.height;
+      _weight=widget.userData.weight;
+      _activityLevel=widget.userData.activityLevel;
+      _joinDate=widget.userData.joinDate;
+      _profileUrl=widget.userData.userProfileUrl;
+    }
+  }
 
   Future uploadFile(User user) async {
     try {
@@ -38,13 +57,22 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
           .ref('UserProfiles/${user.uid}/pic1.jpeg')
           .putFile(_image);
     } on Exception catch (e) {
-      print('Failed');
+      print('Failed - $e');
     }
+    try {
+      var result = await firebase_storage.FirebaseStorage.instance
+          .ref('UserProfiles/${user.uid}/pic1.jpeg')
+          .getDownloadURL();
+      _profileUrl=result;
+      print('profileUrl: $_profileUrl');
+    } on Exception catch (e) {
+      print('Failed - $e');
+    }
+
   }
 
   Future getImageFromCamera() async{
     final pickedImage = await picker.getImage(source: ImageSource.camera);
-    print('hi');
     setState((){
       if(pickedImage != null){
         _image = File(pickedImage.path);
@@ -57,7 +85,6 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
 
   Future getImageFromGallery() async{
     final pickedImage = await picker.getImage(source: ImageSource.gallery);
-    print('hi');
     setState((){
       if(pickedImage != null){
         _image = File(pickedImage.path);
@@ -69,7 +96,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
     );
   }
 
-  Widget _buildImagePicker(BuildContext context){
+  Widget _buildImagePicker(BuildContext context, User user){
     return Container(
       color: Theme.of(context).dialogBackgroundColor,
       child: Column(
@@ -82,7 +109,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
               print('pressed');
               await getImageFromCamera();
               if(_image!=null){
-                await showDialog(context: context, builder: (context)=>_buildImageDialog());
+                await showDialog(context: context, builder: (context)=>_buildImageDialog(user));
               }
               setState(() {
                 Navigator.pop(context);
@@ -96,7 +123,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
               print('pressed');
               await getImageFromGallery();
               if(_image!=null){
-                await showDialog(context: context, builder: (context)=>_buildImageDialog());
+                await showDialog(context: context, builder: (context)=>_buildImageDialog(user));
               }
               setState(() {
                 Navigator.pop(context);
@@ -108,7 +135,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
     );
   }
 
-  Widget _buildImageDialog(){
+  Widget _buildImageDialog(User user){
     Size size = MediaQuery.of(context).size;
     return Dialog(
       clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -125,18 +152,41 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                 fit: BoxFit.cover,
               ),
             ),
+            uploading==true?Container(
+              padding: EdgeInsets.only(top: 7),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(width: 10,),
+                  Text(
+                    'Uploading..',
+                    style: TextStyle(
+                      fontSize: 24,
+                    ),
+                  ),
+                ],
+              ),
+            ):
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
                   child: Text(
-                    'Confirm',
+                    'Upload',
                     style: TextStyle(
                       fontSize: 24,
                     ),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
+                    setState(() {
+                      uploading=true;
+                    });
+                    await uploadFile(user);
+                    setState(() {
+                      uploading=false;
+                    });
                     Navigator.pop(context);
                   },
                 ),
@@ -161,7 +211,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
     );
   }
 
-  Widget _buildProfile(BuildContext context){
+  Widget _buildProfile(BuildContext context, User user){
     return Container(
       clipBehavior: Clip.antiAliasWithSaveLayer,
       decoration: BoxDecoration(
@@ -174,12 +224,12 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
           showModalBottomSheet(
             context: context,
             builder:(context){
-              return _buildImagePicker(context);
+              return _buildImagePicker(context, user);
             }
           );
         },
         child: CircleAvatar(
-          backgroundImage: _image==null?NetworkImage(_profileUrl):FileImage(_image),
+          backgroundImage: NetworkImage(_profileUrl),
           radius: 70,
           child: Column(
             children: [
@@ -204,6 +254,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
 
   Widget _buildName(){
     return TextFormField(
+      initialValue: _name,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 18),
           enabledBorder: OutlineInputBorder(
@@ -236,6 +287,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
 
   Widget _buildAge(){
     return TextFormField(
+      initialValue: _age.toString()=='null'?'':_age.toString(),
       decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 18),
           enabledBorder: OutlineInputBorder(
@@ -318,6 +370,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
 
   Widget _buildHeight(){
     return TextFormField(
+      initialValue: _height.toString()=='null'?'':_height.toString(),
       decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 18),
           enabledBorder: OutlineInputBorder(
@@ -350,6 +403,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
 
   Widget _buildWeight(){
     return TextFormField(
+      initialValue: _weight.toString()=='null'?'':_weight.toString(),
       decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 18),
           enabledBorder: OutlineInputBorder(
@@ -469,7 +523,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                   ),
                 ),
                 SizedBox(height: 5),
-                _buildProfile(context),
+                _buildProfile(context, user),
                 SizedBox(height: 15),
                 _buildName(),
                 SizedBox(height: 10,),
@@ -500,11 +554,6 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                       setState(() {
                         _formKey.currentState.save();
                       });
-
-                      if(_image!=null){
-                        await uploadFile(user);
-                      }
-
                       switch (_activity){
                         case 'Sedentary: little or no exercise' :{
                           _activityLevel=1.2;
@@ -547,8 +596,10 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                       caloriePlan['mildLoss']=bmr*0.88;
                       caloriePlan['weightLoss']=bmr*0.75;
                       caloriePlan['extLoss']=bmr*0.5;
-                      DateTime now = DateTime.now();
-                      _joinDate=dateToString(now);
+                      if (_joinDate=='') {
+                        DateTime now = DateTime.now();
+                        _joinDate=dateToString(now);
+                      }
                       UserData userData = UserData(
                         name: _name,
                         age: _age,
@@ -556,8 +607,10 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                         height: _height,
                         weight: _weight,
                         activityLevel: _activityLevel,
-                        joinDate: _joinDate
+                        joinDate: _joinDate,
+                        userProfileUrl: _profileUrl
                       );
+                      print(userData.userProfileUrl);
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (BuildContext context) => PlanScreen(userData: userData,caloriePlan: caloriePlan,)),

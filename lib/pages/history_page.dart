@@ -3,11 +3,11 @@ import 'package:dietmate/form_pages/food_form_final.dart';
 import 'package:dietmate/model/food.dart';
 import 'package:dietmate/model/food_list_day.dart';
 import 'package:dietmate/model/user.dart';
+import 'package:dietmate/services/database.dart';
 import 'package:dietmate/shared/conversion.dart';
 import 'package:dietmate/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:glass_kit/glass_kit.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -33,35 +33,30 @@ class _HistoryPageState extends State<HistoryPage> {
         .get();
   }
 
-  ListView buildListView(FoodListDay foodList) {
+  ListView buildListView(FoodListDay foodList, User user) {
     return ListView.builder(
       shrinkWrap: true,
       itemCount: foodList.list.length,
       physics: NeverScrollableScrollPhysics(),
       itemBuilder: (BuildContext context, int i){
         Food food = foodList.list[i];
-        return buildCard(food);
+        return buildCard(food, user);
       },
     );
   }
 
-  InkWell buildCard(Food food) {
+  InkWell buildCard(Food food, User user) {
     return InkWell(
       onTap: () {
-        showDialog(context: context, builder: (BuildContext context) => foodInfoDialog(food));
+        showDialog(context: context, builder: (BuildContext context) => foodInfoDialog(food, user));
       },
       child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(34.0)),
-        ),
-
-        color: Theme.of(context).cardColor,
-        //isFrostedGlass: true,
-        //frostedOpacity: 0.05,
-        child:Container(
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        elevation: 7,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(34)),
+        child: Container(
           padding: EdgeInsets.all(6),
           height: 107,
-          //color: Colors.white10,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -73,10 +68,10 @@ class _HistoryPageState extends State<HistoryPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      '${food.name.length>20?food.name.substring(0,16)+"..":food.name}',
+                      '${food.name.length>16?food.name.substring(0,15)+"..":food.name}',
                       style: TextStyle(
                           fontSize:26,
-                          fontWeight: FontWeight.w500
+                          fontWeight: FontWeight.bold
                       ),
                     ),
                     //SizedBox(height: 1),
@@ -84,7 +79,7 @@ class _HistoryPageState extends State<HistoryPage> {
                       'Calories: ${food.calories} Kcal',
                       style:TextStyle(
                           fontSize: 20,
-                          fontWeight: FontWeight.w400
+                          fontWeight: FontWeight.w500
                       ),
                     ),
                     //SizedBox(height: 1),
@@ -92,7 +87,7 @@ class _HistoryPageState extends State<HistoryPage> {
                       'Time: ${food.time}',
                       style:TextStyle(
                           fontSize: 20,
-                          fontWeight: FontWeight.w400
+                          fontWeight: FontWeight.w500
                       ),
                     ),
                   ],
@@ -117,7 +112,7 @@ class _HistoryPageState extends State<HistoryPage> {
     );
   }
 
-  Widget foodInfoDialog(Food food){
+  Widget foodInfoDialog(Food food, User user){
     return Dialog(
       clipBehavior: Clip.antiAliasWithSaveLayer,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
@@ -216,7 +211,6 @@ class _HistoryPageState extends State<HistoryPage> {
                           );
                         });
                       }
-
                   ),
                   TextButton(
                       child: Text(
@@ -226,8 +220,9 @@ class _HistoryPageState extends State<HistoryPage> {
                             fontWeight: FontWeight.w600
                         ),
                       ),
-                      onPressed: () {
-                        print('Pressed');
+                      onPressed: () async {
+                        await DatabaseService(uid: user.uid).deleteFood(food);
+                        Navigator.pop(context);
                       }
                   ),
                   TextButton(
@@ -423,7 +418,7 @@ class _HistoryPageState extends State<HistoryPage> {
                         //   );
                         // }
                         return Container(
-                          child: buildListView(foodList)
+                          child: buildListView(foodList, user)
                         );
                       }
                       return Container();
