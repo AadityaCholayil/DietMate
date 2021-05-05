@@ -313,10 +313,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
               _buildTheme(themeNotifier),
-              Padding(
-                padding: const EdgeInsets.only(left: 15),
-                child: _buildDebugPage(context),
-              ),
               SizedBox(height: 10),
               Container(
                 padding: EdgeInsets.all(10),
@@ -332,6 +328,10 @@ class _ProfilePageState extends State<ProfilePage> {
               Padding(
                 padding: const EdgeInsets.only(left: 20),
                 child: _buildSignOut(),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 15),
+                child: _buildDebugPage(context),
               ),
               SizedBox(height: 70),
             ],
