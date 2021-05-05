@@ -23,6 +23,7 @@ class _HistoryPageState extends State<HistoryPage> {
   DateTime _focusedDay = DateTime.now();
   FirebaseFirestore db = FirebaseFirestore.instance;
 
+
   Future<QuerySnapshot> getData(User user) async {
     return await db.collection('users')
         .doc(user.uid)
@@ -50,12 +51,17 @@ class _HistoryPageState extends State<HistoryPage> {
         showDialog(context: context, builder: (BuildContext context) => foodInfoDialog(food));
       },
       child: Card(
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        elevation: 7,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(34)),
-        child: Container(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(34.0)),
+        ),
+
+        color: Theme.of(context).cardColor,
+        //isFrostedGlass: true,
+        //frostedOpacity: 0.05,
+        child:Container(
           padding: EdgeInsets.all(6),
           height: 107,
+          //color: Colors.white10,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -67,10 +73,10 @@ class _HistoryPageState extends State<HistoryPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      '${food.name.length>16?food.name.substring(0,15)+"..":food.name}',
+                      '${food.name.length>20?food.name.substring(0,16)+"..":food.name}',
                       style: TextStyle(
                           fontSize:26,
-                          fontWeight: FontWeight.bold
+                          fontWeight: FontWeight.w500
                       ),
                     ),
                     //SizedBox(height: 1),
@@ -78,7 +84,7 @@ class _HistoryPageState extends State<HistoryPage> {
                       'Calories: ${food.calories} Kcal',
                       style:TextStyle(
                           fontSize: 20,
-                          fontWeight: FontWeight.w500
+                          fontWeight: FontWeight.w400
                       ),
                     ),
                     //SizedBox(height: 1),
@@ -86,7 +92,7 @@ class _HistoryPageState extends State<HistoryPage> {
                       'Time: ${food.time}',
                       style:TextStyle(
                           fontSize: 20,
-                          fontWeight: FontWeight.w500
+                          fontWeight: FontWeight.w400
                       ),
                     ),
                   ],
@@ -94,7 +100,7 @@ class _HistoryPageState extends State<HistoryPage> {
               ),
               Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(34)
+                    borderRadius: BorderRadius.circular(34)
                 ),
                 height: 95,
                 width: 95,
@@ -195,46 +201,47 @@ class _HistoryPageState extends State<HistoryPage> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   TextButton(
-                    child: Text(
-                      'Update',
-                      style: TextStyle(
-                          fontSize:23,
-                          fontWeight: FontWeight.w600
+                      child: Text(
+                        'Update',
+                        style: TextStyle(
+                            fontSize:23,
+                            fontWeight: FontWeight.w600
+                        ),
                       ),
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => FoodFormFinal(food: food))
-                        );
-                      });
-                    }
+                      onPressed: () {
+                        setState(() {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => FoodFormFinal(food: food))
+                          );
+                        });
+                      }
+
                   ),
                   TextButton(
-                    child: Text(
-                      'Delete',
-                      style: TextStyle(
-                          fontSize:23,
-                          fontWeight: FontWeight.w600
+                      child: Text(
+                        'Delete',
+                        style: TextStyle(
+                            fontSize:23,
+                            fontWeight: FontWeight.w600
+                        ),
                       ),
-                    ),
-                    onPressed: () {
-                      print('Pressed');
-                    }
+                      onPressed: () {
+                        print('Pressed');
+                      }
                   ),
                   TextButton(
-                    child: Text(
-                      'Cancel',
-                      style: TextStyle(
-                          fontSize:23,
-                          fontWeight: FontWeight.w600
+                      child: Text(
+                        'Cancel',
+                        style: TextStyle(
+                            fontSize:23,
+                            fontWeight: FontWeight.w600
+                        ),
                       ),
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                      print('Pressed');
-                    }
+                      onPressed: () {
+                        Navigator.pop(context);
+                        print('Pressed');
+                      }
                   ),
                 ],
               ),
@@ -250,173 +257,183 @@ class _HistoryPageState extends State<HistoryPage> {
     User user = Provider.of<User>(context);
     UserData userData = Provider.of<UserData>(context);
     DateTime joinDate = stringToDate(userData.joinDate);
+    var uHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/mid_${Theme.of(context).brightness==Brightness.light?'light':'dark'}.jpg'),
-            fit: BoxFit.cover,
+      body: Stack(
+        children:[
+        Card(
+          margin: EdgeInsets.zero,
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          shape: RoundedRectangleBorder(
+            borderRadius:  BorderRadius.vertical(bottom: Radius.elliptical(90, 40)),
           ),
+          elevation: 8,
+        child: Container(
+          height: _format == CalendarFormat.month ? uHeight*0.4 :( _format == CalendarFormat.twoWeeks ? uHeight*0.25 : uHeight*0.22),
+          width: MediaQuery.of(context).size.width,
+          color: Theme.of(context).accentColor,
+          child: SizedBox(),
         ),
-        padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.0625),
-        height: MediaQuery.of(context).size.height,
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.fromLTRB(50,37,0,16),
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'History',
-                  style: TextStyle(
-                    fontSize: 40,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
-                ),
-              ),
-              GlassContainer(
-                borderRadius: BorderRadius.all(Radius.circular(34.0)),
-                color: Theme.of(context).cardColor.withOpacity(0.5),
-                borderColor: Theme.of(context).colorScheme.surface.withOpacity(0.0),
-                height: _format == CalendarFormat.month?425:_format == CalendarFormat.week?160:220,
-                width: MediaQuery.of(context).size.width*0.875,
-                isFrostedGlass: true,
-                frostedOpacity: 0.01,
-                blur: 15,
-                child: Container(
-                  // duration: Duration(milliseconds: 300),
-                  //height: _format == CalendarFormat.month?425:_format == CalendarFormat.week?170:250,
-                  padding: EdgeInsets.fromLTRB(15,5,15,15),
-                  child: TableCalendar(
-                    focusedDay: _focusedDay,
-                    firstDay: joinDate,
-                    lastDay: now,
-                    calendarFormat: _format,
-                    onFormatChanged: (CalendarFormat format) {
-                      setState(() {
-                        _format = format;
-                      });
-                    },
-                    startingDayOfWeek: StartingDayOfWeek.sunday,
-                    daysOfWeekVisible: true,
-                    daysOfWeekHeight: 22,
-                    daysOfWeekStyle: DaysOfWeekStyle(
-                      weekdayStyle: TextStyle(
-                        fontSize: 20,
-                          color: Theme.of(context).colorScheme.onSurface,fontWeight: FontWeight.w500
+      ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.0625),
+            height: MediaQuery.of(context).size.height,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.fromLTRB(30,30,0,10),
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'History',
+                      style: TextStyle(
+                        fontSize: 38,
+                        fontWeight: FontWeight.bold,
+                        // color: Theme.of(context).colorScheme.onSurface,
+                        color: Color(0xff176607),
                       ),
-                      weekendStyle: TextStyle(
-                        fontSize: 20,
-                        color: Colors.red,fontWeight: FontWeight.w500
-                      )
                     ),
+                  ),
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(34.0)),
+                    ),
+                    color: Theme.of(context).cardColor,
+                    child: Container(
+                      // duration: Duration(milliseconds: 300),
+                      //height: _format == CalendarFormat.month?425:_format == CalendarFormat.week?170:250,
+                      padding: EdgeInsets.fromLTRB(15,5,15,15),
+                      child: TableCalendar(
+                        focusedDay: _focusedDay,
+                        firstDay: joinDate,
+                        lastDay: now,
+                        calendarFormat: _format,
+                        onFormatChanged: (CalendarFormat format) {
+                          setState(() {
+                            _format = format;
+                          });
+                        },
+                        startingDayOfWeek: StartingDayOfWeek.sunday,
+                        daysOfWeekVisible: true,
+                        daysOfWeekHeight: 22,
+                        daysOfWeekStyle: DaysOfWeekStyle(
+                          weekdayStyle: TextStyle(
+                            fontSize: 20,
+                              color: Theme.of(context).colorScheme.onSurface,fontWeight: FontWeight.w500
+                          ),
+                          weekendStyle: TextStyle(
+                            fontSize: 20,
+                            color: Colors.red,fontWeight: FontWeight.w500
+                          )
+                        ),
 
-                    //Day Changed
-                    onDaySelected: (DateTime selectDay, DateTime focusDay) {
-                      if (!isSameDay(_selectedDay, selectDay)) {
-                        setState(() {
-                          _selectedDay = selectDay;
-                          _focusedDay = selectDay;
-                        });
-                        print('$_focusedDay, $_selectedDay');
+                        //Day Changed
+                        onDaySelected: (DateTime selectDay, DateTime focusDay) {
+                          if (!isSameDay(_selectedDay, selectDay)) {
+                            setState(() {
+                              _selectedDay = selectDay;
+                              _focusedDay = selectDay;
+                            });
+                            print('$_focusedDay, $_selectedDay');
+                          }
+                        },
+                        selectedDayPredicate: (DateTime date) {
+                          return isSameDay(_selectedDay, date);
+                        },
+                        availableGestures: AvailableGestures.horizontalSwipe,
+                        //headerVisible: false,
+                        calendarStyle: CalendarStyle(
+                          isTodayHighlighted: true,
+                          defaultTextStyle: TextStyle(fontSize: 20,color: Theme.of(context).colorScheme.onSurface,fontWeight: FontWeight.w500 ),
+                          todayTextStyle:TextStyle(fontSize: 20,color: Theme.of(context).colorScheme.onSurface,fontWeight: FontWeight.w600 ),
+                          selectedTextStyle: TextStyle(fontSize: 20,color: Theme.of(context).colorScheme.onSurface,fontWeight: FontWeight.w600 ),
+                          //rangeStartTextStyle:TextStyle(fontSize: 20,color: Colors.red ),
+                          //rangeEndTextStyle: TextStyle(fontSize: 20,color: Colors.red),
+                          outsideTextStyle: TextStyle(fontSize: 20,color: Theme.of(context).colorScheme.onSurface ),
+                          disabledTextStyle: TextStyle(fontSize: 20,color: Theme.of(context).disabledColor,fontWeight: FontWeight.w600),
+                          holidayTextStyle: TextStyle(fontSize: 20,color: Colors.red ),
+                          weekendTextStyle: TextStyle(fontSize: 20,color: Colors.red ),
+                          withinRangeTextStyle: TextStyle(fontSize: 20,color: Theme.of(context).colorScheme.onSurface,fontWeight: FontWeight.w600 ),
+                          selectedDecoration: BoxDecoration(
+                            color: Colors.lightGreen[600],
+                            shape: BoxShape.circle,
+                            //borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          todayDecoration: BoxDecoration(
+                            color: Colors.green[700],
+                            shape: BoxShape.circle,
+                            //borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          defaultDecoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            //borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          weekendDecoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            //borderRadius: BorderRadius.circular(5.0),
+                          ),
+                        ),
+                        headerStyle: HeaderStyle(
+                          formatButtonVisible: true,
+                          titleCentered: true,
+                          formatButtonShowsNext: false,
+                          titleTextStyle: TextStyle(fontSize: 23,color: Theme.of(context).colorScheme.onSurface,fontWeight: FontWeight.w500),
+                          formatButtonDecoration: BoxDecoration(
+                            color: Colors.lightGreen[600],
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          formatButtonTextStyle: TextStyle(fontSize: 20,color: Theme.of(context).colorScheme.onSurface,fontWeight: FontWeight.w500),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left:25, top: 13, bottom: 10),
+                    child: Text(
+                      "${formattedDate(_selectedDay)}'s food",
+                      style: TextStyle(
+                          fontSize: 26,
+                          fontWeight: FontWeight.w400
+                      ),
+                    ),
+                  ),
+                  FutureBuilder<QuerySnapshot>(
+                    future: getData(user),
+                    builder: (context, snapshot){
+                      if(snapshot.connectionState!=ConnectionState.done){
+                        //query in progress
+                        return LoadingSmall(color: Colors.transparent);
                       }
+                      if(snapshot.hasError){
+                        return Container(
+                          child: Text(
+                            'Error occurred',
+                          ),
+                        );
+                      }
+                      if(snapshot.hasData) {
+                        FoodListDay foodList = FoodListDay.fromSnapshot(snapshot.data);
+                        // if(foodList.list.isEmpty){
+                        //   //query successful but is empty
+                        //   return Container(
+                        //     child: Text(
+                        //         'Empty'
+                        //     ),
+                        //   );
+                        // }
+                        return Container(
+                          child: buildListView(foodList)
+                        );
+                      }
+                      return Container();
                     },
-                    selectedDayPredicate: (DateTime date) {
-                      return isSameDay(_selectedDay, date);
-                    },
-                    availableGestures: AvailableGestures.horizontalSwipe,
-                    //headerVisible: false,
-                    calendarStyle: CalendarStyle(
-                      isTodayHighlighted: true,
-                      defaultTextStyle: TextStyle(fontSize: 20,color: Theme.of(context).colorScheme.onSurface,fontWeight: FontWeight.w500 ),
-                      todayTextStyle:TextStyle(fontSize: 20,color: Theme.of(context).colorScheme.onSurface,fontWeight: FontWeight.w600 ),
-                      selectedTextStyle: TextStyle(fontSize: 20,color: Theme.of(context).colorScheme.onSurface,fontWeight: FontWeight.w600 ),
-                      //rangeStartTextStyle:TextStyle(fontSize: 20,color: Colors.red ),
-                      //rangeEndTextStyle: TextStyle(fontSize: 20,color: Colors.red),
-                      outsideTextStyle: TextStyle(fontSize: 20,color: Theme.of(context).colorScheme.onSurface ),
-                      disabledTextStyle: TextStyle(fontSize: 20,color: Theme.of(context).disabledColor,fontWeight: FontWeight.w600),
-                      holidayTextStyle: TextStyle(fontSize: 20,color: Colors.red ),
-                      weekendTextStyle: TextStyle(fontSize: 20,color: Colors.red ),
-                      withinRangeTextStyle: TextStyle(fontSize: 20,color: Theme.of(context).colorScheme.onSurface,fontWeight: FontWeight.w600 ),
-                      selectedDecoration: BoxDecoration(
-                        color: Colors.lightGreen[600],
-                        shape: BoxShape.circle,
-                        //borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      todayDecoration: BoxDecoration(
-                        color: Colors.green[700],
-                        shape: BoxShape.circle,
-                        //borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      defaultDecoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        //borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      weekendDecoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        //borderRadius: BorderRadius.circular(5.0),
-                      ),
-                    ),
-                    headerStyle: HeaderStyle(
-                      formatButtonVisible: true,
-                      titleCentered: true,
-                      formatButtonShowsNext: false,
-                      titleTextStyle: TextStyle(fontSize: 25,color: Theme.of(context).colorScheme.onSurface,fontWeight: FontWeight.w500),
-                      formatButtonDecoration: BoxDecoration(
-                        color: Colors.lightGreen[600],
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      formatButtonTextStyle: TextStyle(fontSize: 20,color: Theme.of(context).colorScheme.onSurface,fontWeight: FontWeight.w500),
-                    ),
                   ),
-                ),
+                ],
               ),
-              Padding(
-                padding: EdgeInsets.only(left:25, top: 13, bottom: 10),
-                child: Text(
-                  "${dateToString(_selectedDay)}'s food",
-                  style: TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.w400
-                  ),
-                ),
-              ),
-              FutureBuilder<QuerySnapshot>(
-                future: getData(user),
-                builder: (context, snapshot){
-                  if(snapshot.connectionState!=ConnectionState.done){
-                    //query in progress
-                    return LoadingSmall(color: Colors.transparent);
-                  }
-                  if(snapshot.hasError){
-                    return Container(
-                      child: Text(
-                        'Error occurred',
-                      ),
-                    );
-                  }
-                  if(snapshot.hasData) {
-                    FoodListDay foodList = FoodListDay.fromSnapshot(snapshot.data);
-                    // if(foodList.list.isEmpty){
-                    //   //query successful but is empty
-                    //   return Container(
-                    //     child: Text(
-                    //         'Empty'
-                    //     ),
-                    //   );
-                    // }
-                    return Container(
-                      child: buildListView(foodList)
-                    );
-                  }
-                  return Container();
-                },
-              ),
-            ],
-          ),
-        ),
+            ),
+          )
+        ],
       ),
     );
   }

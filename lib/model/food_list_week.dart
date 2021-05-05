@@ -99,7 +99,7 @@ class FoodListWeek{
     int max=0;
     for(int i = 0; i<7 ;i++){
       if(weekList[i].totalCarbs>max){
-        max=weekList[i].totalFats;
+        max=weekList[i].totalCarbs;
       }
     }
     return max;

@@ -61,3 +61,56 @@ DateTime stringToDate (String date) {
   return DateTime(year, month, day);
 }
 
+String formattedDate(DateTime date){
+ List<String> _months = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December'
+  ];
+  String dateStr = '';
+  String months = '';
+  String daysIndex = date.day.toString();
+  String suffix = '';
+
+
+//     for making number to month
+  months = _months[date.month-1];
+
+//     for index of date
+  if(date.day>10){
+    daysIndex = daysIndex.substring(1);
+  };
+
+//     for date suffix
+  if(int.tryParse(daysIndex) == 1){
+    suffix = 'st';
+  }
+
+  else if (int.tryParse(daysIndex) == 2){
+    suffix = 'nd';
+  }
+
+  else if (int.tryParse(daysIndex) == 3){
+    suffix = 'rd';
+  }
+
+  else {
+    suffix = 'th';
+  };
+
+  dateStr = date.day.toString() + suffix + ' ' + months;
+
+  return dateStr;
+}
+
+
+
