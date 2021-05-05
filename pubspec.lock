@@ -148,34 +148,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"
-  firebase_storage:
-    dependency: "direct main"
-    description:
-      name: firebase_storage
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "8.0.5"
-  firebase_storage_platform_interface:
-    dependency: transitive
-    description:
-      name: firebase_storage_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.3"
-  firebase_storage_web:
-    dependency: transitive
-    description:
-      name: firebase_storage_web
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.5"
   fl_chart:
     dependency: "direct main"
     description:
       name: fl_chart
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.36.0"
+    version: "0.35.0"
   flutter:
     dependency: "direct main"
     description: flutter
