@@ -35,7 +35,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
   Future uploadFile(User user) async {
     try {
       await firebase_storage.FirebaseStorage.instance
-          .ref('UserProfiles/${user.uid}.png')
+          .ref('UserProfiles/${user.uid}/pic1.jpeg')
           .putFile(_image);
     } on Exception catch (e) {
       print('Failed');

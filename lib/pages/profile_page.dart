@@ -78,7 +78,7 @@ class _ProfilePageState extends State<ProfilePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Settings Page\n${userData.name}',
+              'Settings Page',
               style: TextStyle(
                 fontSize: 40,
               ),

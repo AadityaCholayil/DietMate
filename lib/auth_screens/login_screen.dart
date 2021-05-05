@@ -22,87 +22,58 @@ class _LoginScreenState extends State<LoginScreen> {
   String password = '';
 
   Widget _buildEmail(){
-    return GlassContainer(
-
-      borderRadius: BorderRadius.all(Radius.circular(10.0)),
-      color: Theme.of(context).cardColor.withOpacity(0.55),
-      borderColor: Theme.of(context).colorScheme.surface.withOpacity(0.0),
-      height:60,
-      width: MediaQuery.of(context).size.width,
-      //isFrostedGlass: true,
-      //frostedOpacity: 0.05,
-      blur: 12,
-      child: TextFormField(
-        decoration: InputDecoration(
-            contentPadding: EdgeInsets.fromLTRB(15, 18,15, 18),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.transparent, width: 2, style: BorderStyle.solid, ),
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2, style: BorderStyle.solid, ),
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            ),
-            fillColor: Theme.of(context).colorScheme.surface,
-            labelText: 'Email Id',
-            labelStyle: TextStyle(fontSize: 25),
-            floatingLabelBehavior: FloatingLabelBehavior.never
-        ),
-        keyboardType: TextInputType.emailAddress,
-        style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
-        validator: (String value) {
-          if (value.isEmpty) {
-            return 'Invalid Email Id';
-          }
-          // var email = "tony@starkindustries.com"
-          // bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
-          return null;
-        },
-        onSaved: (String value) {
-          email= value;
-        },
+    return TextFormField(
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(15, 18,15, 18),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.green, width: 2, style: BorderStyle.solid, ),
+            borderRadius: BorderRadius.all(Radius.circular(17.0)),
+          ),
+          fillColor: Theme.of(context).colorScheme.surface,
+          labelText: 'Email Id',
+          labelStyle: TextStyle(fontSize: 25),
+          floatingLabelBehavior: FloatingLabelBehavior.never
       ),
+      keyboardType: TextInputType.emailAddress,
+      style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
+      validator: (String value) {
+        if (value.isEmpty) {
+          return 'Invalid Email Id';
+        }
+        // var email = "tony@starkindustries.com"
+        // bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
+        return null;
+      },
+      onSaved: (String value) {
+        email= value;
+      },
     );
   }
 
   Widget _buildPassword(){
-    return GlassContainer(
-      borderRadius: BorderRadius.all(Radius.circular(10.0)),
-      color: Theme.of(context).cardColor.withOpacity(0.55),
-      borderColor: Theme.of(context).colorScheme.surface.withOpacity(0.0),
-      height:65,
-      width: MediaQuery.of(context).size.width,
-      //isFrostedGlass: true,
-      //frostedOpacity: 0.05,
-      blur: 12,
-      child: TextFormField(
-        decoration: InputDecoration(
-            contentPadding: EdgeInsets.fromLTRB(15, 18,15, 18),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.transparent, width: 2, style: BorderStyle.solid, ),
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2, style: BorderStyle.solid, ),
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            ),
-            fillColor: Theme.of(context).colorScheme.surface,
-            labelText: 'Password',
-            labelStyle: TextStyle(fontSize: 25),
-            floatingLabelBehavior: FloatingLabelBehavior.never
-        ),
-        obscureText: true,
-        style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
-        validator: (String value) {
-          if (value.isEmpty) {
-            return 'Password cannot be empty';
-          }
-          return null;
-        },
-        onSaved: (String value) {
-          password= value;
-        },
+    return TextFormField(
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(15, 18,15, 18),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.green, width: 2, style: BorderStyle.solid, ),
+            borderRadius: BorderRadius.all(Radius.circular(17.0)),
+          ),
+          fillColor: Theme.of(context).colorScheme.surface,
+          labelText: 'Password',
+          labelStyle: TextStyle(fontSize: 25),
+          floatingLabelBehavior: FloatingLabelBehavior.never
       ),
+      obscureText: true,
+      style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
+      validator: (String value) {
+        if (value.isEmpty) {
+          return 'Password cannot be empty';
+        }
+        return null;
+      },
+      onSaved: (String value) {
+        password= value;
+      },
     );
   }
 

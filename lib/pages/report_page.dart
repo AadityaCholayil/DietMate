@@ -598,7 +598,7 @@ class _ReportPageState extends State<ReportPage> {
                                     color: Colors.black,
                                     onPressed: () {
                                       DateTime joinDate = stringToDate(userData.joinDate);
-                                      if(joinDate.isBefore(start.subtract(Duration(days: 7)))){
+                                      if(joinDate.isBefore(end.subtract(Duration(days: 7)))){
                                         setState(() {
                                           start=start.subtract(Duration(days: 7));
                                           end=end.subtract(Duration(days: 7));
