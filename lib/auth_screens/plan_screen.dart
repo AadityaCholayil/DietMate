@@ -43,11 +43,11 @@ class _PlanScreenState extends State<PlanScreen> {
                 ),
               ),
             ),
-            buildCard(context),
-            buildCard(context),
-            buildCard(context),
-            buildCard(context),
-            buildCard(context),
+            buildCard(context,1),
+            buildCard(context,2),
+            buildCard(context,3),
+            buildCard(context,4),
+            buildCard(context,5),
             loading?LoadingSmall():Container(
               alignment: Alignment.topCenter,
               padding: EdgeInsets.only(top: 20),
@@ -80,20 +80,72 @@ class _PlanScreenState extends State<PlanScreen> {
     );
   }
 
-  Card buildCard(BuildContext context) {
-    return Card(
-            color: Theme.of(context).cardColor,
-              shape:RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(20.0))
-              ) ,
-              clipBehavior: Clip.antiAliasWithSaveLayer,
+  Widget buildCard(BuildContext context, int index) {
+    String title, subTitle;
+    int calGoal, lossPercentage;
+    bool isTrue= false;
 
-              child: Container(
-                height: 80,
+    switch(index){
+      case 1:{
+        title='Mild weight gain';
+        subTitle='+0.25 kg/week';
+      }
+      break;
+      case 2:{
+        title='Maintain weight';
+        subTitle='';
+      }
+      break;
+      case 3:{
+        title='Mild weight loss';
+        subTitle='-0.25 kg/week';
+      }
+      break;
+      case 4:{
+        title='Weight loss';
+        subTitle='0.5 kg/week';
+      }
+      break;
+      case 5:{
+        title='Extreme weight loss';
+        subTitle='1 kg/week';
+      }
+      break;
+    }
+    return InkWell(
+      onTap:(){},
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Colors.green,
+            width: 0,
+          ),
+          borderRadius: BorderRadius.circular(20),
 
+        ),
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        child: Card(
+          color: Theme.of(context).cardColor,
+            shape:RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20.0))
+            ) ,
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            child: Container(
+              height: 80,
+              child: Column(
+                children: [
+                  Text(
+                    '$title',
 
+                  ),
+                ],
               ),
 
-          );
+
+            ),
+
+        ),
+      ),
+    );
   }
 }

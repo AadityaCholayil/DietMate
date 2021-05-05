@@ -388,8 +388,8 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
         borderRadius: BorderRadius.circular(10)
       ),
       child: Container(
-        padding: EdgeInsets.all(15),
-        // width: MediaQuery.of(context).size.width-20,
+        padding: EdgeInsets.all(12),
+        width: MediaQuery.of(context).size.width,
         child: DropdownButton<String>(
           value: _activity,
           icon: Icon(Icons.arrow_drop_down),
