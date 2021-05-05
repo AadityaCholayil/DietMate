@@ -23,6 +23,7 @@ class DatabaseService{
       'activityLevel': userData.activityLevel,
       'calorieGoal': userData.calorieGoal,
       'joinDate': userData.joinDate,
+      'userProfileUrl': userData.userProfileUrl,
     });
   }
 
@@ -36,6 +37,7 @@ class DatabaseService{
       'activityLevel': userData.activityLevel,
       'calorieGoal': userData.calorieGoal,
       'joinDate': userData.joinDate,
+      'userProfileUrl': userData.userProfileUrl,
     }).then((value) => print('Updated!'));
   }
 
@@ -51,6 +53,7 @@ class DatabaseService{
       activityLevel: snapshot.data()['activityLevel'],
       calorieGoal: snapshot.data()['calorieGoal'],
       joinDate: snapshot.data()['joinDate'],
+      userProfileUrl: snapshot.data()['userProfileUrl'],
     );
   }
 

@@ -1,7 +1,13 @@
+import 'dart:io';
+import 'package:dietmate/shared/conversion.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:dietmate/auth_screens/plan_screen.dart';
 import 'package:dietmate/model/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 class AdditionalDetailsScreen extends StatefulWidget {
   @override
@@ -23,26 +29,134 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
   Map caloriePlan= {};
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  File _image;
+  final picker = ImagePicker();
+
+  Future uploadFile(User user) async {
+    try {
+      await firebase_storage.FirebaseStorage.instance
+          .ref('UserProfiles/${user.uid}.png')
+          .putFile(_image);
+    } on Exception catch (e) {
+      print('Failed');
+    }
+  }
+
+  Future getImageFromCamera() async{
+    final pickedImage = await picker.getImage(source: ImageSource.camera);
+    print('hi');
+    setState((){
+      if(pickedImage != null){
+        _image = File(pickedImage.path);
+        print(_image.path);
+      }else{
+        print("No Image Selected");
+      }
+    });
+  }
+
+  Future getImageFromGallery() async{
+    final pickedImage = await picker.getImage(source: ImageSource.gallery);
+    print('hi');
+    setState((){
+      if(pickedImage != null){
+        _image = File(pickedImage.path);
+        print(_image.path);
+      }else{
+        print("No Image Selected");
+      }
+    }
+    );
+  }
+
   Widget _buildImagePicker(BuildContext context){
     return Container(
+      color: Theme.of(context).dialogBackgroundColor,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
             leading: Icon(Icons.camera),
             title: Text('Camera'),
-            onTap: () {
-              Navigator.pop(context);
-            },
+            onTap: () async {
+              print('pressed');
+              await getImageFromCamera();
+              if(_image!=null){
+                await showDialog(context: context, builder: (context)=>_buildImageDialog());
+              }
+              setState(() {
+                Navigator.pop(context);
+              });
+            }
           ),
           ListTile(
             leading: Icon(Icons.photo),
             title: Text('Gallery'),
-            onTap: () {
-              Navigator.pop(context);
-            },
+            onTap: () async {
+              print('pressed');
+              await getImageFromGallery();
+              if(_image!=null){
+                await showDialog(context: context, builder: (context)=>_buildImageDialog());
+              }
+              setState(() {
+                Navigator.pop(context);
+              });
+            }
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildImageDialog(){
+    Size size = MediaQuery.of(context).size;
+    return Dialog(
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      child: Container(
+        height: size.height*0.54,
+        width: size.width*0.9,
+        child: Column(
+          children: [
+            Container(
+              height: size.width*0.9,
+              width: size.width*0.9,
+              child: Image.file(
+                _image,
+                fit: BoxFit.cover,
+              ),
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  child: Text(
+                    'Confirm',
+                    style: TextStyle(
+                      fontSize: 24,
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                TextButton(
+                  child: Text(
+                    'Cancel',
+                    style: TextStyle(
+                      fontSize: 24,
+                    ),
+                  ),
+                  onPressed: () {
+                    _image=null;
+                    Navigator.pop(context);
+                  },
+                ),
+                SizedBox(width: 10)
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
@@ -65,7 +179,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
           );
         },
         child: CircleAvatar(
-          backgroundImage: NetworkImage(_profileUrl),
+          backgroundImage: _image==null?NetworkImage(_profileUrl):FileImage(_image),
           radius: 70,
           child: Column(
             children: [
@@ -73,7 +187,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                 flex: 2,
                 child: Container(),
               ),
-              _profileUrl==defaultUrl?Expanded(
+              _image==null?Expanded(
                 flex: 1,
                 child: Container(
                   alignment: Alignment.center,
@@ -329,6 +443,9 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    User user = Provider.of<User>(context);
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -376,13 +493,18 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                         fontSize: 20,
                       ),
                     ),
-                    onPressed: (){
+                    onPressed: () async {
                       if (!_formKey.currentState.validate()) {
                         return;
                       }
                       setState(() {
                         _formKey.currentState.save();
                       });
+
+                      if(_image!=null){
+                        await uploadFile(user);
+                      }
+
                       switch (_activity){
                         case 'Sedentary: little or no exercise' :{
                           _activityLevel=1.2;
@@ -426,7 +548,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                       caloriePlan['weightLoss']=bmr*0.75;
                       caloriePlan['extLoss']=bmr*0.5;
                       DateTime now = DateTime.now();
-                      _joinDate='${now.day}-${now.month}-${now.year}';
+                      _joinDate=dateToString(now);
                       UserData userData = UserData(
                         name: _name,
                         age: _age,
