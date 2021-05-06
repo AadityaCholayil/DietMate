@@ -39,9 +39,62 @@ class _ReportPageState extends State<ReportPage> {
         .get();
     return result;
   }
+  bool isCalorieDataZero(FoodListWeek data){
+    var isZero = true;
 
+  for (var elements in data.weekList ) {
+    if(elements.consumedCalories > 0){
+      return false;
+    }
+   };
+  return true;
+  }
+  bool isFatsDataZero(FoodListWeek data){
+    var isZero = true;
+
+  for (var elements in data.weekList ) {
+    if(elements.totalFats > 0){
+      return false;
+    }
+   };
+  return true;
+  }
+  bool isCarbsDataZero(FoodListWeek data){
+    var isZero = true;
+
+  for (var elements in data.weekList ) {
+    if(elements.totalCarbs > 0){
+      return false;
+    }
+   };
+  return true;
+  }
+  bool isProteinDataZero(FoodListWeek data){
+    var isZero = true;
+
+  for (var elements in data.weekList ) {
+    if(elements.totalProtein > 0){
+      return false;
+    }
+   };
+  return true;
+  }
+
+  Widget noDataAvailable(){
+    return Container(
+          child: Text(
+            'No Data Available',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+          ),
+        );
+  }
 
   Widget _buildLineChart(FoodListWeek data) {
+
     return Card(
       margin: EdgeInsets.zero,
       color: Theme.of(context).cardColor,
@@ -53,7 +106,8 @@ class _ReportPageState extends State<ReportPage> {
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(5, 25, 35, 10),
         margin: EdgeInsets.all(10),
-        child: LineChart(
+        child: isCalorieDataZero(data) ? noDataAvailable():
+        LineChart(
           LineChartData(
             maxY: data.maxCalOfDay().toDouble(),
             maxX: 7,
@@ -291,6 +345,52 @@ class _ReportPageState extends State<ReportPage> {
   );
   }
 
+  List<PieChartSectionData> getPieChartData(FoodListWeek data){
+    List<PieChartSectionData> list = [];
+    var fatPieCHart = PieChartSectionData(
+      title: '${data.totalFats}g' ,
+      titleStyle: TextStyle(
+        fontSize: 18,
+       ),
+      titlePositionPercentageOffset: 0.7,
+      radius: 90,
+      value: data.totalFats.toDouble(),
+      color: Color(0xFF94FC13),
+      );
+
+    var proteinPieChart = PieChartSectionData(
+      title: '${data.totalProtein}g',
+      titleStyle: TextStyle(
+        fontSize: 18,
+       ),
+      radius: 90,
+      titlePositionPercentageOffset: 0.7,
+      value: data.totalProtein.toDouble(),
+      color: Color(0xFF22A806),
+    );
+
+    var carbPieChart = PieChartSectionData(
+      title: '${data.totalCarbs}g',
+      titleStyle: TextStyle(
+        fontSize: 18,
+       ),
+      radius: 90,
+      titlePositionPercentageOffset: 0.7,
+      value: data.totalCarbs.toDouble(),
+      color: Color(0xFF176607),
+    );
+    if (isFatsDataZero(data)!=true){
+      list.add(fatPieCHart);
+    }
+    if (isProteinDataZero(data)!=true){
+      list.add(proteinPieChart);
+    }
+    if (isCarbsDataZero(data)!=true){
+      list.add(carbPieChart);
+    }
+    return list;
+  }
+
   Widget _buildPieChart(FoodListWeek data) {
       return Card(
           shape: RoundedRectangleBorder(
@@ -302,46 +402,15 @@ class _ReportPageState extends State<ReportPage> {
           padding: EdgeInsets.symmetric(horizontal:21 ,vertical: 16),
           height: 212,
           width: 222,
-          child: PieChart(
-            PieChartData(
+          child:
 
+          isFatsDataZero(data) && isProteinDataZero(data) && isCarbsDataZero(data)?
+         noDataAvailable():
+          PieChart(
+            PieChartData(
               centerSpaceRadius: 0,
               sectionsSpace: 2.5,
-              sections:[
-                PieChartSectionData(
-                  title: '${data.totalFats}g' ,
-                  titleStyle: TextStyle(
-                    fontSize: 18,
-                  ),
-                  titlePositionPercentageOffset: 0.7,
-                  radius: 90,
-                  value: data.totalFats.toDouble(),
-                  color: Color(0xFF94FC13),
-
-                ),
-
-                PieChartSectionData(
-                  title: '${data.totalProtein}g',
-                  titleStyle: TextStyle(
-                    fontSize: 18,
-                  ),
-                  radius: 90,
-                  titlePositionPercentageOffset: 0.7,
-                  value: data.totalProtein.toDouble(),
-                  color: Color(0xFF22A806),
-                ),
-
-                PieChartSectionData(
-                  title: '${data.totalCarbs}g',
-                  titleStyle: TextStyle(
-                    fontSize: 18,
-                  ),
-                  radius: 90,
-                  titlePositionPercentageOffset: 0.7,
-                  value: data.totalCarbs.toDouble(),
-                  color: Color(0xFF176607),
-                ),
-              ]
+              sections: getPieChartData(data),
             ),
           ),
         ),
@@ -408,22 +477,26 @@ class _ReportPageState extends State<ReportPage> {
 
     String label='';
     double maximumY = 0;
+    bool isZero = true;
     // Color titleColor ;
     //1 for Fats 2 for Protein 3 for carbs
     switch(type){
       case 1:{
+        isZero = isFatsDataZero(data);
         label = 'Total Fats';
         maximumY = double.tryParse((data.maxFatsOfDay()/4).toStringAsPrecision(1)) ;
         // titleColor = Color(0xFF94FC13) ;
       }
       break;
       case 2:{
+        isZero = isProteinDataZero(data);
         label = 'Total Protein';
         maximumY = double.tryParse((data.maxProteinOfDay()/4).toStringAsPrecision(1));
         // titleColor = Color(0xFF22A806) ;
       }
       break;
       case 3:{
+        isZero = isCarbsDataZero(data);
         label = 'Total Carbs';
         maximumY = double.tryParse((data.maxCarbOfDay()/0.7).toStringAsPrecision(1));
         // titleColor = Color(0xFF176607);
@@ -438,12 +511,17 @@ class _ReportPageState extends State<ReportPage> {
       margin: EdgeInsets.zero,
       color: Theme.of(context).cardColor,
       child: Container(
-        padding: EdgeInsets.fromLTRB(0, 25, 30, 5),
-        alignment: Alignment.center,
-        margin: EdgeInsets.all(10),
-        height:170,
-        width: MediaQuery.of(context).size.width*0.9,
-        child:BarChart(
+      padding: EdgeInsets.fromLTRB(0, 25, 30, 5),
+      alignment: Alignment.center,
+      margin: EdgeInsets.all(10),
+      height:170,
+      width: MediaQuery.of(context).size.width*0.9,
+      child: isZero ?
+      Container(
+          padding: EdgeInsets.fromLTRB(22, 0, 0, 22),
+          child: noDataAvailable()
+      ):
+      BarChart(
           BarChartData(
             borderData: FlBorderData(
                 show: true,
