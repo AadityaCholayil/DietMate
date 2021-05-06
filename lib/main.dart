@@ -63,14 +63,14 @@ class _MyAppState extends State<MyApp> {
       return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: themeNotifier.getTheme(),
-        home: Loading(),
+        home: Scaffold(body: Loading()),
       );
     }
     if (!_initialized) {
       return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: themeNotifier.getTheme(),
-        home: Loading(),
+        home: Scaffold(body: Loading()),
       );
     }
     User user = FirebaseAuth.instance.currentUser ?? null;

@@ -1,6 +1,6 @@
 import 'package:dietmate/pages/history_page.dart';
 import 'package:dietmate/pages/homepage.dart';
-import 'package:dietmate/pages/settings_page.dart';
+import 'package:dietmate/pages/profile_page.dart';
 import 'package:dietmate/pages/report_page.dart';
 import 'package:dietmate/form_pages/food_form.dart';
 import 'package:dietmate/shared/gradient.dart';
@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
           HomePage(),
           ReportPage(),
           HistoryPage(),
-          SettingsPage(),
+          ProfilePage(),
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -134,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(width: 15,),
               IconButton(
                 icon: Icon(
-                  Icons.settings,
+                  Icons.person,
                   color: pageNo==3?Theme.of(context).toggleableActiveColor:Theme.of(context).colorScheme.onSurface,
                   size: 30.0,
                 ),

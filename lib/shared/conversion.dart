@@ -88,7 +88,7 @@ String formattedDate(DateTime date){
 //     for index of date
   if(date.day>10){
     daysIndex = daysIndex.substring(1);
-  };
+  }
 
 //     for date suffix
   if(int.tryParse(daysIndex) == 1){
@@ -105,7 +105,7 @@ String formattedDate(DateTime date){
 
   else {
     suffix = 'th';
-  };
+  }
 
   dateStr = date.day.toString() + suffix + ' ' + months;
 

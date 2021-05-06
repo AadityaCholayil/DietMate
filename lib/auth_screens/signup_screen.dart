@@ -1,8 +1,8 @@
+import 'package:dietmate/auth_screens/login_screen.dart';
 import 'package:dietmate/model/user.dart';
 import 'package:dietmate/services/auth.dart';
 import 'package:dietmate/shared/loading.dart';
 import 'package:flutter/material.dart';
-import 'package:glass_kit/glass_kit.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -21,89 +21,83 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String password = '';
 
   Widget _buildEmail(){
-    return GlassContainer(
-      borderRadius: BorderRadius.all(Radius.circular(10.0)),
-      color: Theme.of(context).cardColor.withOpacity(0.55),
-      borderColor: Theme.of(context).colorScheme.surface.withOpacity(0.0),
-      height:65,
-      width: MediaQuery.of(context).size.width,
-      //isFrostedGlass: true,
-      //frostedOpacity: 0.05,
-      blur: 12,
-      child: TextFormField(
-        decoration: InputDecoration(
-            contentPadding: EdgeInsets.fromLTRB(15, 18,15, 18),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.transparent, width: 2, style: BorderStyle.solid, ),
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2, style: BorderStyle.solid, ),
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            ),
-            filled: true,
-            fillColor: Theme.of(context).colorScheme.surface,
-            labelText: 'Email Id',
-            labelStyle: TextStyle(fontSize: 25),
-            floatingLabelBehavior: FloatingLabelBehavior.never
-        ),
-        keyboardType: TextInputType.emailAddress,
-        style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
-        validator: (String value) {
-          if (value.isEmpty) {
-            return 'Invalid Email Id';
-          }
-          return null;
-        },
-        onSaved: (String value) {
-          email= value;
-        },
+    return TextFormField(
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(15, 18,15, 18),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.green, width: 2, style: BorderStyle.solid, ),
+            borderRadius: BorderRadius.all(Radius.circular(17.0)),
+          ),
+          fillColor: Theme.of(context).colorScheme.surface,
+          labelText: 'Email Id',
+          labelStyle: TextStyle(fontSize: 25),
+          floatingLabelBehavior: FloatingLabelBehavior.never
       ),
+      keyboardType: TextInputType.emailAddress,
+      style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
+      validator: (String value) {
+        if (value.isEmpty) {
+          return 'Invalid Email Id';
+        }
+        return null;
+      },
+      onSaved: (String value) {
+        email= value;
+      },
     );
   }
 
   Widget _buildPassword(){
-    return GlassContainer(
-      borderRadius: BorderRadius.all(Radius.circular(10.0)),
-      color: Theme.of(context).cardColor.withOpacity(0.55),
-      borderColor: Theme.of(context).colorScheme.surface.withOpacity(0.0),
-      height:65,
-      width: MediaQuery.of(context).size.width,
-      //isFrostedGlass: true,
-      //frostedOpacity: 0.05,
-      blur: 12,
-      child: TextFormField(
-        decoration: InputDecoration(
-            contentPadding: EdgeInsets.fromLTRB(15, 18,15, 18),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.transparent, width: 2, style: BorderStyle.solid, ),
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2, style: BorderStyle.solid, ),
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            ),
-            filled: true,
-            fillColor: Theme.of(context).colorScheme.surface,
-            labelText: 'Password',
-            labelStyle: TextStyle(fontSize: 25),
-            floatingLabelBehavior: FloatingLabelBehavior.never
-        ),
-        obscureText: true,
-        style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
-        validator: (String value) {
-          if (value.isEmpty) {
-            return 'Password cannot be empty';
-          }
-          return null;
-        },
-        onSaved: (String value) {
-          password= value;
-        },
+    return TextFormField(
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(15, 18,15, 18),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.green, width: 2, style: BorderStyle.solid, ),
+            borderRadius: BorderRadius.all(Radius.circular(17.0)),
+          ),
+          fillColor: Theme.of(context).colorScheme.surface,
+          labelText: 'Password',
+          labelStyle: TextStyle(fontSize: 25),
+          floatingLabelBehavior: FloatingLabelBehavior.never
       ),
+      obscureText: true,
+      style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
+      validator: (String value) {
+        if (value.isEmpty) {
+          return 'Password cannot be empty';
+        }
+        return null;
+      },
+      onSaved: (String value) {
+        password= value;
+      },
     );
   }
 
+  Widget logInButton(){
+    return TextButton(
+      style: TextButton.styleFrom(
+          padding: EdgeInsets.only(bottom: 15),
+          primary: Color(0xFF2ACD07)
+      ),
+      child: Text(
+        'Login',
+        style: TextStyle(
+          fontSize: 20,
+          decoration: TextDecoration.underline,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+      onPressed: (){
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => LoginScreen()
+            )
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -136,11 +130,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
               SizedBox(height:10),
               _buildPassword(),
               SizedBox(height:10),
+              Container(
+                alignment: Alignment.topRight,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      "Already have an account?",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    logInButton(),
+                  ],
+                ),
+              ),
               loading?LoadingSmall():ElevatedButton(
                 child:  Text(
                   'SignUp',
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 25,
                   ),
                 ),
                 onPressed: () async {
@@ -180,7 +190,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   fontWeight:FontWeight.w300,
                   color: Colors.red,
                 ),
-
               ): SizedBox.shrink(),
             ],
           ),

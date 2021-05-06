@@ -25,7 +25,7 @@ class _AuthScreenState extends State<AuthScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                padding: EdgeInsets.fromLTRB(0, 400,0,60),
+                padding: EdgeInsets.fromLTRB(0, 300,0,50),
                 // child: GradientText(
                 //   'DietMate',
                 //   size:50.0,
@@ -41,6 +41,8 @@ class _AuthScreenState extends State<AuthScreen> {
               ),
 
               GradientButton(
+                expanded:true,
+                extraPaddingHeight:5.0,
                 label: Text('Log In',
                   style: TextStyle(
                     fontSize:25.0,
@@ -55,8 +57,10 @@ class _AuthScreenState extends State<AuthScreen> {
                 },
                 extraPaddingWidth: 108.0,
               ),
-              SizedBox(height:20),
+              SizedBox(height:22),
               GradientButton(
+                extraPaddingHeight: 5.0,
+                expanded:true,
                 label: Text('Sign up',
                   style: TextStyle(
                     fontSize:25.0,
@@ -90,7 +94,9 @@ class _AuthScreenState extends State<AuthScreen> {
             ],
           ),
         ),
+        padding: EdgeInsets.all(25.0),
       ),
+
     );
   }
 }

@@ -7,7 +7,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:glass_kit/glass_kit.dart';
 import 'package:provider/provider.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'dart:ui';
@@ -676,7 +675,7 @@ class _ReportPageState extends State<ReportPage> {
                                     color: Colors.black,
                                     onPressed: () {
                                       DateTime joinDate = stringToDate(userData.joinDate);
-                                      if(joinDate.isBefore(start.subtract(Duration(days: 7)))){
+                                      if(joinDate.isBefore(end.subtract(Duration(days: 7)))){
                                         setState(() {
                                           start=start.subtract(Duration(days: 7));
                                           end=end.subtract(Duration(days: 7));

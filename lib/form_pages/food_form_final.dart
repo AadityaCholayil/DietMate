@@ -312,7 +312,7 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
   //   ),
   // ):SizedBox.shrink(),
 
-  Widget _buildTime(){
+  Widget _buildTime(Size size){
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(17)),
       clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -345,7 +345,7 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
               padding: EdgeInsets.only(top: 13, bottom: 5),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 35),
+                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: size.width*0.081),
                     primary: Color(0xFF2ACD07),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)
@@ -575,7 +575,6 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
         height: size.height,
         child: SingleChildScrollView(
           child: Container(
-            height: size.height,
             padding: EdgeInsets.all(size.width*0.057),
             child: Form(
               key: _formKey,
@@ -592,7 +591,7 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       _buildFoodImage(),
-                      _buildTime(),
+                      _buildTime(size),
                     ],
                   ),
                   _buildRow(size, 'Protein', _buildProtein(), 'Carbohydrates', _buildCarbohydrates()),
