@@ -81,6 +81,7 @@ class _ReportPageState extends State<ReportPage> {
 
   Widget noDataAvailable(){
     return Container(
+      alignment: Alignment.center,
           child: Text(
             'No Data Available',
             style: TextStyle(
@@ -105,7 +106,12 @@ class _ReportPageState extends State<ReportPage> {
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(5, 25, 35, 10),
         margin: EdgeInsets.all(10),
-        child: isCalorieDataZero(data) ? noDataAvailable():
+        child: isCalorieDataZero(data) ?
+        Padding(
+          padding: EdgeInsets.only(left: 20),
+          child: noDataAvailable(),
+
+        ):
         LineChart(
           LineChartData(
             maxY: data.maxCalOfDay().toDouble(),
@@ -400,9 +406,8 @@ class _ReportPageState extends State<ReportPage> {
         child: Container(
           padding: EdgeInsets.symmetric(horizontal:21 ,vertical: 16),
           height: 212,
-          width: 222,
+          width: MediaQuery.of(context).size.width,
           child:
-
           isFatsDataZero(data) && isProteinDataZero(data) && isCarbsDataZero(data)?
          noDataAvailable():
           PieChart(
