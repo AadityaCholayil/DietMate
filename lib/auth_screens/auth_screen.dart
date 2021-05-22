@@ -25,7 +25,7 @@ class _AuthScreenState extends State<AuthScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                padding: EdgeInsets.fromLTRB(0, 300,0,50),
+                padding: EdgeInsets.fromLTRB(0, 300,0,20),
                 // child: GradientText(
                 //   'DietMate',
                 //   size:50.0,
@@ -34,21 +34,34 @@ class _AuthScreenState extends State<AuthScreen> {
                 child: Text(
                   'DietMate',
                   style: TextStyle(
-                    fontSize: 50,
-                    fontWeight: FontWeight.bold
+                    fontSize: 60,
+                    fontWeight: FontWeight.w700
                   ),
                 ),
               ),
-
+              Container(
+                padding: EdgeInsets.fromLTRB(0,10,0,40),
+                child: Text(
+                  'Healthier, \nHappier Lifestyle',
+                  style: TextStyle(
+                    color: Color(0xff176607),
+                    fontSize: 30,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
               GradientButton(
                 expanded:true,
                 extraPaddingHeight:5.0,
-                label: Text('Log In',
+                label: Text(
+                  'Log In',
                   style: TextStyle(
                     fontSize:25.0,
-                    fontWeight: FontWeight.w300,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-                ),
+                radius: 25,
                 onPressed: (){
                   Navigator.push(
                     context,
@@ -64,9 +77,10 @@ class _AuthScreenState extends State<AuthScreen> {
                 label: Text('Sign up',
                   style: TextStyle(
                     fontSize:25.0,
-                    fontWeight: FontWeight.w300,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
+                radius: 25,
                 onPressed:(){
                   Navigator.push(
                     context,

@@ -104,7 +104,7 @@ class _FoodFormState extends State<FoodForm> {
           ),
           textCapitalization: TextCapitalization.words,
           keyboardType: TextInputType.name,
-          style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
+          style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w500),
           validator: (String value) {
             if (value.isEmpty ) {
               return 'Food name is empty!';
@@ -175,97 +175,102 @@ class _FoodFormState extends State<FoodForm> {
         ],
       );
     }
-    return GlassContainer(
-      alignment: Alignment.center,
-      height: MediaQuery.of(context).size.height*0.6,
-      borderRadius: BorderRadius.all(Radius.circular(17.0)),
-      color: Theme.of(context).cardColor.withOpacity(0.55),
-      borderColor: Theme.of(context).colorScheme.surface.withOpacity(0.0),
-      width: MediaQuery.of(context).size.width,
-      child: Column(
-        children: [
-          Container(
-            alignment: Alignment.center,
-            height: MediaQuery.of(context).size.height*0.51,
-            padding: EdgeInsets.symmetric(horizontal: 12),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  SizedBox(height: 5,),
-                  ListView.separated(
-                    padding: EdgeInsets.zero,
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (BuildContext context, int index){
-                      Food food=foodList.list[index];
-                      return OpenContainer(
-                        closedElevation: 0,
-                        closedColor: Theme.of(context).cardColor.withOpacity(0),
-                        openColor: Theme.of(context).canvasColor.withOpacity(0),
-                        transitionDuration: Duration(milliseconds: 500),
-                        closedBuilder: (context, openBuilder){
-                          return InkWell(
-                            child: Container(
-                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                                width: double.infinity,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      '${food.name}',
-                                      style: TextStyle(
-                                        fontSize: 23,
-                                        fontWeight: FontWeight.w300
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(17.0)),
+      ),
+      margin: EdgeInsets.zero,
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      child: Container(
+        alignment: Alignment.center,
+        height: MediaQuery.of(context).size.height*0.6,
+        color: Theme.of(context).buttonColor,
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          children: [
+            Container(
+              alignment: Alignment.center,
+              height: MediaQuery.of(context).size.height*0.51,
+              padding: EdgeInsets.symmetric(horizontal: 12),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    SizedBox(height: 5,),
+                    ListView.separated(
+                      padding: EdgeInsets.zero,
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (BuildContext context, int index){
+                        Food food=foodList.list[index];
+                        return OpenContainer(
+                          closedElevation: 0,
+                          closedColor: Theme.of(context).cardColor.withOpacity(0),
+                          openColor: Theme.of(context).canvasColor.withOpacity(0),
+                          transitionDuration: Duration(milliseconds: 500),
+                          closedBuilder: (context, openBuilder){
+                            return InkWell(
+                              child: Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                                  width: double.infinity,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '${food.name}',
+                                        style: TextStyle(
+                                          fontSize: 23,
+                                          fontWeight: FontWeight.w500
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(height: 5,),
-                                    Text(
-                                      'Calories: ${food.calories} KCal',
-                                      style: TextStyle(
-                                        fontSize: 19,
-                                        fontWeight: FontWeight.w300
+                                      SizedBox(height: 2,),
+                                      Text(
+                                        'Calories: ${food.calories} KCal',
+                                        style: TextStyle(
+                                          fontSize: 19,
+                                          fontWeight: FontWeight.w400
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                )
-                            ),
-                            onTap: (){
-                              openBuilder();
-                            },
-                          );
-                        },
-                        openBuilder: (context, closedBuilder){
-                          return FoodFormFinal(food: food, query: foodName);
-                        },
-                      );
-                    },
-                    itemCount: foodList.list.length,
-                    separatorBuilder: (BuildContext context, int index) =>
-                        Divider(thickness: 1, color: Theme.of(context).primaryColor,),
-                  ),
-                  SizedBox(height: 10,)
-                  //Divider(thickness: 1, color: Theme.of(context).primaryColor,),
-                ],
-              ),
-            ),
-          ),
-          Divider(thickness: 1, color: Theme.of(context).primaryColor,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'or ',
-                style: TextStyle(
-                  fontSize: 23,
+                                    ],
+                                  )
+                              ),
+                              onTap: (){
+                                openBuilder();
+                              },
+                            );
+                          },
+                          openBuilder: (context, closedBuilder){
+                            return FoodFormFinal(food: food, query: foodName);
+                          },
+                        );
+                      },
+                      itemCount: foodList.list.length,
+                      separatorBuilder: (BuildContext context, int index) =>
+                          Divider(thickness: 1, color: Theme.of(context).primaryColor,),
+                    ),
+                    SizedBox(height: 10,)
+                    //Divider(thickness: 1, color: Theme.of(context).primaryColor,),
+                  ],
                 ),
               ),
-              customFoodButton(),
-            ],
-          )
-        ],
+            ),
+            Divider(thickness: 1, color: Theme.of(context).primaryColor,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'or ',
+                  style: TextStyle(
+                    fontSize: 23,
+                  ),
+                ),
+                customFoodButton(),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

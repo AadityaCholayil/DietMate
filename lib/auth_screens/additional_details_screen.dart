@@ -23,7 +23,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
   bool _isMale = true;
   int _height;
   int _weight;
-  double _activityLevel = 1.5;
+  double _activityLevel = 1.2;
   String _activity = 'Sedentary: little or no exercise';
   String _joinDate = '';
   String _profileUrl = 'https://rpgplanner.com/wp-content/uploads/2020/06/no-photo-available.png';
@@ -48,6 +48,32 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
       _activityLevel=widget.userData.activityLevel;
       _joinDate=widget.userData.joinDate;
       _profileUrl=widget.userData.userProfileUrl;
+      // switch (_activityLevel){
+      //   case 1.2 :{
+      //     _activity='Sedentary: little or no exercise';
+      //   }
+      //   break;
+      //   case 1.375 :{
+      //     _activity='Light: exercise 1-3 times/week';
+      //   }
+      //   break;
+      //   case 1.465:{
+      //     _activity='Moderate: exercise 4-5 time/week';
+      //   }
+      //   break;
+      //   case 1.55:{
+      //     _activity='Active: daily exercise or intense exercise 3-4 times/week';
+      //   }
+      //   break;
+      //   case 1.725:{
+      //     _activity='Very Active: intense exercise 6-7 times/week';
+      //   }
+      //   break;
+      //   case 1.9:{
+      //     _activity= 'Extra Active: very intense exercise daily, or physical job';
+      //   }
+      //   break;
+      // }
     }
   }
 

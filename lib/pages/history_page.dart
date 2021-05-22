@@ -222,7 +222,9 @@ class _HistoryPageState extends State<HistoryPage> {
                       ),
                       onPressed: () async {
                         await DatabaseService(uid: user.uid).deleteFood(food);
-                        Navigator.pop(context);
+                        setState(() {
+                          Navigator.pop(context);
+                        });
                       }
                   ),
                   TextButton(
@@ -263,7 +265,8 @@ class _HistoryPageState extends State<HistoryPage> {
             borderRadius:  BorderRadius.vertical(bottom: Radius.elliptical(90, 40)),
           ),
           elevation: 8,
-        child: Container(
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 250),
           height: _format == CalendarFormat.month ? uHeight*0.4 :( _format == CalendarFormat.twoWeeks ? uHeight*0.25 : uHeight*0.22),
           width: MediaQuery.of(context).size.width,
           color: Theme.of(context).accentColor,

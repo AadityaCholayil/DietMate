@@ -7,12 +7,15 @@ class GradientButton extends StatelessWidget {
   final Text label;
   final Function() onPressed;
   final bool expanded;
-  GradientButton({Text label, double extraPaddingHeight, double extraPaddingWidth, Function() onPressed, bool expanded}):
+  final double radius;
+
+  GradientButton({Text label, double extraPaddingHeight, double extraPaddingWidth, Function() onPressed, bool expanded, double radius}):
     this.label=label??'',
     this.extraPaddingHeight=extraPaddingHeight??0.0,
     this.extraPaddingWidth=extraPaddingWidth??0.0,
     this.onPressed=onPressed??null,
-    this.expanded=expanded??false;
+    this.expanded=expanded??false,
+    this.radius=radius??10.0;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +28,7 @@ class GradientButton extends StatelessWidget {
         semanticContainer: true,
         clipBehavior: Clip.antiAliasWithSaveLayer,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(radius),
         ),
         child: Container(
           alignment: expanded?Alignment.center:null,

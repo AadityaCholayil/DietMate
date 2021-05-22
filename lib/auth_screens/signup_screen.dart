@@ -34,7 +34,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           floatingLabelBehavior: FloatingLabelBehavior.never
       ),
       keyboardType: TextInputType.emailAddress,
-      style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
+      style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w400),
       validator: (String value) {
         if (value.isEmpty) {
           return 'Invalid Email Id';
@@ -61,7 +61,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           floatingLabelBehavior: FloatingLabelBehavior.never
       ),
       obscureText: true,
-      style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
+      style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w400),
       validator: (String value) {
         if (value.isEmpty) {
           return 'Password cannot be empty';
@@ -121,7 +121,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 child: Text(
                   'SignUp',
                   style: TextStyle(
-                    fontSize: 40,
+                    fontSize: 45,
+                    fontWeight: FontWeight.w500
                   ),
                 ),
               ),
@@ -130,6 +131,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
               SizedBox(height:10),
               _buildPassword(),
               SizedBox(height:10),
+              errorOccured? Text(
+                error,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight:FontWeight.w400,
+                  color: Colors.red,
+                ),
+              ): SizedBox.shrink(),
               Container(
                 alignment: Alignment.topRight,
                 child: Column(
@@ -183,14 +192,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   }
                 },
               ),
-              errorOccured? Text(
-                error,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight:FontWeight.w300,
-                  color: Colors.red,
-                ),
-              ): SizedBox.shrink(),
             ],
           ),
         ),

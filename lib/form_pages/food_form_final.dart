@@ -77,7 +77,7 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
       labelText: label,
       labelStyle: TextStyle(
           fontSize: 25,
-          fontWeight: FontWeight.w300,
+          fontWeight: FontWeight.w400,
           color: Color(0xFF8C8C8C)
       ),
       floatingLabelBehavior: FloatingLabelBehavior.never

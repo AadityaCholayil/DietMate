@@ -142,7 +142,7 @@ class _HomePageState extends State<HomePage> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(34)),
       child: Container(
         height: 80,
-        width: 117,
+        width: 125,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -177,11 +177,11 @@ class _HomePageState extends State<HomePage> {
         Flexible(
           child: totalMetricInfo('Fats', '$totalFats'),
         ),
-        SizedBox(width: 20,),
+        SizedBox(width: 12,),
         Flexible(
           child: totalMetricInfo('Protein', '$totalProtein'),
         ),
-        SizedBox(width: 20),
+        SizedBox(width: 12),
         Flexible(
           child: totalMetricInfo('Carb', '$totalCarb'),
         ),

@@ -36,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
           floatingLabelBehavior: FloatingLabelBehavior.never
       ),
       keyboardType: TextInputType.emailAddress,
-      style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
+      style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w400),
       validator: (String value) {
         if (value.isEmpty) {
           return 'Invalid Email Id';
@@ -67,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
               floatingLabelBehavior: FloatingLabelBehavior.never
           ),
           obscureText: !showPassword,
-          style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
+          style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w400),
           validator: (String value) {
             if (value.isEmpty) {
               return 'Password cannot be empty';
@@ -142,7 +142,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Text(
                   'Login',
                   style: TextStyle(
-                    fontSize: 40,
+                      fontSize: 45,
+                      fontWeight: FontWeight.w500
                   ),
                 ),
               ),
@@ -150,7 +151,20 @@ class _LoginScreenState extends State<LoginScreen> {
               _buildEmail(),
               SizedBox(height: 10),
               _buildPassword(),
+              errorOccured? Container(
+                alignment: Alignment.centerLeft,
+                padding: EdgeInsets.only(top: 5),
+                child: Text(
+                  error,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight:FontWeight.w400,
+                    color: Colors.red,
+                  ),
+                ),
+              ): SizedBox.shrink(),
               SizedBox(height: 10),
+
               Container(
                 alignment: Alignment.topRight,
                 child: Column(
@@ -194,15 +208,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   }
                 },
               ),
-              errorOccured? Text(
-                error,
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight:FontWeight.w300,
-                    color: Colors.red,
-                ),
-
-              ): SizedBox.shrink(),
             ],
           ),
         ),
