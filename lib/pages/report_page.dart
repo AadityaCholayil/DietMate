@@ -236,7 +236,7 @@ class _ReportPageState extends State<ReportPage> {
       margin: EdgeInsets.zero,
       child: Container(
       width: width*0.34,
-      height: width*0.49,
+      height: 228,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -356,9 +356,10 @@ class _ReportPageState extends State<ReportPage> {
       title: '${data.totalFats}g' ,
       titleStyle: TextStyle(
         fontSize: 18,
+        fontWeight: FontWeight.w500,
        ),
       titlePositionPercentageOffset: 0.7,
-      radius: 90,
+      radius: 93,
       value: data.totalFats.toDouble(),
       color: Color(0xFF94FC13),
       );
@@ -367,8 +368,9 @@ class _ReportPageState extends State<ReportPage> {
       title: '${data.totalProtein}g',
       titleStyle: TextStyle(
         fontSize: 18,
+        fontWeight: FontWeight.w500,
        ),
-      radius: 90,
+      radius: 93,
       titlePositionPercentageOffset: 0.7,
       value: data.totalProtein.toDouble(),
       color: Color(0xFF22A806),
@@ -378,8 +380,9 @@ class _ReportPageState extends State<ReportPage> {
       title: '${data.totalCarbs}g',
       titleStyle: TextStyle(
         fontSize: 18,
+        fontWeight: FontWeight.w500,
        ),
-      radius: 90,
+      radius: 93,
       titlePositionPercentageOffset: 0.7,
       value: data.totalCarbs.toDouble(),
       color: Color(0xFF176607),
@@ -406,9 +409,8 @@ class _ReportPageState extends State<ReportPage> {
         child: Container(
           height: width*0.53,
           width: width*0.53,
-          child:
-          isFatsDataZero(data) && isProteinDataZero(data) && isCarbsDataZero(data)?
-         noDataAvailable():
+          child: isFatsDataZero(data) && isProteinDataZero(data) && isCarbsDataZero(data)?
+          noDataAvailable():
           PieChart(
             PieChartData(
               centerSpaceRadius: 0,
@@ -463,7 +465,7 @@ class _ReportPageState extends State<ReportPage> {
                 barRods: [
                   BarChartRodData(
                     y: data.weekList[i].totalCarbs.toDouble(),
-                    colors:[Color(0xFF176607),]
+                    colors:[Color(0xFF176607)],
                   )
                 ],
             );
@@ -481,13 +483,15 @@ class _ReportPageState extends State<ReportPage> {
     String label='';
     double maximumY = 0;
     bool isZero = true;
+    double hLineInterval=0;
     // Color titleColor ;
     //1 for Fats 2 for Protein 3 for carbs
     switch(type){
       case 1:{
         isZero = isFatsDataZero(data);
         label = 'Total Fats';
-        maximumY = double.tryParse((data.maxFatsOfDay()/4).toStringAsPrecision(1)) ;
+        maximumY = double.tryParse((data.maxFatsOfDay()/4).toStringAsPrecision(1));
+        hLineInterval = maximumY;
         // titleColor = Color(0xFF94FC13) ;
       }
       break;
@@ -495,13 +499,15 @@ class _ReportPageState extends State<ReportPage> {
         isZero = isProteinDataZero(data);
         label = 'Total Protein';
         maximumY = double.tryParse((data.maxProteinOfDay()/4).toStringAsPrecision(1));
+        hLineInterval = maximumY;
         // titleColor = Color(0xFF22A806) ;
       }
       break;
       case 3:{
         isZero = isCarbsDataZero(data);
         label = 'Total Carbs';
-        maximumY = double.tryParse((data.maxCarbOfDay()/0.7).toStringAsPrecision(1));
+        maximumY = double.tryParse((data.maxCarbOfDay()/4).toStringAsPrecision(1));
+        hLineInterval = maximumY;
         // titleColor = Color(0xFF176607);
       }
       break;
@@ -588,7 +594,8 @@ class _ReportPageState extends State<ReportPage> {
               )
             ),
             gridData: FlGridData(
-              drawHorizontalLine: false,
+              drawHorizontalLine: true,
+              horizontalInterval: hLineInterval,
             ),
           barGroups: generateBarData(data, type)
           ),
@@ -674,13 +681,13 @@ class _ReportPageState extends State<ReportPage> {
                                   margin: EdgeInsets.only(bottom: 5, left: 5),
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Colors.white,
+                                    color: Theme.of(context).cardColor,
                                   ),
                                   child: IconButton(
                                     // padding: EdgeInsets.only(bottom: 10, left: 5),
                                     icon: Icon(Icons.arrow_back_ios),
                                     iconSize: 25,
-                                    color: Colors.black,
+                                    color: Theme.of(context).colorScheme.onSurface,
                                     onPressed: () {
                                       DateTime joinDate = stringToDate(userData.joinDate);
                                       if(joinDate.isBefore(end.subtract(Duration(days: 7)))){
@@ -703,7 +710,7 @@ class _ReportPageState extends State<ReportPage> {
                                         style: TextStyle(
                                           fontSize: 30,
                                           fontWeight: FontWeight.bold,
-                                          color: Theme.of(context).colorScheme.onSurface,
+                                          color: Color(0xff176607),
                                         ),
                                       ),
                                     ),
@@ -715,7 +722,7 @@ class _ReportPageState extends State<ReportPage> {
                                         style: TextStyle(
                                           fontSize: 19,
                                           fontWeight: FontWeight.w500,
-                                          color: Theme.of(context).colorScheme.onSurface,
+                                          color: Color(0xff176607),
                                         ),
                                       ),
                                     ),
@@ -728,13 +735,13 @@ class _ReportPageState extends State<ReportPage> {
                                   margin: EdgeInsets.only(bottom: 5, right: 5,),
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Colors.white,
+                                    color: Theme.of(context).cardColor,
                                   ),
                                   child: IconButton(
                                     // padding: EdgeInsets.only(bottom: 10, left: 5),
                                     icon: Icon(Icons.arrow_forward_ios),
                                     iconSize: 25,
-                                    color: Colors.black,
+                                    color: Theme.of(context).colorScheme.onSurface,
                                     onPressed: () {
                                       if(now.isAfter(end.add(Duration(days: 6)))){
                                         setState(() {
