@@ -208,57 +208,62 @@ class _ImageSearchState extends State<ImageSearch> {
         ),
         padding: EdgeInsets.all(15),
         height: MediaQuery.of(context).size.height,
-        child: Form(
-          key: _imgFormKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              _buildTitle(),
-              _buildSearchQuery(),
-              SizedBox(height: 20),
-              isSearching==true?Column(
-                children: [
+        child: SingleChildScrollView(
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            child: Form(
+              key: _imgFormKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  _buildTitle(),
+                  _buildSearchQuery(),
                   SizedBox(height: 20),
-                  LoadingSmall(color: Color( 0xFF2ACD07)),
-                  SizedBox(height: 20),
+                  isSearching==true?Column(
+                    children: [
+                      SizedBox(height: 20),
+                      LoadingSmall(color: Color( 0xFF2ACD07)),
+                      SizedBox(height: 20),
+                    ],
+                  ):SizedBox.shrink(),
+                  searchDone==true?_buildImageList(foodImages):SizedBox.shrink(),
+                  Builder(builder: (context) => ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.symmetric(vertical: 7, horizontal: 20),
+                        primary: Color(0xFF2ACD07),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15)
+                        )
+                    ),
+                    child: Text(
+                      'Search',
+                      style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400, color: Colors.white),
+                    ),
+                    onPressed: () async {
+                      if (!_imgFormKey.currentState.validate()) {
+                        return;
+                      }
+                      setState(() {
+                        isSearching=true;
+                        searchDone=false;
+                        _imgFormKey.currentState.save();
+                      });
+                      searchResult=await getImages(searchQuery);
+                      if(searchResult=='No results'){
+                        foodImages=FoodImages(foodImageList: []);
+                      }else{
+                        foodImages=FoodImages.fromData(searchResult);
+                      }
+                      setState(() {
+                        isSearching=false;
+                        searchDone=true;
+                      });
+                    },
+                  )),
+                  SizedBox(height: 40,)
                 ],
-              ):SizedBox.shrink(),
-              searchDone==true?_buildImageList(foodImages):SizedBox.shrink(),
-              Builder(builder: (context) => ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: 7, horizontal: 20),
-                    primary: Color(0xFF2ACD07),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)
-                    )
-                ),
-                child: Text(
-                  'Search',
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400, color: Colors.white),
-                ),
-                onPressed: () async {
-                  if (!_imgFormKey.currentState.validate()) {
-                    return;
-                  }
-                  setState(() {
-                    isSearching=true;
-                    searchDone=false;
-                    _imgFormKey.currentState.save();
-                  });
-                  searchResult=await getImages(searchQuery);
-                  if(searchResult=='No results'){
-                    foodImages=FoodImages(foodImageList: []);
-                  }else{
-                    foodImages=FoodImages.fromData(searchResult);
-                  }
-                  setState(() {
-                    isSearching=false;
-                    searchDone=true;
-                  });
-                },
-              )),
-              SizedBox(height: 40,)
-            ],
+              ),
+            ),
           ),
         )
       ),

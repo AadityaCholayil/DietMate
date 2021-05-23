@@ -12,6 +12,13 @@ class DatabaseService{
   final CollectionReference usersCollection =
       FirebaseFirestore.instance.collection('users');
 
+  //userData Stream
+  Stream<UserData> get userData{
+    print('UserData Stream updated');
+    return db.collection('users').doc(uid).snapshots()
+        .map(_userDataFromSnapshot);
+  }
+
   //write UserData
   Future setUserData(UserData userData) async {
     return await db.collection('users').doc(uid).set({
@@ -55,12 +62,6 @@ class DatabaseService{
       joinDate: snapshot.data()['joinDate'],
       userProfileUrl: snapshot.data()['userProfileUrl'],
     );
-  }
-
-  Stream<UserData> get userData{
-    print('UserData Stream updated');
-    return db.collection('users').doc(uid).snapshots()
-      .map(_userDataFromSnapshot);
   }
 
   //add food
