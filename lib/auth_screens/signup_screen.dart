@@ -16,6 +16,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String error = '';
   bool loading = false;
   bool errorOccured=false;
+  bool showPassword=false;
 
   String email = '';
   String password = '';
@@ -34,7 +35,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           floatingLabelBehavior: FloatingLabelBehavior.never
       ),
       keyboardType: TextInputType.emailAddress,
-      style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w400),
+      style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
       validator: (String value) {
         if (value.isEmpty) {
           return 'Invalid Email Id';
@@ -48,29 +49,47 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Widget _buildPassword(){
-    return TextFormField(
-      decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(15, 18,15, 18),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.green, width: 2, style: BorderStyle.solid, ),
-            borderRadius: BorderRadius.all(Radius.circular(17.0)),
+    return Stack(
+      children: [
+        TextFormField(
+          decoration: InputDecoration(
+              contentPadding: EdgeInsets.fromLTRB(15, 18,15, 18),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.green, width: 2, style: BorderStyle.solid, ),
+                borderRadius: BorderRadius.all(Radius.circular(17.0)),
+              ),
+              fillColor: Theme.of(context).colorScheme.surface,
+              labelText: 'Password',
+              labelStyle: TextStyle(fontSize: 25),
+              floatingLabelBehavior: FloatingLabelBehavior.never
           ),
-          fillColor: Theme.of(context).colorScheme.surface,
-          labelText: 'Password',
-          labelStyle: TextStyle(fontSize: 25),
-          floatingLabelBehavior: FloatingLabelBehavior.never
-      ),
-      obscureText: true,
-      style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w400),
-      validator: (String value) {
-        if (value.isEmpty) {
-          return 'Password cannot be empty';
-        }
-        return null;
-      },
-      onSaved: (String value) {
-        password= value;
-      },
+          obscureText: !showPassword,
+          style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
+          validator: (String value) {
+            if (value.isEmpty) {
+              return 'Password cannot be empty';
+            }
+            return null;
+          },
+          onSaved: (String value) {
+            password= value;
+          },
+
+        ),
+        Container(
+          margin: EdgeInsets.only(right: 15),
+          alignment: Alignment.centerRight,
+          height: 68,
+          child: InkWell(
+              onTap: (){
+                setState(() {
+                  showPassword=!showPassword;
+                });
+              },
+              child: Icon(showPassword?Icons.visibility:Icons.visibility_off,)
+          ),
+        ),
+      ],
     );
   }
 
@@ -121,8 +140,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 child: Text(
                   'SignUp',
                   style: TextStyle(
-                    fontSize: 45,
-                    fontWeight: FontWeight.w500
+                    fontSize: 40,
                   ),
                 ),
               ),
@@ -131,14 +149,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
               SizedBox(height:10),
               _buildPassword(),
               SizedBox(height:10),
-              errorOccured? Text(
-                error,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight:FontWeight.w400,
-                  color: Colors.red,
-                ),
-              ): SizedBox.shrink(),
               Container(
                 alignment: Alignment.topRight,
                 child: Column(
@@ -192,6 +202,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   }
                 },
               ),
+              errorOccured? Text(
+                error,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight:FontWeight.w300,
+                  color: Colors.red,
+                ),
+              ): SizedBox.shrink(),
             ],
           ),
         ),
