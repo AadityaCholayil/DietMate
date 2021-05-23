@@ -33,22 +33,22 @@ class _HistoryPageState extends State<HistoryPage> {
         .get();
   }
 
-  ListView buildListView(FoodListDay foodList, User user) {
+  ListView buildListView(FoodListDay foodList, User user, double width) {
     return ListView.builder(
       shrinkWrap: true,
       itemCount: foodList.list.length,
       physics: NeverScrollableScrollPhysics(),
       itemBuilder: (BuildContext context, int i){
         Food food = foodList.list[i];
-        return buildCard(food, user);
+        return buildCard(food, user, width);
       },
     );
   }
 
-  InkWell buildCard(Food food, User user) {
+  InkWell buildCard(Food food, User user,double width) {
     return InkWell(
       onTap: () {
-        showDialog(context: context, builder: (BuildContext context) => foodInfoDialog(food, user));
+        showDialog(context: context, builder: (BuildContext context) => foodInfoDialog(food, user,width));
       },
       child: Card(
         clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -56,7 +56,7 @@ class _HistoryPageState extends State<HistoryPage> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(34)),
         child: Container(
           padding: EdgeInsets.all(6),
-          height: 107,
+          height: width*0.26,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -112,13 +112,13 @@ class _HistoryPageState extends State<HistoryPage> {
     );
   }
 
-  Widget foodInfoDialog(Food food, User user){
+  Widget foodInfoDialog(Food food, User user,double width){
     return Dialog(
       clipBehavior: Clip.antiAliasWithSaveLayer,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
       insetPadding: EdgeInsets.zero,
       child: Container(
-        height: 630,
+        height: width*1.53,
         width: MediaQuery.of(context).size.width*0.9,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -134,7 +134,7 @@ class _HistoryPageState extends State<HistoryPage> {
             SizedBox(height:5),
             Container(
               padding: EdgeInsets.only(left:12,top: 5),
-              width: 400,
+              width: width*0.97,
               child:Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start ,
@@ -252,6 +252,9 @@ class _HistoryPageState extends State<HistoryPage> {
   @override
   Widget build(BuildContext context) {
     User user = Provider.of<User>(context);
+    final Size size = MediaQuery.of(context).size;
+    print("${size.height}x${size.width}");
+    double width = size.width;
     UserData userData = Provider.of<UserData>(context);
     DateTime joinDate = stringToDate(userData.joinDate);
     var uHeight = MediaQuery.of(context).size.height;
@@ -421,7 +424,7 @@ class _HistoryPageState extends State<HistoryPage> {
                         //   );
                         // }
                         return Container(
-                          child: buildListView(foodList, user)
+                          child: buildListView(foodList, user,width)
                         );
                       }
                       return Container();
