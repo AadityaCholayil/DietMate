@@ -252,6 +252,9 @@ class _HistoryPageState extends State<HistoryPage> {
   @override
   Widget build(BuildContext context) {
     User user = Provider.of<User>(context);
+    final Size size = MediaQuery.of(context).size;
+    print("${size.height}x${size.width}");
+    double width = size.width;
     UserData userData = Provider.of<UserData>(context);
     DateTime joinDate = stringToDate(userData.joinDate);
     var uHeight = MediaQuery.of(context).size.height;

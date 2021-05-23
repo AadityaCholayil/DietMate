@@ -93,7 +93,7 @@ class _ReportPageState extends State<ReportPage> {
         );
   }
 
-  Widget _buildLineChart(FoodListWeek data) {
+  Widget _buildLineChart(FoodListWeek data , double width) {
 
     return Card(
       margin: EdgeInsets.zero,
@@ -102,7 +102,7 @@ class _ReportPageState extends State<ReportPage> {
         borderRadius: BorderRadius.all(Radius.circular(54))
       ),
       child: Container(
-        height: 300 ,
+        height: width*0.695 ,
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(5, 25, 35, 10),
         margin: EdgeInsets.all(10),
@@ -227,7 +227,7 @@ class _ReportPageState extends State<ReportPage> {
     );
   }
 
-  Widget _buildLegends(FoodListWeek data) {
+  Widget _buildLegends(FoodListWeek data, double width) {
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(31))
@@ -235,8 +235,8 @@ class _ReportPageState extends State<ReportPage> {
       color: Theme.of(context).cardColor,
       margin: EdgeInsets.zero,
       child: Container(
-      width: 144,
-      height: 212,
+      width: width*0.34,
+      height: width*0.49,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -396,7 +396,7 @@ class _ReportPageState extends State<ReportPage> {
     return list;
   }
 
-  Widget _buildPieChart(FoodListWeek data) {
+  Widget _buildPieChart(FoodListWeek data, double width) {
       return Card(
           shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(31)) ,
@@ -404,9 +404,8 @@ class _ReportPageState extends State<ReportPage> {
         color: Theme.of(context).cardColor,
         margin: EdgeInsets.zero,
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal:21 ,vertical: 16),
-          height: 212,
-          width: MediaQuery.of(context).size.width,
+          height: width*0.53,
+          width: width*0.53,
           child:
           isFatsDataZero(data) && isProteinDataZero(data) && isCarbsDataZero(data)?
          noDataAvailable():
@@ -477,7 +476,7 @@ class _ReportPageState extends State<ReportPage> {
     return list;
   }
 
-  Widget _buildBarChart(FoodListWeek data,int type) {
+  Widget _buildBarChart(FoodListWeek data,int type, double width) {
 
     String label='';
     double maximumY = 0;
@@ -518,7 +517,7 @@ class _ReportPageState extends State<ReportPage> {
       padding: EdgeInsets.fromLTRB(0, 25, 30, 5),
       alignment: Alignment.center,
       margin: EdgeInsets.all(10),
-      height:170,
+      height:width*0.39,
       width: MediaQuery.of(context).size.width*0.9,
       child: isZero ?
       Container(
@@ -609,7 +608,11 @@ class _ReportPageState extends State<ReportPage> {
 
     final user = Provider.of<User>(context);
     final userData = Provider.of<UserData>(context);
+    final Size size = MediaQuery.of(context).size;
+    print("${size.height}x${size.width}");
+    double width = size.width;
     caloriesGoal=userData.calorieGoal;
+
 
     return Scaffold(
         body: Container(
@@ -657,7 +660,7 @@ class _ReportPageState extends State<ReportPage> {
                         ),
                       ),
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.05),
+                        padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.03),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -745,36 +748,36 @@ class _ReportPageState extends State<ReportPage> {
                               ],
                             ),
                             SizedBox(
-                              height: 10,
+                              height: width*0.03,
                             ),
-                            _buildLineChart(data),
+                            _buildLineChart(data,width),
                             SizedBox(
-                              height: 10,
+                              height: width*0.03,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                _buildLegends(data),
+                                _buildLegends(data, width),
   
                                 SizedBox(
-                                  width: 10,
+                                  width: width*0.03,
                                 ),
   
-                                _buildPieChart(data)
+                                _buildPieChart(data,width)
                               ],
                             ),
                             SizedBox(
-                              height: 10,
+                              height: width*0.03,
                             ),
-                            _buildBarChart(data,1), //Fats Bar Chart
+                            _buildBarChart(data,1,width), //Fats Bar Chart
                             SizedBox(
-                              height: 10,
+                              height: width*0.03,
                             ),
-                            _buildBarChart(data,2), //Protein Bar Chart
+                            _buildBarChart(data,2,width), //Protein Bar Chart
                             SizedBox(
-                              height: 10,
+                              height: width*0.03,
                             ),
-                            _buildBarChart(data,3), //Carbs Bar Chart
+                            _buildBarChart(data,3,width), //Carbs Bar Chart
                             SizedBox(
                               height: 90,
                             )
