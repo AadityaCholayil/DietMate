@@ -45,11 +45,18 @@ dependencies:
   cupertino_icons: ^1.0.2
   table_calendar: ^3.0.0
   fl_chart: ^0.35.0
+  flutter_launcher_icons: ^0.9.0
+  flutter_native_splash: ^1.1.8+4
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/icon.png"
 
 
 # For information on the generic Dart part of this file, see the
@@ -101,3 +108,10 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+flutter_native_splash:
+  background_image: "assets/splashscreen/bg.png"
+  image: "assets/splashscreen/splash.png"
+  background_image_dark: "assets/splashscreen/darkbg.png"
+  image_dark: "assets/splashscreen/splash_dark.png"
+  web: false

@@ -38,59 +38,55 @@ class _ReportPageState extends State<ReportPage> {
         .get();
     return result;
   }
+
   bool isCalorieDataZero(FoodListWeek data){
-    var isZero = true;
-
-  for (var elements in data.weekList ) {
-    if(elements.consumedCalories > 0){
-      return false;
+    for (var elements in data.weekList ) {
+      if(elements.consumedCalories > 0){
+        return false;
+      }
     }
-   };
-  return true;
+    return true;
   }
+
   bool isFatsDataZero(FoodListWeek data){
-    var isZero = true;
-
-  for (var elements in data.weekList ) {
-    if(elements.totalFats > 0){
-      return false;
+    for (var elements in data.weekList ) {
+      if(elements.totalFats > 0){
+        return false;
+      }
     }
-   };
-  return true;
+    return true;
   }
+
   bool isCarbsDataZero(FoodListWeek data){
-    var isZero = true;
-
-  for (var elements in data.weekList ) {
-    if(elements.totalCarbs > 0){
-      return false;
+    for (var elements in data.weekList ) {
+      if(elements.totalCarbs > 0){
+        return false;
+      }
     }
-   };
-  return true;
+    return true;
   }
-  bool isProteinDataZero(FoodListWeek data){
-    var isZero = true;
 
-  for (var elements in data.weekList ) {
-    if(elements.totalProtein > 0){
-      return false;
+  bool isProteinDataZero(FoodListWeek data){
+    for (var elements in data.weekList ) {
+      if(elements.totalProtein > 0){
+        return false;
+      }
     }
-   };
-  return true;
+    return true;
   }
 
   Widget noDataAvailable(){
     return Container(
       alignment: Alignment.center,
-          child: Text(
-            'No Data Available',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
+        child: Text(
+          'No Data Available',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
-        );
+        ),
+      );
   }
 
   Widget _buildLineChart(FoodListWeek data , double width) {

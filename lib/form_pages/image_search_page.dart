@@ -157,7 +157,15 @@ class _ImageSearchState extends State<ImageSearch> {
 
   Widget _buildImageList(FoodImages foodImages){
     if(foodImages.foodImageList.length==0){
-      return Text('No results found.');
+      return Container(
+        padding: EdgeInsets.only(bottom: 20),
+        child: Text(
+          'No results found.',
+          style: TextStyle(
+            fontSize: 23
+          ),
+        ),
+      );
     }
     return Column(
       children: [
@@ -182,12 +190,12 @@ class _ImageSearchState extends State<ImageSearch> {
   Widget _buildTitle(){
     return Center(
       child: Container(
-        padding: EdgeInsets.fromLTRB(22, 10, 0, 20),
-        alignment: Alignment.centerLeft,
+        padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
+        alignment: Alignment.center,
         child: Text(
           'Image Search',
           style: TextStyle(
-            fontSize: 50,
+            fontSize: 43,
             fontWeight: FontWeight.bold,
             color: Color( 0xFF2ACD07),
           ),

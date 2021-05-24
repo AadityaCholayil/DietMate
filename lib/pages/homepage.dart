@@ -6,6 +6,7 @@ import 'package:dietmate/model/food_list_day.dart';
 import 'package:dietmate/model/user.dart';
 import 'package:dietmate/services/database.dart';
 import 'package:dietmate/shared/conversion.dart';
+import 'package:dietmate/shared/gradient.dart';
 import 'package:dietmate/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -44,14 +45,14 @@ class _HomePageState extends State<HomePage> {
     dateToday=dateToString(now);
   }
 
-  Widget buildSleekCircularSlider() {
+  Widget buildSleekCircularSlider(double width) {
     return Card(
       clipBehavior: Clip.antiAliasWithSaveLayer,
       elevation: 7,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(54)),
       child: Container(
         alignment:Alignment.center,
-        height:370,
+        height: width*0.856,
         child: SleekCircularSlider(
           min: 0,
           max: caloriesGoal.toDouble(),
@@ -64,17 +65,21 @@ class _HomePageState extends State<HomePage> {
             angleRange: 360,
             size: 300,
             customWidths: CustomSliderWidths(
-              trackWidth: 25.0,
+              trackWidth: 4.0,
               progressBarWidth: 25.0,
               handlerSize: 7.0,
             ),
             customColors: CustomSliderColors(
               gradientStartAngle: 180,
               gradientEndAngle: 190,
-              progressBarColors: [
+              progressBarColors: consumedCalories<=caloriesGoal?
+              <Color>[
                 Color( 0xffB5FF48),
                 Color( 0xff94FC13),
                 Color(0xff05B54B),
+              ]:<Color>[
+                Colors.red,
+                Colors.red
               ],
               dynamicGradient: true,
               trackColor: Color( 0xffDBFFAF),
@@ -135,21 +140,21 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget totalMetricInfo(String top, String bottom){
+  Widget totalMetricInfo(String top, String bottom, double width){
     return Card(
       clipBehavior: Clip.antiAliasWithSaveLayer,
       elevation: 7,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(34)),
       child: Container(
-        height: 80,
-        width: 125,
+        height: width*0.185,
+        width: width*0.289,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               top ,
               style: TextStyle(
-                fontSize:19,
+                fontSize:17,
                 color: Theme.of(context).colorScheme.onSurface,
                 fontStyle: FontStyle.normal,
                   fontWeight: FontWeight.w400
@@ -170,38 +175,50 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget buildOtherMetrics() {
+  Widget buildOtherMetrics(double width) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children:<Widget>[
         Flexible(
-          child: totalMetricInfo('Fats', '$totalFats'),
+          child: totalMetricInfo('Fats', '${totalFats}g', width),
         ),
         SizedBox(width: 12,),
         Flexible(
-          child: totalMetricInfo('Protein', '$totalProtein'),
+          child: totalMetricInfo('Protein', '${totalProtein}g', width),
         ),
         SizedBox(width: 12),
         Flexible(
-          child: totalMetricInfo('Carb', '$totalCarb'),
+          child: totalMetricInfo('Carb', '${totalCarb}g', width),
         ),
       ],
     );
   }
 
-  ListView buildListView(FoodListDay foodList, User user) {
+  Widget buildListView(FoodListDay foodList, User user, double width) {
+    if(foodList.list.isEmpty){
+      return Container(
+        height: 140,
+        alignment: Alignment.center,
+        child: Text(
+          'No food added yet.',
+          style: TextStyle(
+            fontSize: 22
+          ),
+        ),
+      );
+    }
     return ListView.builder(
       shrinkWrap: true,
       itemCount: foodList.list.length,
       physics: NeverScrollableScrollPhysics(),
       itemBuilder: (BuildContext context, int i){
         Food food = foodList.list[i];
-        return buildCard(food, user);
+        return buildCard(food, user, width);
       },
     );
   }
 
-  InkWell buildCard(Food food, User user) {
+  InkWell buildCard(Food food, User user, double width) {
     return InkWell(
       onTap: () {
         showDialog(context: context, builder: (BuildContext context) => foodInfoDialog(food, user));
@@ -211,8 +228,8 @@ class _HomePageState extends State<HomePage> {
         elevation: 7,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(34)),
         child: Container(
-          padding: EdgeInsets.all(6),
-          height: 107,
+          padding: EdgeInsets.all(width*0.0092),
+          height: width*0.238,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -224,37 +241,38 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      '${food.name.length>16?food.name.substring(0,15)+"..":food.name}',
+                      '${food.name.length>17?food.name.substring(0,15)+"..":food.name}',
                       style: TextStyle(
-                        fontSize:26,
-                          fontWeight: FontWeight.bold
+                        fontSize:23,
+                          fontWeight: FontWeight.w500
                       ),
                     ),
                     //SizedBox(height: 1),
                     Text(
                       'Calories: ${food.calories} Kcal',
                       style:TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500
+                        fontSize: 17,
+                        fontWeight: FontWeight.w400
                       ),
                     ),
                     //SizedBox(height: 1),
                     Text(
                       'Time: ${food.time}',
                       style:TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500
+                          fontSize: 17,
+                          fontWeight: FontWeight.w400
                       ),
                     ),
                   ],
                 ),
               ),
               Container(
+                margin: EdgeInsets.zero,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(34)
                 ),
-                height: 95,
-                width: 95,
+                height: width*0.22,
+                width: width*0.22,
                 clipBehavior: Clip.antiAliasWithSaveLayer,
                 child: Image.network(
                   food.thumbnailUrl,
@@ -274,7 +292,7 @@ class _HomePageState extends State<HomePage> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
       insetPadding: EdgeInsets.zero,
       child: Container(
-        height: 630,
+        height: food.name.length<20?MediaQuery.of(context).size.width*1.46:MediaQuery.of(context).size.width*1.535,
         width: MediaQuery.of(context).size.width*0.9,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -298,48 +316,48 @@ class _HomePageState extends State<HomePage> {
                   Text(
                     '${food.name}',
                     style: TextStyle(
-                      fontSize: 26,
-                        fontWeight: FontWeight.bold
+                      fontSize: 24,
+                        fontWeight: FontWeight.w500
                     ),
                   ),
                   SizedBox(height:1),
                   Text(
                     'Calories: ${food.calories} Kcal',
                     style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600
+                      fontSize: 19,
+                      fontWeight: FontWeight.w400
                     ),
                   ),
                   SizedBox(height:1),
                   Text(
                     'Time: ${food.time}',
                     style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600
+                        fontSize: 19,
+                        fontWeight: FontWeight.w400
                     ),
                   ),
                   SizedBox(height:1),
                   Text(
                     'Protein: ${food.protein}g',
                     style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600
+                        fontSize: 19,
+                        fontWeight: FontWeight.w400
                     ),
                   ),
                   SizedBox(height:1),
                   Text(
                     'Fats: ${food.fats}g',
                     style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600
+                        fontSize: 19,
+                        fontWeight: FontWeight.w400
                     ),
                   ),
                   SizedBox(height:1),
                   Text(
                     'Carbohydrates: ${food.carbohydrates} Kcal',
                     style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600
+                        fontSize: 19,
+                        fontWeight: FontWeight.w400
                     ),
                   ),
                 ],
@@ -355,16 +373,17 @@ class _HomePageState extends State<HomePage> {
                     child: Text(
                       'Update',
                     style: TextStyle(
-                      fontSize:23,
+                      fontSize:20,
                         fontWeight: FontWeight.w600
                      ),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
+                      await Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => FoodFormFinal(food: food))
+                      );
                       setState(() {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => FoodFormFinal(food: food))
-                        );
+                        print('back to homepage');
                       });
                     }
                   ),
@@ -372,27 +391,30 @@ class _HomePageState extends State<HomePage> {
                     child: Text(
                       'Delete',
                       style: TextStyle(
-                          fontSize:23,
+                          fontSize:20,
                           fontWeight: FontWeight.w600
                       ),
                     ),
                     onPressed: () async {
                       await DatabaseService(uid: user.uid).deleteFood(food);
+                      setState(() {
+                        print('Deleted!');
+                      });
                       Navigator.pop(context);
                     }
                   ),
                   TextButton(
-                      child: Text(
-                        'Cancel',
-                        style: TextStyle(
-                          fontSize:23,
-                            fontWeight: FontWeight.w600
-                        ),
+                    child: Text(
+                      'Cancel',
+                      style: TextStyle(
+                        fontSize:20,
+                          fontWeight: FontWeight.w600
                       ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                        print('Pressed');
-                      }
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      print('Pressed');
+                    }
                   ),
                 ],
               ),
@@ -410,7 +432,7 @@ class _HomePageState extends State<HomePage> {
     final userData = Provider.of<UserData>(context);
     caloriesGoal=userData.calorieGoal;
     Size size = MediaQuery.of(context).size;
-    print(MediaQuery.of(context).size.width);
+    double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
       body: SafeArea(
@@ -427,14 +449,17 @@ class _HomePageState extends State<HomePage> {
                   ),
                   elevation: 8,
                   child: Container(
-                    height: size.height*0.4,
+                    height: width*0.694,
                     width: size.width,
-                    color: Theme.of(context).accentColor,
+                    decoration: BoxDecoration(
+                      gradient: customGradient
+                    ),
+                    // color: Theme.of(context).accentColor,
                     child: SizedBox(),
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: size.width*0.0625),
+                  padding: EdgeInsets.symmetric(horizontal: width*0.0625),
                   child: FutureBuilder<QuerySnapshot>(
                     future: getData(user),
                     builder: (context, snapshot){
@@ -469,33 +494,33 @@ class _HomePageState extends State<HomePage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Container(
-                                padding: EdgeInsets.fromLTRB(20,47,0,11),
+                                padding: EdgeInsets.fromLTRB(20,40,0,6),
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   'Hello, ${userData.name}',
                                   style: TextStyle(
-                                      fontSize: 32,
+                                      fontSize: 28,
                                       fontWeight: FontWeight.bold,
                                       color: Color(0xff176607),
                                   ),
                                 ),
                               ),
-                              buildSleekCircularSlider(),
+                              buildSleekCircularSlider(width),
                               SizedBox(height: 10),
-                              buildOtherMetrics(),
-                              SizedBox(height: 25),
+                              buildOtherMetrics(width),
+                              SizedBox(height: width*0.058),
                               Padding(
                                 padding: EdgeInsets.only(left:25),
                                 child: Text(
                                   "Today's Food",
                                   style: TextStyle(
-                                    fontSize: 26,
+                                    fontSize: 23,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
                               ),
                               SizedBox(height: 8),
-                              buildListView(foodList, user),
+                              buildListView(foodList, user, width),
                             ],
                           ),
                         );

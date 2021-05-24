@@ -24,18 +24,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget _buildEmail(){
     return TextFormField(
       decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(15, 18,15, 18),
+          contentPadding: EdgeInsets.fromLTRB(15, 15, 15, 15),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.green, width: 2, style: BorderStyle.solid, ),
             borderRadius: BorderRadius.all(Radius.circular(17.0)),
           ),
           fillColor: Theme.of(context).colorScheme.surface,
           labelText: 'Email Id',
-          labelStyle: TextStyle(fontSize: 25),
+          labelStyle: TextStyle(fontSize: 22),
           floatingLabelBehavior: FloatingLabelBehavior.never
       ),
       keyboardType: TextInputType.emailAddress,
-      style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
+      style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w400),
       validator: (String value) {
         if (value.isEmpty) {
           return 'Invalid Email Id';
@@ -53,18 +53,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
       children: [
         TextFormField(
           decoration: InputDecoration(
-              contentPadding: EdgeInsets.fromLTRB(15, 18,15, 18),
+              contentPadding: EdgeInsets.fromLTRB(15, 15,15, 15),
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.green, width: 2, style: BorderStyle.solid, ),
                 borderRadius: BorderRadius.all(Radius.circular(17.0)),
               ),
               fillColor: Theme.of(context).colorScheme.surface,
               labelText: 'Password',
-              labelStyle: TextStyle(fontSize: 25),
+              labelStyle: TextStyle(fontSize: 22),
               floatingLabelBehavior: FloatingLabelBehavior.never
           ),
           obscureText: !showPassword,
-          style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
+          style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w400),
           validator: (String value) {
             if (value.isEmpty) {
               return 'Password cannot be empty';
@@ -79,7 +79,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         Container(
           margin: EdgeInsets.only(right: 15),
           alignment: Alignment.centerRight,
-          height: 68,
+          height: 60,
           child: InkWell(
               onTap: (){
                 setState(() {
@@ -166,6 +166,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
               loading?LoadingSmall():ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(vertical: 7, horizontal: 30),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15)
+                    )
+                ),
                 child:  Text(
                   'SignUp',
                   style: TextStyle(

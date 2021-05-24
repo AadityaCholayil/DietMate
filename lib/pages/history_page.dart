@@ -33,7 +33,19 @@ class _HistoryPageState extends State<HistoryPage> {
         .get();
   }
 
-  ListView buildListView(FoodListDay foodList, User user, double width) {
+  Widget buildListView(FoodListDay foodList, User user, double width) {
+    if(foodList.list.isEmpty){
+      return Container(
+        height: 140,
+        alignment: Alignment.center,
+        child: Text(
+          'No food added.',
+          style: TextStyle(
+              fontSize: 22
+          ),
+        ),
+      );
+    }
     return ListView.builder(
       shrinkWrap: true,
       itemCount: foodList.list.length,
@@ -45,18 +57,18 @@ class _HistoryPageState extends State<HistoryPage> {
     );
   }
 
-  InkWell buildCard(Food food, User user,double width) {
+  InkWell buildCard(Food food, User user, double width) {
     return InkWell(
       onTap: () {
-        showDialog(context: context, builder: (BuildContext context) => foodInfoDialog(food, user,width));
+        showDialog(context: context, builder: (BuildContext context) => foodInfoDialog(food, user));
       },
       child: Card(
         clipBehavior: Clip.antiAliasWithSaveLayer,
         elevation: 7,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(34)),
         child: Container(
-          padding: EdgeInsets.all(6),
-          height: width*0.26,
+          padding: EdgeInsets.all(width*0.0092),
+          height: width*0.238,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -70,35 +82,36 @@ class _HistoryPageState extends State<HistoryPage> {
                     Text(
                       '${food.name.length>16?food.name.substring(0,15)+"..":food.name}',
                       style: TextStyle(
-                          fontSize:26,
-                          fontWeight: FontWeight.bold
+                          fontSize:23,
+                          fontWeight: FontWeight.w500
                       ),
                     ),
                     //SizedBox(height: 1),
                     Text(
                       'Calories: ${food.calories} Kcal',
                       style:TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500
+                          fontSize: 17,
+                          fontWeight: FontWeight.w400
                       ),
                     ),
                     //SizedBox(height: 1),
                     Text(
                       'Time: ${food.time}',
                       style:TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500
+                          fontSize: 17,
+                          fontWeight: FontWeight.w400
                       ),
                     ),
                   ],
                 ),
               ),
               Container(
+                margin: EdgeInsets.zero,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(34)
                 ),
-                height: 95,
-                width: 95,
+                height: width*0.22,
+                width: width*0.22,
                 clipBehavior: Clip.antiAliasWithSaveLayer,
                 child: Image.network(
                   food.thumbnailUrl,
@@ -112,13 +125,13 @@ class _HistoryPageState extends State<HistoryPage> {
     );
   }
 
-  Widget foodInfoDialog(Food food, User user,double width){
+  Widget foodInfoDialog(Food food, User user){
     return Dialog(
       clipBehavior: Clip.antiAliasWithSaveLayer,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
       insetPadding: EdgeInsets.zero,
       child: Container(
-        height: width*1.53,
+        height: food.name.length<20?MediaQuery.of(context).size.width*1.46:MediaQuery.of(context).size.width*1.535,
         width: MediaQuery.of(context).size.width*0.9,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -134,7 +147,7 @@ class _HistoryPageState extends State<HistoryPage> {
             SizedBox(height:5),
             Container(
               padding: EdgeInsets.only(left:12,top: 5),
-              width: width*0.97,
+              width: 400,
               child:Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start ,
@@ -142,48 +155,48 @@ class _HistoryPageState extends State<HistoryPage> {
                   Text(
                     '${food.name}',
                     style: TextStyle(
-                        fontSize: 26,
-                        fontWeight: FontWeight.bold
+                        fontSize: 24,
+                        fontWeight: FontWeight.w500
                     ),
                   ),
                   SizedBox(height:1),
                   Text(
                     'Calories: ${food.calories} Kcal',
                     style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600
+                        fontSize: 19,
+                        fontWeight: FontWeight.w400
                     ),
                   ),
                   SizedBox(height:1),
                   Text(
                     'Time: ${food.time}',
                     style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600
+                        fontSize: 19,
+                        fontWeight: FontWeight.w400
                     ),
                   ),
                   SizedBox(height:1),
                   Text(
                     'Protein: ${food.protein}g',
                     style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600
+                        fontSize: 19,
+                        fontWeight: FontWeight.w400
                     ),
                   ),
                   SizedBox(height:1),
                   Text(
                     'Fats: ${food.fats}g',
                     style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600
+                        fontSize: 19,
+                        fontWeight: FontWeight.w400
                     ),
                   ),
                   SizedBox(height:1),
                   Text(
                     'Carbohydrates: ${food.carbohydrates} Kcal',
                     style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600
+                        fontSize: 19,
+                        fontWeight: FontWeight.w400
                     ),
                   ),
                 ],
@@ -196,47 +209,50 @@ class _HistoryPageState extends State<HistoryPage> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   TextButton(
-                      child: Text(
-                        'Update',
-                        style: TextStyle(
-                            fontSize:23,
-                            fontWeight: FontWeight.w600
-                        ),
+                    child: Text(
+                      'Update',
+                      style: TextStyle(
+                          fontSize:20,
+                          fontWeight: FontWeight.w600
                       ),
-                      onPressed: () {
-                        setState(() {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => FoodFormFinal(food: food))
-                          );
-                        });
-                      }
+                    ),
+                    onPressed: () async {
+                      await Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => FoodFormFinal(food: food))
+                      );
+                      setState(() {
+                        print('back to homepage');
+                      });
+                    }
                   ),
                   TextButton(
                       child: Text(
                         'Delete',
                         style: TextStyle(
-                            fontSize:23,
+                            fontSize:20,
                             fontWeight: FontWeight.w600
                         ),
                       ),
                       onPressed: () async {
                         await DatabaseService(uid: user.uid).deleteFood(food);
                         setState(() {
-                          Navigator.pop(context);
+                          print('Deleted!');
                         });
+                        Navigator.pop(context);
                       }
                   ),
                   TextButton(
                       child: Text(
                         'Cancel',
                         style: TextStyle(
-                            fontSize:23,
+                            fontSize:20,
                             fontWeight: FontWeight.w600
                         ),
                       ),
                       onPressed: () {
                         Navigator.pop(context);
+                        print('Pressed');
                       }
                   ),
                 ],
@@ -389,11 +405,11 @@ class _HistoryPageState extends State<HistoryPage> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(left:25, top: 13, bottom: 10),
+                      padding: EdgeInsets.only(left:25, top: 13, bottom: 5),
                       child: Text(
                         "${formattedDate(_selectedDay)}'s food",
                         style: TextStyle(
-                            fontSize: 26,
+                            fontSize: 24,
                             fontWeight: FontWeight.w400
                         ),
                       ),

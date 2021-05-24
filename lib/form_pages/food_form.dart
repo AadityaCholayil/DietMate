@@ -4,7 +4,6 @@ import 'package:dietmate/form_pages/food_form_final.dart';
 import 'package:dietmate/shared/loading.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:glass_kit/glass_kit.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 
@@ -159,7 +158,7 @@ class _FoodFormState extends State<FoodForm> {
       return Column(
         children: [
           SizedBox(height: 10),
-          Row(
+          Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
@@ -221,7 +220,7 @@ class _FoodFormState extends State<FoodForm> {
                                       Text(
                                         '${food.name}',
                                         style: TextStyle(
-                                          fontSize: 23,
+                                          fontSize: 22,
                                           fontWeight: FontWeight.w500
                                         ),
                                       ),
@@ -325,7 +324,7 @@ class _FoodFormState extends State<FoodForm> {
         child: Text(
           'Search',
           style: TextStyle(
-            fontSize: 56,
+            fontSize: 52,
             fontWeight: FontWeight.bold,
             color: Color( 0xFF2ACD07)
           ),

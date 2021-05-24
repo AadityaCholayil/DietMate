@@ -1,6 +1,6 @@
 import 'package:dietmate/auth_screens/wrapper.dart';
 import 'package:dietmate/services/auth.dart';
-import 'package:dietmate/shared/loading.dart';
+import 'package:dietmate/shared/splash_screen.dart';
 import 'package:dietmate/themes/custom_theme.dart';
 import 'package:dietmate/themes/dark_theme.dart';
 import 'package:dietmate/themes/light_theme.dart';
@@ -59,18 +59,22 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     if(_error) {
       return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: themeNotifier.getTheme(),
-        home: Scaffold(body: Loading()),
+        home: Scaffold(body: SplashScreen()),
       );
     }
     if (!_initialized) {
       return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: themeNotifier.getTheme(),
-        home: Scaffold(body: Loading()),
+        home: Scaffold(body: SplashScreen()),
       );
     }
     User user = FirebaseAuth.instance.currentUser ?? null;

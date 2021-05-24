@@ -56,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
       children: [
         TextFormField(
           decoration: InputDecoration(
-              contentPadding: EdgeInsets.fromLTRB(15, 18,15, 18),
+              contentPadding: EdgeInsets.fromLTRB(15, 15,15, 15),
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.green, width: 2, style: BorderStyle.solid, ),
                 borderRadius: BorderRadius.all(Radius.circular(17.0)),
@@ -81,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
         Container(
           margin: EdgeInsets.only(right: 15),
           alignment: Alignment.centerRight,
-          height: 68,
+          height: 60,
           child: InkWell(
             onTap: (){
               setState(() {
@@ -181,6 +181,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               loading?LoadingSmall():ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(vertical: 7, horizontal: 30),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15)
+                    )
+                ),
                 child:  Text(
                   'Login',
                   style: TextStyle(

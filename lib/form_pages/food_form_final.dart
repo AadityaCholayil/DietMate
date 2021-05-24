@@ -254,7 +254,7 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
               child: Text(
                 'Select Image',
                 style: TextStyle(
-                  fontSize: 22,
+                  fontSize: 20,
                   fontWeight: FontWeight.w500,
                   color: Colors.white
                 ),
@@ -553,12 +553,12 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
   Widget _buildTitle(){
     return Center(
       child: Container(
-        padding: EdgeInsets.only(bottom: 5),
+        padding: EdgeInsets.only(bottom: 5, top: 10),
         alignment: Alignment.bottomCenter,
         child: Text(
           'Food Details',
           style: TextStyle(
-            fontSize: 50,
+            fontSize: 42,
             fontWeight: FontWeight.bold,
             color: Color( 0xFF2ACD07),
           ),

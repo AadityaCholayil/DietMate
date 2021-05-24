@@ -72,8 +72,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     size: 33,
                   ),
                 ),
-                onPressed: () async {
-                  await openContainer();
+                onPressed: () {
+                  openContainer();
                   setState((){
                     print('HomePage');
                   });

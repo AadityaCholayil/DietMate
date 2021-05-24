@@ -20,11 +20,30 @@ class PlanScreen extends StatefulWidget {
 
 class _PlanScreenState extends State<PlanScreen> {
 
-  int _calorieGoal=2000;
+  int _calorieGoal=99999;
   int _customCalorieGoal;
   int selectedIndex=0;
   bool loading = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  SnackBar showCustomSnackBar(String message){
+    return SnackBar(
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      content: Text(
+        message,
+        style: TextStyle(
+          fontSize: 15,
+          color: Theme.of(context).colorScheme.onSurface,
+        ),
+      ),
+      action: SnackBarAction(
+        label: 'OK',
+        textColor: Theme.of(context).accentColor,
+        onPressed: () {},
+      ),
+    );
+  }
+
 
   Widget buildCard(BuildContext context, int index) {
     String title, subTitle;
@@ -196,8 +215,9 @@ class _PlanScreenState extends State<PlanScreen> {
           fillColor: Theme.of(context).colorScheme.surface,
           labelText: 'Eg. 2200 KCal',
           labelStyle: TextStyle(fontSize: 23),
-          floatingLabelBehavior: FloatingLabelBehavior.never
+          floatingLabelBehavior: FloatingLabelBehavior.never,
       ),
+      keyboardType: TextInputType.number,
       style: TextStyle(fontSize: 23.0, fontWeight: FontWeight.w300),
       onChanged: (value){
         setState(() {
@@ -285,6 +305,12 @@ class _PlanScreenState extends State<PlanScreen> {
                     alignment: Alignment.topCenter,
                     padding: EdgeInsets.only(top: 20),
                     child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(vertical: 7, horizontal: 30),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15)
+                          )
+                      ),
                       child:  Text(
                         'Submit',
                         style: TextStyle(
@@ -295,6 +321,10 @@ class _PlanScreenState extends State<PlanScreen> {
                         UserData newUserData = widget.userData;
                         print("url: ${newUserData.userProfileUrl}");
                         newUserData.calorieGoal=_customCalorieGoal??_calorieGoal;
+                        if(newUserData.calorieGoal==99999){
+                          ScaffoldMessenger.of(context).showSnackBar(showCustomSnackBar('Select a plan!'));
+                          return;
+                        }
                         setState(() => loading = true);
                         await DatabaseService(uid: user.uid).updateUserData(newUserData);
                         setState(() {
