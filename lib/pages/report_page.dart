@@ -236,7 +236,7 @@ class _ReportPageState extends State<ReportPage> {
       margin: EdgeInsets.zero,
       child: Container(
       width: width*0.34,
-      height: 228,
+      height: width*0.53,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -622,184 +622,186 @@ class _ReportPageState extends State<ReportPage> {
 
 
     return Scaffold(
-        body: Container(
-          height: MediaQuery.of(context).size.height,
-          child: SingleChildScrollView(
-            child: FutureBuilder<QuerySnapshot>(
-              future: getData(user),
-              builder: (context, snapshot){
-                if(snapshot.connectionState!=ConnectionState.done){
-                  //query in progress
-                  return Loading();
-                }
-                if(snapshot.hasError){
+        body: SafeArea(
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            child: SingleChildScrollView(
+              child: FutureBuilder<QuerySnapshot>(
+                future: getData(user),
+                builder: (context, snapshot){
+                  if(snapshot.connectionState!=ConnectionState.done){
+                    //query in progress
+                    return Loading();
+                  }
+                  if(snapshot.hasError){
+                    return Container(
+                      child: Text(
+                        'Error occurred',
+                      ),
+                    );
+                  }
+                  if(snapshot.hasData){
+                    FoodListWeek data = FoodListWeek.fromSnapshot(snapshot.data, start);
+                    // if(foodList.list.isEmpty){
+                    //   //query successful but is empty
+                    //   return Container(
+                    //     child: Text(
+                    //         'Empty'
+                    //     ),
+                    //   );
+                    // }
+                    //TODO main code
+                    return Stack(
+                      children: [
+                        Card(
+                          margin: EdgeInsets.zero,
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          shape: RoundedRectangleBorder(
+                            borderRadius:  BorderRadius.vertical(bottom: Radius.elliptical(90, 40)),
+                          ),
+                          elevation: 8,
+                          child: Container(
+                            height: MediaQuery.of(context).size.height*0.4,
+                            width: MediaQuery.of(context).size.width,
+                            color: Theme.of(context).accentColor,
+                            child: SizedBox(),
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.04),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Container(
+                                    alignment: Alignment.center,
+                                    padding: EdgeInsets.only(left: 7),
+                                    margin: EdgeInsets.only(bottom: 5, left: 5),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Theme.of(context).cardColor,
+                                    ),
+                                    child: IconButton(
+                                      // padding: EdgeInsets.only(bottom: 10, left: 5),
+                                      icon: Icon(Icons.arrow_back_ios),
+                                      iconSize: 25,
+                                      color: Theme.of(context).colorScheme.onSurface,
+                                      onPressed: () {
+                                        DateTime joinDate = stringToDate(userData.joinDate);
+                                        if(joinDate.isBefore(end.subtract(Duration(days: 7)))){
+                                          setState(() {
+                                            start=start.subtract(Duration(days: 7));
+                                            end=end.subtract(Duration(days: 7));
+                                          });
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                  Column(
+                                    // crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.only(top: 27),
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          'Report',
+                                          style: TextStyle(
+                                            fontSize: 30,
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(0xff176607),
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        // padding: EdgeInsets.only(top: 38),
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          '${ formattedDate(start)} - ${formattedDate(end)}',
+                                          style: TextStyle(
+                                            fontSize: 19,
+                                            fontWeight: FontWeight.w500,
+                                            color: Color(0xff176607),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  // Spacer(),
+                                  Container(
+                                    alignment: Alignment.center,
+                                    // padding: EdgeInsets.only(right: 5),
+                                    margin: EdgeInsets.only(bottom: 5, right: 5,),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Theme.of(context).cardColor,
+                                    ),
+                                    child: IconButton(
+                                      // padding: EdgeInsets.only(bottom: 10, left: 5),
+                                      icon: Icon(Icons.arrow_forward_ios),
+                                      iconSize: 25,
+                                      color: Theme.of(context).colorScheme.onSurface,
+                                      onPressed: () {
+                                        if(now.isAfter(end.add(Duration(days: 6)))){
+                                          setState(() {
+                                            start=start.add(Duration(days: 7));
+                                            end=end.add(Duration(days: 7));
+                                          });
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: width*0.03,
+                              ),
+                              _buildLineChart(data,width),
+                              SizedBox(
+                                height: width*0.03,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  _buildLegends(data, width),
+
+                                  SizedBox(
+                                    width: width*0.03,
+                                  ),
+
+                                  _buildPieChart(data,width)
+                                ],
+                              ),
+                              SizedBox(
+                                height: width*0.03,
+                              ),
+                              _buildBarChart(data,1,width), //Fats Bar Chart
+                              SizedBox(
+                                height: width*0.03,
+                              ),
+                              _buildBarChart(data,2,width), //Protein Bar Chart
+                              SizedBox(
+                                height: width*0.03,
+                              ),
+                              _buildBarChart(data,3,width), //Carbs Bar Chart
+                              SizedBox(
+                                height: 90,
+                              )
+                            ],
+                          ),
+                        ),
+                      ]
+                    );
+                  }
                   return Container(
                     child: Text(
-                      'Error occurred',
+                        'Something went wrong'
                     ),
                   );
-                }
-                if(snapshot.hasData){
-                  FoodListWeek data = FoodListWeek.fromSnapshot(snapshot.data, start);
-                  // if(foodList.list.isEmpty){
-                  //   //query successful but is empty
-                  //   return Container(
-                  //     child: Text(
-                  //         'Empty'
-                  //     ),
-                  //   );
-                  // }
-                  //TODO main code
-                  return Stack(
-                    children: [
-                      Card(
-                        margin: EdgeInsets.zero,
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                        shape: RoundedRectangleBorder(
-                          borderRadius:  BorderRadius.vertical(bottom: Radius.elliptical(90, 40)),
-                        ),
-                        elevation: 8,
-                        child: Container(
-                          height: MediaQuery.of(context).size.height*0.4,
-                          width: MediaQuery.of(context).size.width,
-                          color: Theme.of(context).accentColor,
-                          child: SizedBox(),
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.03),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Container(
-                                  alignment: Alignment.center,
-                                  padding: EdgeInsets.only(left: 7),
-                                  margin: EdgeInsets.only(bottom: 5, left: 5),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Theme.of(context).cardColor,
-                                  ),
-                                  child: IconButton(
-                                    // padding: EdgeInsets.only(bottom: 10, left: 5),
-                                    icon: Icon(Icons.arrow_back_ios),
-                                    iconSize: 25,
-                                    color: Theme.of(context).colorScheme.onSurface,
-                                    onPressed: () {
-                                      DateTime joinDate = stringToDate(userData.joinDate);
-                                      if(joinDate.isBefore(end.subtract(Duration(days: 7)))){
-                                        setState(() {
-                                          start=start.subtract(Duration(days: 7));
-                                          end=end.subtract(Duration(days: 7));
-                                        });
-                                      }
-                                    },
-                                  ),
-                                ),
-                                Column(
-                                  // crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      padding: EdgeInsets.only(top: 36),
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        'Report',
-                                        style: TextStyle(
-                                          fontSize: 30,
-                                          fontWeight: FontWeight.bold,
-                                          color: Color(0xff176607),
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      // padding: EdgeInsets.only(top: 38),
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        '${ formattedDate(start)} - ${formattedDate(end)}',
-                                        style: TextStyle(
-                                          fontSize: 19,
-                                          fontWeight: FontWeight.w500,
-                                          color: Color(0xff176607),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                // Spacer(),
-                                Container(
-                                  alignment: Alignment.center,
-                                  // padding: EdgeInsets.only(right: 5),
-                                  margin: EdgeInsets.only(bottom: 5, right: 5,),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Theme.of(context).cardColor,
-                                  ),
-                                  child: IconButton(
-                                    // padding: EdgeInsets.only(bottom: 10, left: 5),
-                                    icon: Icon(Icons.arrow_forward_ios),
-                                    iconSize: 25,
-                                    color: Theme.of(context).colorScheme.onSurface,
-                                    onPressed: () {
-                                      if(now.isAfter(end.add(Duration(days: 6)))){
-                                        setState(() {
-                                          start=start.add(Duration(days: 7));
-                                          end=end.add(Duration(days: 7));
-                                        });
-                                      }
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: width*0.03,
-                            ),
-                            _buildLineChart(data,width),
-                            SizedBox(
-                              height: width*0.03,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                _buildLegends(data, width),
-  
-                                SizedBox(
-                                  width: width*0.03,
-                                ),
-  
-                                _buildPieChart(data,width)
-                              ],
-                            ),
-                            SizedBox(
-                              height: width*0.03,
-                            ),
-                            _buildBarChart(data,1,width), //Fats Bar Chart
-                            SizedBox(
-                              height: width*0.03,
-                            ),
-                            _buildBarChart(data,2,width), //Protein Bar Chart
-                            SizedBox(
-                              height: width*0.03,
-                            ),
-                            _buildBarChart(data,3,width), //Carbs Bar Chart
-                            SizedBox(
-                              height: 90,
-                            )
-                          ],
-                        ),
-                      ),
-                    ]
-                  );
-                }
-                return Container(
-                  child: Text(
-                      'Something went wrong'
-                  ),
-                );
-              },
+                },
+              ),
             ),
           ),
         )

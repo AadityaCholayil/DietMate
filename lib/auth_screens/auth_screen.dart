@@ -25,7 +25,7 @@ class _AuthScreenState extends State<AuthScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                padding: EdgeInsets.fromLTRB(0, 300,0,20),
+                padding: EdgeInsets.fromLTRB(0, 300,0,5),
                 // child: GradientText(
                 //   'DietMate',
                 //   size:50.0,
@@ -34,18 +34,18 @@ class _AuthScreenState extends State<AuthScreen> {
                 child: Text(
                   'DietMate',
                   style: TextStyle(
-                    fontSize: 60,
+                    fontSize: 55,
                     fontWeight: FontWeight.w700
                   ),
                 ),
               ),
               Container(
-                padding: EdgeInsets.fromLTRB(0,10,0,40),
+                padding: EdgeInsets.fromLTRB(0,0,0,30),
                 child: Text(
-                  'Healthier, \nHappier Lifestyle',
+                  'Healthier, Happier Lifestyle!',
                   style: TextStyle(
                     color: Color(0xff176607),
-                    fontSize: 30,
+                    fontSize: 24,
                     fontWeight: FontWeight.w600,
                   ),
                   textAlign: TextAlign.center,
@@ -57,7 +57,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 label: Text(
                   'Log In',
                   style: TextStyle(
-                    fontSize:25.0,
+                    fontSize:23.0,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -70,13 +70,13 @@ class _AuthScreenState extends State<AuthScreen> {
                 },
                 extraPaddingWidth: 108.0,
               ),
-              SizedBox(height:22),
+              SizedBox(height:15),
               GradientButton(
                 extraPaddingHeight: 5.0,
                 expanded:true,
                 label: Text('Sign up',
                   style: TextStyle(
-                    fontSize:25.0,
+                    fontSize:23.0,
                     fontWeight: FontWeight.w500,
                   ),
                 ),

@@ -17,12 +17,12 @@ class HistoryPage extends StatefulWidget {
 }
 
 class _HistoryPageState extends State<HistoryPage> {
+
   CalendarFormat _format = CalendarFormat.month;
   DateTime now = DateTime.now();
   DateTime _selectedDay = DateTime.now();
   DateTime _focusedDay = DateTime.now();
   FirebaseFirestore db = FirebaseFirestore.instance;
-
 
   Future<QuerySnapshot> getData(User user) async {
     return await db.collection('users')
@@ -237,7 +237,6 @@ class _HistoryPageState extends State<HistoryPage> {
                       ),
                       onPressed: () {
                         Navigator.pop(context);
-                        print('Pressed');
                       }
                   ),
                 ],
@@ -253,188 +252,189 @@ class _HistoryPageState extends State<HistoryPage> {
   Widget build(BuildContext context) {
     User user = Provider.of<User>(context);
     final Size size = MediaQuery.of(context).size;
-    print("${size.height}x${size.width}");
     double width = size.width;
     UserData userData = Provider.of<UserData>(context);
     DateTime joinDate = stringToDate(userData.joinDate);
     var uHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: Stack(
-        children:[
-        Card(
-          margin: EdgeInsets.zero,
-          clipBehavior: Clip.antiAliasWithSaveLayer,
-          shape: RoundedRectangleBorder(
-            borderRadius:  BorderRadius.vertical(bottom: Radius.elliptical(90, 40)),
-          ),
-          elevation: 8,
-        child: AnimatedContainer(
-          duration: Duration(milliseconds: 250),
-          height: _format == CalendarFormat.month ? uHeight*0.4 :( _format == CalendarFormat.twoWeeks ? uHeight*0.25 : uHeight*0.22),
-          width: MediaQuery.of(context).size.width,
-          color: Theme.of(context).accentColor,
-          child: SizedBox(),
-        ),
-      ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.0625),
-            height: MediaQuery.of(context).size.height,
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.fromLTRB(30,30,0,10),
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'History',
-                      style: TextStyle(
-                        fontSize: 38,
-                        fontWeight: FontWeight.bold,
-                        // color: Theme.of(context).colorScheme.onSurface,
-                        color: Color(0xff176607),
-                      ),
-                    ),
-                  ),
-                  Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(34.0)),
-                    ),
-                    color: Theme.of(context).cardColor,
-                    child: Container(
-                      // duration: Duration(milliseconds: 300),
-                      //height: _format == CalendarFormat.month?425:_format == CalendarFormat.week?170:250,
-                      padding: EdgeInsets.fromLTRB(15,5,15,15),
-                      child: TableCalendar(
-                        focusedDay: _focusedDay,
-                        firstDay: joinDate,
-                        lastDay: now,
-                        calendarFormat: _format,
-                        onFormatChanged: (CalendarFormat format) {
-                          setState(() {
-                            _format = format;
-                          });
-                        },
-                        startingDayOfWeek: StartingDayOfWeek.sunday,
-                        daysOfWeekVisible: true,
-                        daysOfWeekHeight: 22,
-                        daysOfWeekStyle: DaysOfWeekStyle(
-                          weekdayStyle: TextStyle(
-                            fontSize: 20,
-                              color: Theme.of(context).colorScheme.onSurface,fontWeight: FontWeight.w500
-                          ),
-                          weekendStyle: TextStyle(
-                            fontSize: 20,
-                            color: Colors.red,fontWeight: FontWeight.w500
-                          )
-                        ),
-
-                        //Day Changed
-                        onDaySelected: (DateTime selectDay, DateTime focusDay) {
-                          if (!isSameDay(_selectedDay, selectDay)) {
-                            setState(() {
-                              _selectedDay = selectDay;
-                              _focusedDay = selectDay;
-                            });
-                            print('$_focusedDay, $_selectedDay');
-                          }
-                        },
-                        selectedDayPredicate: (DateTime date) {
-                          return isSameDay(_selectedDay, date);
-                        },
-                        availableGestures: AvailableGestures.horizontalSwipe,
-                        //headerVisible: false,
-                        calendarStyle: CalendarStyle(
-                          isTodayHighlighted: true,
-                          defaultTextStyle: TextStyle(fontSize: 20,color: Theme.of(context).colorScheme.onSurface,fontWeight: FontWeight.w500 ),
-                          todayTextStyle:TextStyle(fontSize: 20,color: Theme.of(context).colorScheme.onSurface,fontWeight: FontWeight.w600 ),
-                          selectedTextStyle: TextStyle(fontSize: 20,color: Theme.of(context).colorScheme.onSurface,fontWeight: FontWeight.w600 ),
-                          //rangeStartTextStyle:TextStyle(fontSize: 20,color: Colors.red ),
-                          //rangeEndTextStyle: TextStyle(fontSize: 20,color: Colors.red),
-                          outsideTextStyle: TextStyle(fontSize: 20,color: Theme.of(context).colorScheme.onSurface ),
-                          disabledTextStyle: TextStyle(fontSize: 20,color: Theme.of(context).disabledColor,fontWeight: FontWeight.w600),
-                          holidayTextStyle: TextStyle(fontSize: 20,color: Colors.red ),
-                          weekendTextStyle: TextStyle(fontSize: 20,color: Colors.red ),
-                          withinRangeTextStyle: TextStyle(fontSize: 20,color: Theme.of(context).colorScheme.onSurface,fontWeight: FontWeight.w600 ),
-                          selectedDecoration: BoxDecoration(
-                            color: Colors.lightGreen[600],
-                            shape: BoxShape.circle,
-                            //borderRadius: BorderRadius.circular(5.0),
-                          ),
-                          todayDecoration: BoxDecoration(
-                            color: Colors.green[700],
-                            shape: BoxShape.circle,
-                            //borderRadius: BorderRadius.circular(5.0),
-                          ),
-                          defaultDecoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            //borderRadius: BorderRadius.circular(5.0),
-                          ),
-                          weekendDecoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            //borderRadius: BorderRadius.circular(5.0),
-                          ),
-                        ),
-                        headerStyle: HeaderStyle(
-                          formatButtonVisible: true,
-                          titleCentered: true,
-                          formatButtonShowsNext: false,
-                          titleTextStyle: TextStyle(fontSize: 23,color: Theme.of(context).colorScheme.onSurface,fontWeight: FontWeight.w500),
-                          formatButtonDecoration: BoxDecoration(
-                            color: Colors.lightGreen[600],
-                            borderRadius: BorderRadius.circular(5.0),
-                          ),
-                          formatButtonTextStyle: TextStyle(fontSize: 20,color: Theme.of(context).colorScheme.onSurface,fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left:25, top: 13, bottom: 10),
-                    child: Text(
-                      "${formattedDate(_selectedDay)}'s food",
-                      style: TextStyle(
-                          fontSize: 26,
-                          fontWeight: FontWeight.w400
-                      ),
-                    ),
-                  ),
-                  FutureBuilder<QuerySnapshot>(
-                    future: getData(user),
-                    builder: (context, snapshot){
-                      if(snapshot.connectionState!=ConnectionState.done){
-                        //query in progress
-                        return LoadingSmall(color: Colors.transparent);
-                      }
-                      if(snapshot.hasError){
-                        return Container(
-                          child: Text(
-                            'Error occurred',
-                          ),
-                        );
-                      }
-                      if(snapshot.hasData) {
-                        FoodListDay foodList = FoodListDay.fromSnapshot(snapshot.data);
-                        // if(foodList.list.isEmpty){
-                        //   //query successful but is empty
-                        //   return Container(
-                        //     child: Text(
-                        //         'Empty'
-                        //     ),
-                        //   );
-                        // }
-                        return Container(
-                          child: buildListView(foodList, user,width)
-                        );
-                      }
-                      return Container();
-                    },
-                  ),
-                ],
+      body: SafeArea(
+        child: Stack(
+          children:[
+            Card(
+              margin: EdgeInsets.zero,
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              shape: RoundedRectangleBorder(
+                borderRadius:  BorderRadius.vertical(bottom: Radius.elliptical(90, 40)),
+              ),
+              elevation: 8,
+              child: AnimatedContainer(
+                duration: Duration(milliseconds: 250),
+                height: _format == CalendarFormat.month ? uHeight*0.4 :( _format == CalendarFormat.twoWeeks ? uHeight*0.25 : uHeight*0.21),
+                width: MediaQuery.of(context).size.width,
+                color: Theme.of(context).accentColor,
+                child: SizedBox(),
               ),
             ),
-          )
-        ],
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.0625),
+              height: MediaQuery.of(context).size.height,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.fromLTRB(30,35,0,5),
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'History',
+                        style: TextStyle(
+                          fontSize: 29,
+                          fontWeight: FontWeight.bold,
+                          // color: Theme.of(context).colorScheme.onSurface,
+                          color: Color(0xff176607),
+                        ),
+                      ),
+                    ),
+                    Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(34.0)),
+                      ),
+                      color: Theme.of(context).cardColor,
+                      child: Container(
+                        // duration: Duration(milliseconds: 300),
+                        //height: _format == CalendarFormat.month?425:_format == CalendarFormat.week?170:250,
+                        padding: EdgeInsets.fromLTRB(15,5,15,15),
+                        child: TableCalendar(
+                          focusedDay: _focusedDay,
+                          firstDay: joinDate,
+                          lastDay: now,
+                          calendarFormat: _format,
+                          onFormatChanged: (CalendarFormat format) {
+                            setState(() {
+                              _format = format;
+                            });
+                          },
+                          startingDayOfWeek: StartingDayOfWeek.sunday,
+                          daysOfWeekVisible: true,
+                          daysOfWeekHeight: 22,
+                          daysOfWeekStyle: DaysOfWeekStyle(
+                            weekdayStyle: TextStyle(
+                              fontSize: 17,
+                                color: Theme.of(context).colorScheme.onSurface,fontWeight: FontWeight.w500
+                            ),
+                            weekendStyle: TextStyle(
+                              fontSize: 17,
+                              color: Colors.red,fontWeight: FontWeight.w500
+                            )
+                          ),
+
+                          //Day Changed
+                          onDaySelected: (DateTime selectDay, DateTime focusDay) {
+                            if (!isSameDay(_selectedDay, selectDay)) {
+                              setState(() {
+                                _selectedDay = selectDay;
+                                _focusedDay = selectDay;
+                              });
+                              print('$_focusedDay, $_selectedDay');
+                            }
+                          },
+                          selectedDayPredicate: (DateTime date) {
+                            return isSameDay(_selectedDay, date);
+                          },
+                          availableGestures: AvailableGestures.horizontalSwipe,
+                          //headerVisible: false,
+                          calendarStyle: CalendarStyle(
+                            isTodayHighlighted: true,
+                            defaultTextStyle: TextStyle(fontSize: 20,color: Theme.of(context).colorScheme.onSurface,fontWeight: FontWeight.w500 ),
+                            todayTextStyle:TextStyle(fontSize: 20,color: Theme.of(context).colorScheme.onSurface,fontWeight: FontWeight.w600 ),
+                            selectedTextStyle: TextStyle(fontSize: 20,color: Theme.of(context).colorScheme.onSurface,fontWeight: FontWeight.w600 ),
+                            //rangeStartTextStyle:TextStyle(fontSize: 20,color: Colors.red ),
+                            //rangeEndTextStyle: TextStyle(fontSize: 20,color: Colors.red),
+                            outsideTextStyle: TextStyle(fontSize: 20,color: Theme.of(context).disabledColor ),
+                            disabledTextStyle: TextStyle(fontSize: 20,color: Theme.of(context).disabledColor,fontWeight: FontWeight.w400),
+                            holidayTextStyle: TextStyle(fontSize: 20,color: Colors.red ),
+                            weekendTextStyle: TextStyle(fontSize: 20,color: Colors.red ),
+                            withinRangeTextStyle: TextStyle(fontSize: 20,color: Theme.of(context).colorScheme.onSurface,fontWeight: FontWeight.w600 ),
+                            selectedDecoration: BoxDecoration(
+                              color: Colors.lightGreen[600],
+                              shape: BoxShape.circle,
+                              //borderRadius: BorderRadius.circular(5.0),
+                            ),
+                            todayDecoration: BoxDecoration(
+                              color: Colors.green[700],
+                              shape: BoxShape.circle,
+                              //borderRadius: BorderRadius.circular(5.0),
+                            ),
+                            defaultDecoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              //borderRadius: BorderRadius.circular(5.0),
+                            ),
+                            weekendDecoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              //borderRadius: BorderRadius.circular(5.0),
+                            ),
+                          ),
+                          headerStyle: HeaderStyle(
+                            formatButtonVisible: true,
+                            titleCentered: true,
+                            formatButtonShowsNext: false,
+                            titleTextStyle: TextStyle(fontSize: 20,color: Theme.of(context).colorScheme.onSurface,fontWeight: FontWeight.w500),
+                            formatButtonDecoration: BoxDecoration(
+                              color: Colors.lightGreen[600],
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            formatButtonTextStyle: TextStyle(fontSize: 18,color: Theme.of(context).colorScheme.onSurface,fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left:25, top: 13, bottom: 10),
+                      child: Text(
+                        "${formattedDate(_selectedDay)}'s food",
+                        style: TextStyle(
+                            fontSize: 26,
+                            fontWeight: FontWeight.w400
+                        ),
+                      ),
+                    ),
+                    FutureBuilder<QuerySnapshot>(
+                      future: getData(user),
+                      builder: (context, snapshot){
+                        if(snapshot.connectionState!=ConnectionState.done){
+                          //query in progress
+                          return LoadingSmall(color: Colors.transparent);
+                        }
+                        if(snapshot.hasError){
+                          return Container(
+                            child: Text(
+                              'Error occurred',
+                            ),
+                          );
+                        }
+                        if(snapshot.hasData) {
+                          FoodListDay foodList = FoodListDay.fromSnapshot(snapshot.data);
+                          // if(foodList.list.isEmpty){
+                          //   //query successful but is empty
+                          //   return Container(
+                          //     child: Text(
+                          //         'Empty'
+                          //     ),
+                          //   );
+                          // }
+                          return Container(
+                            child: buildListView(foodList, user,width)
+                          );
+                        }
+                        return Container();
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

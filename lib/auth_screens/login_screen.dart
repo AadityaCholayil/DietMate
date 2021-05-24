@@ -15,7 +15,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   String error = '';
   bool loading = false;
-  bool errorOccured= true;
+  bool errorOccured= false;
   bool showPassword=false;
 
   // text field state
@@ -25,18 +25,18 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _buildEmail(){
     return TextFormField(
       decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(15, 18,15, 18),
+          contentPadding: EdgeInsets.fromLTRB(15, 15,15, 15),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.green, width: 2, style: BorderStyle.solid, ),
             borderRadius: BorderRadius.all(Radius.circular(17.0)),
           ),
           fillColor: Theme.of(context).colorScheme.surface,
           labelText: 'Email Id',
-          labelStyle: TextStyle(fontSize: 25),
+          labelStyle: TextStyle(fontSize: 22),
           floatingLabelBehavior: FloatingLabelBehavior.never
       ),
       keyboardType: TextInputType.emailAddress,
-      style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w400),
+      style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w400),
       validator: (String value) {
         if (value.isEmpty) {
           return 'Invalid Email Id';
@@ -63,11 +63,11 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               fillColor: Theme.of(context).colorScheme.surface,
               labelText: 'Password',
-              labelStyle: TextStyle(fontSize: 25),
+              labelStyle: TextStyle(fontSize: 22),
               floatingLabelBehavior: FloatingLabelBehavior.never
           ),
           obscureText: !showPassword,
-          style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w400),
+          style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w400),
           validator: (String value) {
             if (value.isEmpty) {
               return 'Password cannot be empty';
@@ -164,7 +164,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ): SizedBox.shrink(),
               SizedBox(height: 10),
-
               Container(
                 alignment: Alignment.topRight,
                 child: Column(

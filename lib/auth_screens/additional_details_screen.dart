@@ -153,9 +153,12 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
   Widget _buildImageDialog(User user){
     Size size = MediaQuery.of(context).size;
     return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
       clipBehavior: Clip.antiAliasWithSaveLayer,
       child: Container(
-        height: size.height*0.54,
+        height: size.width*1.035,
         width: size.width*0.9,
         child: Column(
           children: [
@@ -191,11 +194,12 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                   child: Text(
                     'Upload',
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize: 21,
                     ),
                   ),
                   onPressed: () async {
                     setState(() {
+                      print('pressed upload');
                       uploading=true;
                     });
                     await uploadFile(user);
@@ -209,7 +213,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                   child: Text(
                     'Cancel',
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize: 21,
                     ),
                   ),
                   onPressed: () {
@@ -228,7 +232,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
 
   Widget _buildProfile(BuildContext context, User user){
     return Container(
-      clipBehavior: Clip.antiAliasWithSaveLayer,
+      //clipBehavior: Clip.antiAliasWithSaveLayer,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
       ),
@@ -243,25 +247,44 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
             }
           );
         },
-        child: CircleAvatar(
-          backgroundImage: NetworkImage(_profileUrl),
-          radius: 70,
-          child: Column(
-            children: [
-              Expanded(
-                flex: 2,
-                child: Container(),
+        child: Stack(
+          children: [
+            CircleAvatar(
+              backgroundImage: NetworkImage(_profileUrl),
+              radius: 70,
+              child: Column(
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: Container(),
+                  ),
+                  _profileUrl=='https://rpgplanner.com/wp-content/uploads/2020/06/no-photo-available.png'?Expanded(
+                    flex: 1,
+                    child: Container(
+                      alignment: Alignment.center,
+                      color: Colors.black87.withOpacity(0.5),
+                      child: Icon(Icons.camera_alt_outlined, size: 35,color: Theme.of(context).accentColor)
+                    ),
+                  ):SizedBox.shrink(),
+                ],
               ),
-              _image==null?Expanded(
-                flex: 1,
-                child: Container(
-                  alignment: Alignment.center,
-                  color: Colors.black87.withOpacity(0.5),
-                  child: Icon(Icons.camera_alt_outlined, size: 35,color: Theme.of(context).accentColor)
+            ),
+            Container(
+              width: 140,
+              height: 140,
+              padding: EdgeInsets.only(right: 3, bottom: 3),
+              alignment: Alignment.bottomRight,
+              child: Container(
+                height: 40,
+                width: 40,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  borderRadius: BorderRadius.circular(20)
                 ),
-              ):SizedBox.shrink(),
-            ],
-          ),
+                child: Icon(Icons.edit),
+              ),
+            )
+          ],
         ),
       ),
     );
@@ -271,7 +294,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
     return TextFormField(
       initialValue: _name,
       decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 18),
+          contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 16),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.transparent, width: 2, style: BorderStyle.solid, ),
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -283,11 +306,11 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
           filled: true,
           fillColor: Theme.of(context).colorScheme.surface,
           labelText: 'Name',
-          labelStyle: TextStyle(fontSize: 25),
+          labelStyle: TextStyle(fontSize: 23),
           floatingLabelBehavior: FloatingLabelBehavior.never
       ),
-      keyboardType: TextInputType.emailAddress,
-      style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
+      keyboardType: TextInputType.name,
+      style: TextStyle(fontSize: 23.0, fontWeight: FontWeight.w500),
       validator: (String value) {
         if (value.isEmpty) {
           return 'Please enter your name';
@@ -304,7 +327,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
     return TextFormField(
       initialValue: _age.toString()=='null'?'':_age.toString(),
       decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 18),
+          contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 16),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.transparent, width: 2, style: BorderStyle.solid, ),
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -316,11 +339,11 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
           filled: true,
           fillColor: Theme.of(context).colorScheme.surface,
           labelText: 'Age',
-          labelStyle: TextStyle(fontSize: 25),
+          labelStyle: TextStyle(fontSize: 23),
           floatingLabelBehavior: FloatingLabelBehavior.never
       ),
       keyboardType: TextInputType.emailAddress,
-      style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
+      style: TextStyle(fontSize: 23.0, fontWeight: FontWeight.w500),
       validator: (String value) {
         if (value.isEmpty || int.tryParse(value)<0) {
           return 'Age cannot be less than 0';
@@ -340,8 +363,8 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
         Text(
           'Gender',
           style: TextStyle(
-            fontSize: 25,
-            fontWeight: FontWeight.w300,
+            fontSize: 23,
+            fontWeight: FontWeight.w400,
           ),
         ),
         Spacer(),
@@ -358,8 +381,8 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
         Text(
           'Male',
           style: TextStyle(
-            fontSize: 23,
-            fontWeight: FontWeight.w300,
+            fontSize: 22,
+            fontWeight: FontWeight.w400,
           ),
         ),
         Radio(
@@ -375,8 +398,8 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
         Text(
           'Female',
           style: TextStyle(
-            fontSize: 23,
-            fontWeight: FontWeight.w300,
+            fontSize: 22,
+            fontWeight: FontWeight.w400,
           ),
         ),
       ],
@@ -387,7 +410,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
     return TextFormField(
       initialValue: _height.toString()=='null'?'':_height.toString(),
       decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 18),
+          contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 16),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.transparent, width: 2, style: BorderStyle.solid, ),
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -399,11 +422,11 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
           filled: true,
           fillColor: Theme.of(context).colorScheme.surface,
           labelText: 'Height',
-          labelStyle: TextStyle(fontSize: 25),
+          labelStyle: TextStyle(fontSize: 23),
           floatingLabelBehavior: FloatingLabelBehavior.never
       ),
       keyboardType: TextInputType.emailAddress,
-      style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
+      style: TextStyle(fontSize: 23.0, fontWeight: FontWeight.w500),
       validator: (String value) {
         if (value.isEmpty || int.tryParse(value)<0) {
           return 'Height cannot be less than 0';
@@ -420,7 +443,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
     return TextFormField(
       initialValue: _weight.toString()=='null'?'':_weight.toString(),
       decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 18),
+          contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 16),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.transparent, width: 2, style: BorderStyle.solid, ),
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -432,11 +455,11 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
           filled: true,
           fillColor: Theme.of(context).colorScheme.surface,
           labelText: 'Weight',
-          labelStyle: TextStyle(fontSize: 25),
+          labelStyle: TextStyle(fontSize: 23),
           floatingLabelBehavior: FloatingLabelBehavior.never
       ),
       keyboardType: TextInputType.emailAddress,
-      style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
+      style: TextStyle(fontSize: 23.0, fontWeight: FontWeight.w500),
       validator: (String value) {
         if (value.isEmpty || int.tryParse(value)<0) {
           return 'Weight cannot be less than 0';
@@ -457,6 +480,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
         borderRadius: BorderRadius.circular(10)
       ),
       child: Container(
+        //height: MediaQuery.of(context).size.width*0.,
         padding: EdgeInsets.all(12),
         width: MediaQuery.of(context).size.width,
         child: DropdownButton<String>(
@@ -495,7 +519,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                 width: MediaQuery.of(context).size.width*0.8,
                 padding: EdgeInsets.symmetric(vertical: 10),
                 child: Text(
-                  value,
+                  _activity==value?value.length>33?"${value.substring(0,34)}..":value:value,
                   textAlign: TextAlign.start,
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.onSurface,

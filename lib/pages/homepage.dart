@@ -413,102 +413,104 @@ class _HomePageState extends State<HomePage> {
     print(MediaQuery.of(context).size.width);
 
     return Scaffold(
-      body: Container(
-        height: size.height,
-        child: SingleChildScrollView(
-          child: Stack(
-            children: [
-              Card(
-                margin: EdgeInsets.zero,
-                clipBehavior: Clip.antiAliasWithSaveLayer,
-                shape: RoundedRectangleBorder(
-                  borderRadius:  BorderRadius.vertical(bottom: Radius.elliptical(90, 40)),
+      body: SafeArea(
+        child: Container(
+          height: size.height,
+          child: SingleChildScrollView(
+            child: Stack(
+              children: [
+                Card(
+                  margin: EdgeInsets.zero,
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  shape: RoundedRectangleBorder(
+                    borderRadius:  BorderRadius.vertical(bottom: Radius.elliptical(90, 40)),
+                  ),
+                  elevation: 8,
+                  child: Container(
+                    height: size.height*0.4,
+                    width: size.width,
+                    color: Theme.of(context).accentColor,
+                    child: SizedBox(),
+                  ),
                 ),
-                elevation: 8,
-                child: Container(
-                  height: size.height*0.4,
-                  width: size.width,
-                  color: Theme.of(context).accentColor,
-                  child: SizedBox(),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: size.width*0.0625),
-                child: FutureBuilder<QuerySnapshot>(
-                  future: getData(user),
-                  builder: (context, snapshot){
-                    if(snapshot.connectionState!=ConnectionState.done){
-                      //query in progress
-                      return Loading();
-                    }
-                    if(snapshot.hasError){
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: size.width*0.0625),
+                  child: FutureBuilder<QuerySnapshot>(
+                    future: getData(user),
+                    builder: (context, snapshot){
+                      if(snapshot.connectionState!=ConnectionState.done){
+                        //query in progress
+                        return Loading();
+                      }
+                      if(snapshot.hasError){
+                        return Container(
+                          child: Text(
+                            'Error occurred',
+                          ),
+                        );
+                      }
+                      if(snapshot.hasData) {
+                        FoodListDay foodList = FoodListDay.fromSnapshot(snapshot.data);
+                        consumedCalories=foodList.consumedCalories;
+                        totalFats=foodList.totalFats;
+                        totalProtein=foodList.totalProtein;
+                        totalCarb=foodList.totalCarbs;
+                        // if(foodList.list.isEmpty){
+                        //   //query successful but is empty
+                        //   return Container(
+                        //     child: Text(
+                        //         'Empty'
+                        //     ),
+                        //   );
+                        // }
+                        //TODO main code
+                        return Container(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                padding: EdgeInsets.fromLTRB(20,47,0,11),
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'Hello, ${userData.name}',
+                                  style: TextStyle(
+                                      fontSize: 32,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xff176607),
+                                  ),
+                                ),
+                              ),
+                              buildSleekCircularSlider(),
+                              SizedBox(height: 10),
+                              buildOtherMetrics(),
+                              SizedBox(height: 25),
+                              Padding(
+                                padding: EdgeInsets.only(left:25),
+                                child: Text(
+                                  "Today's Food",
+                                  style: TextStyle(
+                                    fontSize: 26,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              buildListView(foodList, user),
+                            ],
+                          ),
+                        );
+                      }
                       return Container(
                         child: Text(
-                          'Error occurred',
+                            'Something went wrong'
                         ),
                       );
-                    }
-                    if(snapshot.hasData) {
-                      FoodListDay foodList = FoodListDay.fromSnapshot(snapshot.data);
-                      consumedCalories=foodList.consumedCalories;
-                      totalFats=foodList.totalFats;
-                      totalProtein=foodList.totalProtein;
-                      totalCarb=foodList.totalCarbs;
-                      // if(foodList.list.isEmpty){
-                      //   //query successful but is empty
-                      //   return Container(
-                      //     child: Text(
-                      //         'Empty'
-                      //     ),
-                      //   );
-                      // }
-                      //TODO main code
-                      return Container(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              padding: EdgeInsets.fromLTRB(20,47,0,11),
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                'Hello, ${userData.name}',
-                                style: TextStyle(
-                                    fontSize: 32,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xff176607),
-                                ),
-                              ),
-                            ),
-                            buildSleekCircularSlider(),
-                            SizedBox(height: 10),
-                            buildOtherMetrics(),
-                            SizedBox(height: 25),
-                            Padding(
-                              padding: EdgeInsets.only(left:25),
-                              child: Text(
-                                "Today's Food",
-                                style: TextStyle(
-                                  fontSize: 26,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 8),
-                            buildListView(foodList, user),
-                          ],
-                        ),
-                      );
-                    }
-                    return Container(
-                      child: Text(
-                          'Something went wrong'
-                      ),
-                    );
 
-                  },
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

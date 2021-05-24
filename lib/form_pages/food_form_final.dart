@@ -274,7 +274,28 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
                 });
               },
             ),
-          ):SizedBox.shrink(),
+          ):InkWell(
+            child: Container(
+              padding: EdgeInsets.all(10),
+              alignment: Alignment.topRight,
+              child: Icon(Icons.edit, size: 35,),
+            ),
+            onTap: () async {
+              FoodImage foodImage = await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (BuildContext context) => ImageSearch())
+              );
+              setState(() {
+                if(foodImage!=null){
+                  _foodImage=foodImage;
+                  _fullUrl=_foodImage.fullUrl;
+                  _thumbnailUrl=_foodImage.thumbnailUrl;
+                  _imageWidth=_foodImage.width;
+                  _imageHeight=_foodImage.height;
+                }
+              });
+            },
+          ),
         ],
       ),
     );
@@ -322,14 +343,14 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SizedBox(height: 20,),
+            SizedBox(height: 12,),
             Container(
               alignment: Alignment.center,
               margin: EdgeInsets.zero,
               child: Text(
                 convertTo12Hr(pickedTime??DateTime.now()).substring(0,5),
                 style: TextStyle(
-                  fontSize: 51,
+                  fontSize: 46,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -342,7 +363,7 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: 13, bottom: 5),
+              padding: EdgeInsets.only(top: 8, bottom: 5),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.symmetric(vertical: 5, horizontal: size.width*0.081),
@@ -354,7 +375,7 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
                 child: Text(
                   'Time',
                   style: TextStyle(
-                      fontSize: 25,
+                      fontSize: 23,
                       fontWeight: FontWeight.w500,
                       color: Colors.white
                   ),
@@ -362,7 +383,7 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
                 onPressed: () async {
                   TimeOfDay time = await showTimePicker(
                     context: context,
-                    initialTime: TimeOfDay.now(),
+                    initialTime: TimeOfDay.fromDateTime(pickedTime),
                   );
                   if (time!=null) {
                     setState(() {
@@ -480,11 +501,11 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
   Widget _buildTextHelp(String text){
     return Container(
       alignment: Alignment.centerLeft,
-      padding: EdgeInsets.only(left: 13, bottom: 5, top: 5),
+      padding: EdgeInsets.only(left: 13, bottom: 3, top: 6),
       child: Text(
         text,
         style: TextStyle(
-            fontSize: 20,
+            fontSize: 18,
             color: Theme.of(context).unselectedWidgetColor,
             fontWeight: FontWeight.w400
         ),

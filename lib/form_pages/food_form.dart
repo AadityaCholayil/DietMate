@@ -81,7 +81,7 @@ class _FoodFormState extends State<FoodForm> {
           child: Text(
             'Food Name',
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 18,
               color: Theme.of(context).unselectedWidgetColor,
               fontWeight: FontWeight.w400
             ),
@@ -89,7 +89,7 @@ class _FoodFormState extends State<FoodForm> {
         ),
         TextFormField(
           decoration: InputDecoration(
-            contentPadding: EdgeInsets.fromLTRB(20, 18, 15, 18),
+            contentPadding: EdgeInsets.fromLTRB(20, 17, 15, 17),
             filled: true,
             //fillColor: Color(0xFFE3E7EF),
             fillColor: Theme.of(context).buttonColor,
@@ -127,7 +127,7 @@ class _FoodFormState extends State<FoodForm> {
       child: Text(
         'Create a custom one',
         style: TextStyle(
-          fontSize: 26,
+          fontSize: 23,
           decoration: TextDecoration.underline,
           fontWeight: FontWeight.w500,
         ),

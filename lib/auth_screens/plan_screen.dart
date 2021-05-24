@@ -114,14 +114,14 @@ class _PlanScreenState extends State<PlanScreen> {
                         Text(
                           '$title',
                           style: TextStyle(
-                            fontSize: 25.0,
+                            fontSize: 21.0,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
                         index!=2?Text(
                           '$subTitle',
                           style: TextStyle(
-                            fontSize: 20.0,
+                            fontSize: 18.0,
                             fontWeight: FontWeight.w400,
                           ),
                         ):SizedBox.shrink(),
@@ -148,7 +148,7 @@ class _PlanScreenState extends State<PlanScreen> {
                                 Text(
                                   '$calGoal',
                                   style: TextStyle(
-                                    fontSize: 25.0,
+                                    fontSize: 23.0,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
@@ -157,7 +157,7 @@ class _PlanScreenState extends State<PlanScreen> {
                                   child: Text(
                                     '$lossPercentage',
                                     style: TextStyle(
-                                      fontSize: 17.0,
+                                      fontSize: 16.0,
                                       fontWeight: FontWeight.w300,
                                     ),
                                   ),
@@ -167,7 +167,7 @@ class _PlanScreenState extends State<PlanScreen> {
                             Text(
                               'Calories/day',
                               style: TextStyle(
-                                fontSize: 16.0,
+                                fontSize: 14.0,
                                 fontWeight: FontWeight.w400,
                               ),
                             )
@@ -188,17 +188,17 @@ class _PlanScreenState extends State<PlanScreen> {
   Widget _buildCustom(){
     return TextFormField(
       decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(15, 18,15, 18),
+          contentPadding: EdgeInsets.fromLTRB(15, 16, 15, 16),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.green, width: 0.4, style: BorderStyle.solid, ),
             borderRadius: BorderRadius.all(Radius.circular(17.0)),
           ),
           fillColor: Theme.of(context).colorScheme.surface,
           labelText: 'Eg. 2200 KCal',
-          labelStyle: TextStyle(fontSize: 25),
+          labelStyle: TextStyle(fontSize: 23),
           floatingLabelBehavior: FloatingLabelBehavior.never
       ),
-      style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
+      style: TextStyle(fontSize: 23.0, fontWeight: FontWeight.w300),
       onChanged: (value){
         setState(() {
           selectedIndex=0;
@@ -255,11 +255,11 @@ class _PlanScreenState extends State<PlanScreen> {
                         child: Divider(color: Theme.of(context).primaryColor,thickness: 2,)
                       ),
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        padding: EdgeInsets.symmetric(horizontal: 9),
                         child: Text(
                           'OR',
                           style: TextStyle(
-                            fontSize: 20
+                            fontSize: 18
                           ),
                         ),
                       ),

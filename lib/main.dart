@@ -15,7 +15,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]).then((_) {
     SharedPreferences.getInstance().then((prefs) {
-      var darkModeOn = prefs.getBool('darkMode') ?? true;
+      var darkModeOn = prefs.getBool('darkMode') ?? false;
       runApp(
         ChangeNotifierProvider<ThemeNotifier>(
           create: (_) => ThemeNotifier(darkModeOn ? darkTheme : lightTheme),

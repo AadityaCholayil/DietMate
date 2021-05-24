@@ -7,7 +7,6 @@ String convertTo12Hr(DateTime time){
   //for hour greater than 12
   if(time.hour>12){
     hour = (time.hour - 12).toString();
-
     if((int.tryParse(hour)??0)<10){
       hour = '0' + hour;
     }
