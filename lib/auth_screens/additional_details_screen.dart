@@ -86,29 +86,26 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
 
   }
 
-  Future getImageFromCamera() async{
+  Future<String> getImageFromCamera() async {
     final pickedImage = await picker.getImage(source: ImageSource.camera);
     setState((){
       if(pickedImage != null){
-        _image = File(pickedImage.path);
-        print(_image.path);
-      }else{
-        print("No Image Selected");
+        return pickedImage.path;
       }
     });
+    print("No Image Selected");
+    return '';
   }
 
-  Future getImageFromGallery() async{
+  Future<String> getImageFromGallery() async {
     final pickedImage = await picker.getImage(source: ImageSource.gallery);
     setState((){
       if(pickedImage != null){
-        _image = File(pickedImage.path);
-        print(_image.path);
-      }else{
-        print("No Image Selected");
+        return pickedImage.path;
       }
-    }
-    );
+    });
+    print("No Image Selected");
+    return '';
   }
 
   Widget _buildImagePicker(BuildContext context, User user){
@@ -137,6 +134,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
             onTap: () async {
               print('pressed');
               await getImageFromGallery();
+
               if(_image!=null){
                 await showDialog(context: context, builder: (context)=>_buildImageDialog(user));
               }
