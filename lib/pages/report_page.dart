@@ -116,6 +116,8 @@ class _ReportPageState extends State<ReportPage> {
           LineChartData(
             maxY: data.maxCalOfDay().toDouble(),
             maxX: 7,
+            minY: 0,
+
             lineTouchData: LineTouchData(
               touchTooltipData: LineTouchTooltipData(
                 tooltipBgColor: Theme.of(context).colorScheme.surface.withOpacity(0.9),
@@ -174,6 +176,7 @@ class _ReportPageState extends State<ReportPage> {
                 titleText: 'Calories',
                 textStyle: TextStyle(
                   fontSize: 18,
+                  fontFamily: 'Quicksand',
                   color: Theme.of(context).colorScheme.onSurface
                 ),
               ),
@@ -183,6 +186,7 @@ class _ReportPageState extends State<ReportPage> {
                 margin: 15,
                 textStyle: TextStyle(
                   fontSize: 18,
+                  fontFamily: 'Quicksand',
                   color: Theme.of(context).colorScheme.onSurface
                 ),
               )
@@ -357,6 +361,7 @@ class _ReportPageState extends State<ReportPage> {
       titleStyle: TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.w500,
+        fontFamily: 'Quicksand',
        ),
       titlePositionPercentageOffset: 0.7,
       radius: 93,
@@ -369,6 +374,7 @@ class _ReportPageState extends State<ReportPage> {
       titleStyle: TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.w500,
+        fontFamily: 'Quicksand',
        ),
       radius: 93,
       titlePositionPercentageOffset: 0.7,
@@ -381,6 +387,7 @@ class _ReportPageState extends State<ReportPage> {
       titleStyle: TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.w500,
+        fontFamily: 'Quicksand',
        ),
       radius: 93,
       titlePositionPercentageOffset: 0.7,
@@ -559,6 +566,7 @@ class _ReportPageState extends State<ReportPage> {
                 showTitle: true,
                 titleText: '$label',
                 textStyle: TextStyle(
+                  fontFamily: 'Quicksand',
                   color: Theme.of(context).colorScheme.onSurface,
                 ),
                 margin: 10,
@@ -568,6 +576,7 @@ class _ReportPageState extends State<ReportPage> {
                 titleText: 'Dates',
                 margin:10,
                 textStyle: TextStyle(
+                  fontFamily: 'Quicksand',
                   color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
