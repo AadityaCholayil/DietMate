@@ -100,26 +100,29 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
 
   }
 
-  Future<String> getImageFromCamera() async {
+  Future getImageFromCamera() async{
     final pickedImage = await picker.getImage(source: ImageSource.camera);
     setState((){
       if(pickedImage != null){
-        return pickedImage.path;
+        _image = File(pickedImage.path);
+        print(_image.path);
+      }else{
+        print("No Image Selected");
       }
     });
-    print("No Image Selected");
-    return '';
   }
 
-  Future<String> getImageFromGallery() async {
+  Future getImageFromGallery() async{
     final pickedImage = await picker.getImage(source: ImageSource.gallery);
     setState((){
       if(pickedImage != null){
-        return pickedImage.path;
+        _image = File(pickedImage.path);
+        print(_image.path);
+      }else{
+        print("No Image Selected");
       }
-    });
-    print("No Image Selected");
-    return '';
+    }
+    );
   }
 
   Widget _buildImagePicker(BuildContext context, User user){
@@ -129,33 +132,32 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
-            leading: Icon(Icons.camera),
-            title: Text('Camera'),
-            onTap: () async {
-              print('pressed');
-              await getImageFromCamera();
-              if(_image!=null){
-                await showDialog(context: context, builder: (context)=>_buildImageDialog(user));
+              leading: Icon(Icons.camera),
+              title: Text('Camera'),
+              onTap: () async {
+                print('pressed');
+                await getImageFromCamera();
+                if(_image!=null){
+                  await showDialog(context: context, builder: (context)=>_buildImageDialog(user));
+                }
+                setState(() {
+                  Navigator.pop(context);
+                });
               }
-              setState(() {
-                Navigator.pop(context);
-              });
-            }
           ),
           ListTile(
-            leading: Icon(Icons.photo),
-            title: Text('Gallery'),
-            onTap: () async {
-              print('pressed');
-              await getImageFromGallery();
-
-              if(_image!=null){
-                await showDialog(context: context, builder: (context)=>_buildImageDialog(user));
+              leading: Icon(Icons.photo),
+              title: Text('Gallery'),
+              onTap: () async {
+                print('pressed');
+                await getImageFromGallery();
+                if(_image!=null){
+                  await showDialog(context: context, builder: (context)=>_buildImageDialog(user));
+                }
+                setState(() {
+                  Navigator.pop(context);
+                });
               }
-              setState(() {
-                Navigator.pop(context);
-              });
-            }
           ),
         ],
       ),

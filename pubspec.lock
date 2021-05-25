@@ -240,20 +240,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  glass_kit:
-    dependency: "direct main"
-    description:
-      name: glass_kit
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
-  glassmorphism:
-    dependency: "direct main"
-    description:
-      name: glassmorphism
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.1"
   gradient_input_border:
     dependency: "direct main"
     description:
