@@ -351,7 +351,7 @@ class _ReportPageState extends State<ReportPage> {
   );
   }
 
-  List<PieChartSectionData> getPieChartData(FoodListWeek data){
+  List<PieChartSectionData> getPieChartData(FoodListWeek data, double width){
     List<PieChartSectionData> list = [];
     var fatPieCHart = PieChartSectionData(
       title: '${data.totalFats}g' ,
@@ -361,7 +361,7 @@ class _ReportPageState extends State<ReportPage> {
         fontFamily: 'Quicksand',
        ),
       titlePositionPercentageOffset: 0.7,
-      radius: 93,
+      radius: width*0.215,
       value: data.totalFats.toDouble(),
       color: Color(0xFF94FC13),
       );
@@ -373,7 +373,7 @@ class _ReportPageState extends State<ReportPage> {
         fontWeight: FontWeight.w500,
         fontFamily: 'Quicksand',
        ),
-      radius: 93,
+      radius: width*0.215,
       titlePositionPercentageOffset: 0.7,
       value: data.totalProtein.toDouble(),
       color: Color(0xFF22A806),
@@ -386,7 +386,7 @@ class _ReportPageState extends State<ReportPage> {
         fontWeight: FontWeight.w500,
         fontFamily: 'Quicksand',
        ),
-      radius: 93,
+      radius: width*0.215,
       titlePositionPercentageOffset: 0.7,
       value: data.totalCarbs.toDouble(),
       color: Color(0xFF176607),
@@ -419,7 +419,7 @@ class _ReportPageState extends State<ReportPage> {
             PieChartData(
               centerSpaceRadius: 0,
               sectionsSpace: 2.5,
-              sections: getPieChartData(data),
+              sections: getPieChartData(data, width),
             ),
           ),
         ),
@@ -629,6 +629,7 @@ class _ReportPageState extends State<ReportPage> {
 
     return Scaffold(
         body: SafeArea(
+          bottom: false,
           child: Container(
             height: MediaQuery.of(context).size.height,
             child: SingleChildScrollView(
@@ -673,7 +674,6 @@ class _ReportPageState extends State<ReportPage> {
                             decoration: BoxDecoration(
                               gradient: customGradient
                             ),
-
                             child: SizedBox(),
                           ),
                         ),
