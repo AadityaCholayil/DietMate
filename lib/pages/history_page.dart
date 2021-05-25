@@ -5,6 +5,7 @@ import 'package:dietmate/model/food_list_day.dart';
 import 'package:dietmate/model/user.dart';
 import 'package:dietmate/services/database.dart';
 import 'package:dietmate/shared/conversion.dart';
+import 'package:dietmate/shared/gradient.dart';
 import 'package:dietmate/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -283,12 +284,17 @@ class _HistoryPageState extends State<HistoryPage> {
                 borderRadius:  BorderRadius.vertical(bottom: Radius.elliptical(90, 40)),
               ),
               elevation: 8,
+
+
               child: AnimatedContainer(
                 duration: Duration(milliseconds: 250),
                 height: _format == CalendarFormat.month ? uHeight*0.4 :( _format == CalendarFormat.twoWeeks ? uHeight*0.25 : uHeight*0.21),
                 width: MediaQuery.of(context).size.width,
-                color: Theme.of(context).accentColor,
+                // color: Theme.of(context).accentColor,
                 child: SizedBox(),
+                decoration: BoxDecoration(
+                      gradient: customGradient
+                  )
               ),
             ),
             Container(

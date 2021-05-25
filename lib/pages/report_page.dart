@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietmate/model/food_list_week.dart';
 import 'package:dietmate/model/user.dart';
 import 'package:dietmate/shared/conversion.dart';
+import 'package:dietmate/shared/gradient.dart';
 import 'package:dietmate/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/animation.dart';
@@ -666,9 +667,13 @@ class _ReportPageState extends State<ReportPage> {
                           ),
                           elevation: 8,
                           child: Container(
-                            height: MediaQuery.of(context).size.height*0.4,
+                            height: MediaQuery.of(context).size.height*0.35,
                             width: MediaQuery.of(context).size.width,
-                            color: Theme.of(context).accentColor,
+                            // color: Theme.of(context).accentColor,
+                            decoration: BoxDecoration(
+                              gradient: customGradient
+                            ),
+
                             child: SizedBox(),
                           ),
                         ),
