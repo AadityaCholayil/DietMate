@@ -15,8 +15,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final AuthService _auth = AuthService();
   String error = '';
   bool loading = false;
-  bool errorOccured=false;
+  bool errorOccurred=false;
   bool showPassword=false;
+  bool showConfirmPassword=false;
 
   String email = '';
   String password = '';
@@ -38,7 +39,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
       style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w400),
       validator: (String value) {
         if (value.isEmpty) {
-          return 'Invalid Email Id';
+          return 'Please enter an Email ID!';
+        }
+        if(!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value)){
+          return 'Email format not valid!';
         }
         return null;
       },
@@ -74,7 +78,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
           onSaved: (String value) {
             password= value;
           },
-
+          onChanged: (String value){
+            setState(() {
+              password=value;
+            });
+          },
         ),
         Container(
           margin: EdgeInsets.only(right: 15),
@@ -87,6 +95,47 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 });
               },
               child: Icon(showPassword?Icons.visibility:Icons.visibility_off,)
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildConfirmPassword(){
+    return Stack(
+      children: [
+        TextFormField(
+          decoration: InputDecoration(
+              contentPadding: EdgeInsets.fromLTRB(15, 15,15, 15),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.green, width: 2, style: BorderStyle.solid, ),
+                borderRadius: BorderRadius.all(Radius.circular(17.0)),
+              ),
+              fillColor: Theme.of(context).colorScheme.surface,
+              labelText: 'Confirm Password',
+              labelStyle: TextStyle(fontSize: 22),
+              floatingLabelBehavior: FloatingLabelBehavior.never
+          ),
+          obscureText: !showConfirmPassword,
+          style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w400),
+          validator: (String value) {
+            if (value!=password) {
+              return 'Passwords do not match!';
+            }
+            return null;
+          },
+        ),
+        Container(
+          margin: EdgeInsets.only(right: 15),
+          alignment: Alignment.centerRight,
+          height: 60,
+          child: InkWell(
+              onTap: (){
+                setState(() {
+                  showConfirmPassword=!showConfirmPassword;
+                });
+              },
+              child: Icon(showConfirmPassword?Icons.visibility:Icons.visibility_off,)
           ),
         ),
       ],
@@ -149,6 +198,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
               SizedBox(height:10),
               _buildPassword(),
               SizedBox(height:10),
+              _buildConfirmPassword(),
+              SizedBox(height:10),
               Container(
                 alignment: Alignment.topRight,
                 child: Column(
@@ -184,7 +235,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   }
                   setState(() {
                     loading = true;
-                    errorOccured=false;
+                    errorOccurred=false;
                     _formKey.currentState.save();
                   } );
                   UserData userData = UserData(
@@ -203,12 +254,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     setState(() {
                       loading = false;
                       error = 'Please supply a valid email';
-                      errorOccured=true;
+                      errorOccurred=true;
                     });
                   }
                 },
               ),
-              errorOccured? Text(
+              errorOccurred? Text(
                 error,
                 style: TextStyle(
                   fontSize: 20,

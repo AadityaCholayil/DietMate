@@ -63,7 +63,7 @@ class _HomePageState extends State<HomePage> {
             // ),
             startAngle: 270,
             angleRange: 360,
-            size: 300,
+            size: MediaQuery.of(context).size.width*(320/432),
             customWidths: CustomSliderWidths(
               trackWidth: 4.0,
               progressBarWidth: 25.0,
@@ -292,9 +292,10 @@ class _HomePageState extends State<HomePage> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
       insetPadding: EdgeInsets.zero,
       child: Container(
-        height: food.name.length<20?MediaQuery.of(context).size.width*1.46:MediaQuery.of(context).size.width*1.535,
+        //height: food.name.length<20?MediaQuery.of(context).size.width*1.46:MediaQuery.of(context).size.width*1.535,
         width: MediaQuery.of(context).size.width*0.9,
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Container(
@@ -310,6 +311,7 @@ class _HomePageState extends State<HomePage> {
               padding: EdgeInsets.only(left:12,top: 5),
               width: 400,
               child:Column(
+                mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start ,
                 children: <Widget>[
@@ -363,7 +365,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            Spacer(),
+            SizedBox(height: 15),
             Container(
               padding: EdgeInsets.only(bottom: 5,right: 12),
               child: Row(
@@ -436,6 +438,7 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       body: SafeArea(
+        bottom: false,
         child: Container(
           height: size.height,
           child: SingleChildScrollView(

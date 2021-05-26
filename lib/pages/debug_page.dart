@@ -10,6 +10,7 @@ import 'package:dietmate/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class DebugPage extends StatefulWidget {
   @override
@@ -90,17 +91,28 @@ class _DebugPageState extends State<DebugPage> {
                   DateTime start = now.subtract(Duration(days: 6));
                   now = DateTime(now.year, now.month, now.day, 23, 59);
                   start = DateTime(start.year, start.month, start.day, 0, 0);
+                  //
+                  // FirebaseFirestore db = FirebaseFirestore.instance;
+                  // QuerySnapshot result = await db.collection('users').doc(user.uid)
+                  //       .collection('foods')
+                  //       .orderBy('timestamp')
+                  //       .startAt([Timestamp.fromDate(start)])
+                  //       .endAt([Timestamp.fromDate(now)])
+                  //       .get();
+                  // print(result.docs.length);
+                  // FoodListWeek week = FoodListWeek.fromSnapshot(result, start);
+                  // print(week);
+                  firebase_storage.ListResult result =
+                  await firebase_storage.FirebaseStorage.instance.ref('UserProfiles/${user.uid}/food_images').listAll();
 
-                  FirebaseFirestore db = FirebaseFirestore.instance;
-                  QuerySnapshot result = await db.collection('users').doc(user.uid)
-                        .collection('foods')
-                        .orderBy('timestamp')
-                        .startAt([Timestamp.fromDate(start)])
-                        .endAt([Timestamp.fromDate(now)])
-                        .get();
-                  print(result.docs.length);
-                  FoodListWeek week = FoodListWeek.fromSnapshot(result, start);
-                  print(week);
+                  result.items.forEach((firebase_storage.Reference ref) {
+                    print('Found file: $ref');
+                  });
+                  print(result.items[result.items.length-1]);
+
+                  // result.prefixes.forEach((firebase_storage.Reference ref) {
+                  //   print('Found directory: $ref');
+                  // });
                 },
               ),
             ],

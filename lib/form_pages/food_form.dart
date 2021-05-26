@@ -22,6 +22,7 @@ class _FoodFormState extends State<FoodForm> {
   FoodListForm foodList;
   double screenHeight, screenWidth;
   double searchHeight;
+  String apiKey="9b837a32d8mshd72f108cc18a5ebp160760jsnc13d929cb7fd";
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -37,7 +38,7 @@ class _FoodFormState extends State<FoodForm> {
         {"fields": "item_name,item_id,brand_name,nf_calories,nf_total_fat,nf_total_carbohydrate,nf_protein",
           "limit": "5"}),
         headers: {
-          "x-rapidapi-key": "9b837a32d8mshd72f108cc18a5ebp160760jsnc13d929cb7fd",
+          "x-rapidapi-key": apiKey,
           "x-rapidapi-host": "nutritionix-api.p.rapidapi.com",
         }
     );

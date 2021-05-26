@@ -645,10 +645,8 @@ class _ReportPageState extends State<ReportPage> {
     final user = Provider.of<User>(context);
     final userData = Provider.of<UserData>(context);
     final Size size = MediaQuery.of(context).size;
-    print("${size.height}x${size.width}");
     double width = size.width;
     caloriesGoal=userData.calorieGoal;
-
 
     return Scaffold(
         body: SafeArea(
