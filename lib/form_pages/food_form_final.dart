@@ -357,7 +357,9 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
                   _thumbnailUrl = _foodImage.thumbnailUrl;
                   _imageWidth = _foodImage.width;
                   _imageHeight = _foodImage.height;
+                  _image=null;
                 }
+                Navigator.pop(context);
               });
             }
           ),
@@ -453,6 +455,8 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
                         //   uploading=false;
                         // });
                         setState((){
+                          _fullUrl=null;
+                          _thumbnailUrl=null;
                           Navigator.pop(context);
                         });
                       },
@@ -477,7 +481,6 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
           ),
         );
       },
-
     );
   }
 
@@ -552,19 +555,12 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
               ),
             ),
             onTap: () async {
-              FoodImage foodImage = await Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (BuildContext context) => ImageSearch())
+              showModalBottomSheet(
+                  context: context2,
+                  builder:(context){
+                    return _buildImagePicker(context, user);
+                  }
               );
-              setState(() {
-                if(foodImage!=null){
-                  _foodImage=foodImage;
-                  _fullUrl=_foodImage.fullUrl;
-                  _thumbnailUrl=_foodImage.thumbnailUrl;
-                  _imageWidth=_foodImage.width;
-                  _imageHeight=_foodImage.height;
-                }
-              });
             },
           ),
         ],

@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
         child: SleekCircularSlider(
           min: 0,
           max: caloriesGoal.toDouble(),
-          initialValue: consumedCalories<=caloriesGoal?consumedCalories.floorToDouble():caloriesGoal.toDouble(),
+          initialValue: consumedCalories<caloriesGoal?consumedCalories.floorToDouble():caloriesGoal.toDouble(),
           appearance: CircularSliderAppearance(
             // infoProperties: InfoProperties(
             //   topLabelText: '1200',
@@ -72,15 +72,32 @@ class _HomePageState extends State<HomePage> {
             customColors: CustomSliderColors(
               gradientStartAngle: 180,
               gradientEndAngle: 190,
-              progressBarColors: consumedCalories<=caloriesGoal?
+              progressBarColors: consumedCalories>=caloriesGoal?
               <Color>[
+                Colors.red,
+                Colors.red
+              ]:consumedCalories>(caloriesGoal*0.8)?
+              <Color>[
+                Colors.orange,
+                Colors.orange
+              ]:<Color>[
                 Color( 0xffB5FF48),
                 Color( 0xff94FC13),
                 Color(0xff05B54B),
-              ]:<Color>[
-                Colors.red,
-                Colors.red
               ],
+              // progressBarColors: consumedCalories<caloriesGoal?
+              // <Color>[
+              //   Color( 0xffB5FF48),
+              //   Color( 0xff94FC13),
+              //   Color(0xff05B54B),
+              // ]:consumedCalories>(caloriesGoal*0.8)?
+              // <Color>[
+              //   Colors.orange,
+              //   Colors.orange
+              // ]:<Color>[
+              //   Colors.red,
+              //   Colors.red
+              // ],
               dynamicGradient: true,
               trackColor: Color( 0xffDBFFAF),
               hideShadow: true,
@@ -356,7 +373,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   SizedBox(height:1),
                   Text(
-                    'Carbohydrates: ${food.carbohydrates} Kcal',
+                    'Carbohydrates: ${food.carbohydrates}g',
                     style: TextStyle(
                         fontSize: 19,
                         fontWeight: FontWeight.w400
