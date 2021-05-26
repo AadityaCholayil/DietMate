@@ -7,6 +7,7 @@ import 'package:dietmate/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -16,6 +17,8 @@ class ReportPage extends StatefulWidget {
   @override
   _ReportPageState createState() => _ReportPageState();
 }
+
+
 
 class _ReportPageState extends State<ReportPage> {
   FirebaseFirestore db = FirebaseFirestore.instance;
@@ -353,40 +356,41 @@ class _ReportPageState extends State<ReportPage> {
 
   List<PieChartSectionData> getPieChartData(FoodListWeek data, double width){
     List<PieChartSectionData> list = [];
+    var istouched;
     var fatPieCHart = PieChartSectionData(
-      title: '${data.totalFats}g' ,
+      title: '${data.totalFats}g${touchedIndex == 0? "\nFats":""}' ,
       titleStyle: TextStyle(
-        fontSize: 18,
+        fontSize:18,
         fontWeight: FontWeight.w500,
         fontFamily: 'Quicksand',
        ),
       titlePositionPercentageOffset: 0.7,
-      radius: width*0.215,
+      radius: touchedIndex == 0 ? 110 : 93,
       value: data.totalFats.toDouble(),
       color: Color(0xFF94FC13),
       );
 
     var proteinPieChart = PieChartSectionData(
-      title: '${data.totalProtein}g',
+      title: '${data.totalProtein}g${touchedIndex == 1? "\nProtein":""}',
       titleStyle: TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.w500,
         fontFamily: 'Quicksand',
        ),
-      radius: width*0.215,
+      radius:touchedIndex == 1 ? 110 : 93,
       titlePositionPercentageOffset: 0.7,
       value: data.totalProtein.toDouble(),
       color: Color(0xFF22A806),
     );
 
     var carbPieChart = PieChartSectionData(
-      title: '${data.totalCarbs}g',
+      title: '${data.totalCarbs}g${touchedIndex == 2? "\nCarbs":""}',
       titleStyle: TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.w500,
         fontFamily: 'Quicksand',
        ),
-      radius: width*0.215,
+      radius: touchedIndex == 2 ? 110 : 93,
       titlePositionPercentageOffset: 0.7,
       value: data.totalCarbs.toDouble(),
       color: Color(0xFF176607),
@@ -403,27 +407,46 @@ class _ReportPageState extends State<ReportPage> {
     return list;
   }
 
+  int touchedIndex = -1;
   Widget _buildPieChart(FoodListWeek data, double width) {
-      return Card(
-          shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(31)) ,
-        ),
-        color: Theme.of(context).cardColor,
-        margin: EdgeInsets.zero,
-        child: Container(
-          height: width*0.53,
-          width: width*0.53,
-          child: isFatsDataZero(data) && isProteinDataZero(data) && isCarbsDataZero(data)?
-          noDataAvailable():
-          PieChart(
-            PieChartData(
-              centerSpaceRadius: 0,
-              sectionsSpace: 2.5,
-              sections: getPieChartData(data, width),
-            ),
+      return StatefulBuilder(
+        builder: (context, setState)=>Card(
+            shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(31)) ,
           ),
+          color: Theme.of(context).cardColor,
+          margin: EdgeInsets.zero,
+          child: Container(
+            height: width*0.53,
+            width: width*0.53,
+            child: isFatsDataZero(data) && isProteinDataZero(data) && isCarbsDataZero(data)?
+            noDataAvailable():
+            PieChart(
+              PieChartData(
+                 pieTouchData: PieTouchData(touchCallback: (pieTouchResponse) {
+                  setState(() {
+                    final desiredTouch = pieTouchResponse.touchInput is! PointerExitEvent &&
+                        pieTouchResponse.touchInput is! PointerUpEvent;
+                    if (desiredTouch && pieTouchResponse.touchedSection != null) {
+                      touchedIndex = pieTouchResponse.touchedSection.touchedSectionIndex;
+                    } else {
+                      touchedIndex = -1;
+                    }
+                  });
+                }),
+                borderData: FlBorderData(
+                  show: false,
+                ),
+                sectionsSpace: 2.5,
+                centerSpaceRadius: 0,
+                sections: getPieChartData(data, width)),
+                // centerSpaceRadius: 0,
+                // sectionsSpace: 2.5,
+                // sections: getPieChartData(data, width),
+              )//PieChartDataaaa
+            ),
         ),
-      );
+      );//card shoudl be
     }
 
   List <BarChartGroupData> generateBarData(FoodListWeek data, int type){
