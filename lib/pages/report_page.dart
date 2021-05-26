@@ -173,7 +173,7 @@ class _ReportPageState extends State<ReportPage> {
             axisTitleData: FlAxisTitleData(
               leftTitle: AxisTitle(
                 showTitle: true,
-                titleText: 'Calories',
+                titleText: 'Calories (Kcal)',
                 textStyle: TextStyle(
                   fontSize: 18,
                   fontFamily: 'Quicksand',
@@ -364,8 +364,8 @@ class _ReportPageState extends State<ReportPage> {
         fontWeight: FontWeight.w500,
         fontFamily: 'Quicksand',
        ),
-      titlePositionPercentageOffset: 0.7,
-      radius: touchedIndex == 0 ? 110 : 93,
+      titlePositionPercentageOffset: 0.6,
+      radius: touchedIndex == 0 ? width*0.254 : width*0.215,
       value: data.totalFats.toDouble(),
       color: Color(0xFF94FC13),
       );
@@ -377,8 +377,8 @@ class _ReportPageState extends State<ReportPage> {
         fontWeight: FontWeight.w500,
         fontFamily: 'Quicksand',
        ),
-      radius:touchedIndex == 1 ? 110 : 93,
-      titlePositionPercentageOffset: 0.7,
+      radius:touchedIndex == 1 ? width*0.254 : width*0.215,
+      titlePositionPercentageOffset: 0.6,
       value: data.totalProtein.toDouble(),
       color: Color(0xFF22A806),
     );
@@ -390,8 +390,8 @@ class _ReportPageState extends State<ReportPage> {
         fontWeight: FontWeight.w500,
         fontFamily: 'Quicksand',
        ),
-      radius: touchedIndex == 2 ? 110 : 93,
-      titlePositionPercentageOffset: 0.7,
+      radius: touchedIndex == 2 ? width*0.254 : width*0.215,
+      titlePositionPercentageOffset: 0.6,
       value: data.totalCarbs.toDouble(),
       color: Color(0xFF176607),
     );
@@ -516,7 +516,7 @@ class _ReportPageState extends State<ReportPage> {
     switch(type){
       case 1:{
         isZero = isFatsDataZero(data);
-        label = 'Total Fats';
+        label = 'Total Fats (g)';
         maximumY = double.tryParse((data.maxFatsOfDay()/4).toStringAsPrecision(1));
         hLineInterval = maximumY;
         // titleColor = Color(0xFF94FC13) ;
@@ -524,7 +524,7 @@ class _ReportPageState extends State<ReportPage> {
       break;
       case 2:{
         isZero = isProteinDataZero(data);
-        label = 'Total Protein';
+        label = 'Total Protein (g)';
         maximumY = double.tryParse((data.maxProteinOfDay()/4).toStringAsPrecision(1));
         hLineInterval = maximumY;
         // titleColor = Color(0xFF22A806) ;
@@ -532,7 +532,7 @@ class _ReportPageState extends State<ReportPage> {
       break;
       case 3:{
         isZero = isCarbsDataZero(data);
-        label = 'Total Carbs';
+        label = 'Total Carbs (g)';
         maximumY = double.tryParse((data.maxCarbOfDay()/4).toStringAsPrecision(1));
         hLineInterval = maximumY;
         // titleColor = Color(0xFF176607);
