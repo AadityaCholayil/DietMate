@@ -1,6 +1,6 @@
 import 'package:dietmate/auth_screens/additional_details_screen.dart';
 import 'package:dietmate/model/user.dart';
-// import 'package:dietmate/pages/debug_page.dart';
+import 'package:dietmate/pages/debug_page.dart';
 import 'package:dietmate/services/auth.dart';
 import 'package:dietmate/shared/gradient.dart';
 import 'package:dietmate/themes/custom_theme.dart';
@@ -21,6 +21,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   final AuthService _auth = AuthService();
   bool _darkTheme=true;
+  bool debugMode=true;
 
   void onThemeChanged(bool value, ThemeNotifier themeNotifier) async {
     (value)
@@ -35,7 +36,7 @@ class _ProfilePageState extends State<ProfilePage> {
       title: Text('Dark Theme',
         style: TextStyle(
           fontSize: 21,
-          fontWeight: FontWeight.w300
+          fontWeight: FontWeight.w400
         ),
       ),
       value: _darkTheme,
@@ -48,21 +49,21 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  // ElevatedButton _buildDebugPage(BuildContext context) {
-  //   return ElevatedButton(
-  //     child: Text('Debug Page',
-  //       style: TextStyle(
-  //         fontSize: 20
-  //       ),
-  //     ),
-  //     onPressed: () {
-  //       Navigator.push(
-  //         context,
-  //         MaterialPageRoute(builder: (BuildContext context) => DebugPage()),
-  //       );
-  //     },
-  //   );
-  // }
+  ElevatedButton _buildDebugPage(BuildContext context) {
+    return ElevatedButton(
+      child: Text('Debug Page',
+        style: TextStyle(
+          fontSize: 20
+        ),
+      ),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (BuildContext context) => DebugPage()),
+        );
+      },
+    );
+  }
 
   Widget _buildSignOut(){
     return TextButton(
@@ -88,7 +89,7 @@ class _ProfilePageState extends State<ProfilePage> {
             left,
             style: TextStyle(
                 fontSize: 21,
-                fontWeight: FontWeight.w300
+                fontWeight: FontWeight.w400
             ),
           ),
         ),
@@ -252,10 +253,10 @@ class _ProfilePageState extends State<ProfilePage> {
                       padding: const EdgeInsets.only(left: 20),
                       child: _buildSignOut(),
                     ),
-                    // Padding(
-                    //   padding: const EdgeInsets.only(left: 15),
-                    //   child: _buildDebugPage(context),
-                    // ),
+                    debugMode?Padding(
+                      padding: const EdgeInsets.only(left: 15),
+                      child: _buildDebugPage(context),
+                    ):SizedBox.shrink(),
                     SizedBox(height: 20),
                   ],
                 ),

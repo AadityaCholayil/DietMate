@@ -166,81 +166,86 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
 
   Widget _buildImageDialog(User user){
     Size size = MediaQuery.of(context).size;
-    return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      child: Container(
-        height: size.width*1.035,
-        width: size.width*0.9,
-        child: Column(
-          children: [
-            Container(
-              height: size.width*0.9,
-              width: size.width*0.9,
-              child: Image.file(
-                _image,
-                fit: BoxFit.cover,
-              ),
-            ),
-            uploading==true?Container(
-              padding: EdgeInsets.only(top: 7),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircularProgressIndicator(),
-                  SizedBox(width: 10,),
-                  Text(
-                    'Uploading..',
-                    style: TextStyle(
-                      fontSize: 24,
-                    ),
-                  ),
-                ],
-              ),
-            ):
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.end,
+    return StatefulBuilder(
+      builder: (context, setState){
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          child: Container(
+            height: size.width*1.035,
+            width: size.width*0.9,
+            child: Column(
               children: [
-                TextButton(
-                  child: Text(
-                    'Upload',
-                    style: TextStyle(
-                      fontSize: 21,
-                    ),
+                Container(
+                  height: size.width*0.9,
+                  width: size.width*0.9,
+                  child: Image.file(
+                    _image,
+                    fit: BoxFit.cover,
                   ),
-                  onPressed: () async {
-                    setState(() {
-                      print('pressed upload');
-                      uploading=true;
-                    });
-                    await uploadFile(user);
-                    setState(() {
-                      uploading=false;
-                    });
-                    Navigator.pop(context);
-                  },
                 ),
-                TextButton(
-                  child: Text(
-                    'Cancel',
-                    style: TextStyle(
-                      fontSize: 21,
-                    ),
+                uploading==true?Container(
+                  padding: EdgeInsets.only(top: 7),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(),
+                      SizedBox(width: 10,),
+                      Text(
+                        'Uploading..',
+                        style: TextStyle(
+                          fontSize: 22,
+                        ),
+                      ),
+                    ],
                   ),
-                  onPressed: () {
-                    _image=null;
-                    Navigator.pop(context);
-                  },
-                ),
-                SizedBox(width: 10)
+                ):
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      child: Text(
+                        'Upload',
+                        style: TextStyle(
+                          fontSize: 21,
+                        ),
+                      ),
+                      onPressed: () async {
+                        setState(() {
+                          print('pressed upload');
+                          uploading=true;
+                        });
+                        await uploadFile(user);
+                        setState(() {
+                          uploading=false;
+                        });
+                        Navigator.pop(context);
+                      },
+                    ),
+                    TextButton(
+                      child: Text(
+                        'Cancel',
+                        style: TextStyle(
+                          fontSize: 21,
+                        ),
+                      ),
+                      onPressed: () {
+                        _image=null;
+                        Navigator.pop(context);
+                      },
+                    ),
+                    SizedBox(width: 10)
+                  ],
+                )
               ],
-            )
-          ],
-        ),
-      ),
+            ),
+          ),
+        );
+      },
+
     );
   }
 
@@ -561,132 +566,134 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
     User user = Provider.of<User>(context);
 
     return Scaffold(
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        child: SingleChildScrollView(
-          child: Container(
-            //height: MediaQuery.of(context).size.height,
-            padding: EdgeInsets.all(15),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: EdgeInsets.fromLTRB(15, 20, 0,20 ),
-                    child: Text(
-                      'Additional Details',
-                      style: TextStyle(
-                        fontSize: 34,
-                        fontWeight: FontWeight.bold
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  SizedBox(height: 5),
-                  _buildProfile(context, user),
-                  SizedBox(height: 15),
-                  _buildTextHelp('Name'),
-                  _buildName(),
-                  _buildTextHelp('Age'),
-                  _buildAge(),
-                  _buildGender(),
-                  _buildTextHelp('Height'),
-                  _buildHeight(),
-                  _buildTextHelp('Weight'),
-                  _buildWeight(),
-                  _buildTextHelp('Activity Level'),
-                  _buildActivity(),
-                  SizedBox(height: 10,),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    alignment: Alignment.center,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.symmetric(vertical: 7, horizontal: 30),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15)
-                          )
-                      ),
-                      child:  Text(
-                        'Next',
+      body: SafeArea(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          child: SingleChildScrollView(
+            child: Container(
+              //height: MediaQuery.of(context).size.height,
+              padding: EdgeInsets.all(15),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.fromLTRB(15, 20, 0,20 ),
+                      child: Text(
+                        'Additional Details',
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 34,
+                          fontWeight: FontWeight.bold
                         ),
+                        textAlign: TextAlign.center,
                       ),
-                      onPressed: () async {
-                        if (!_formKey.currentState.validate()) {
-                          return;
-                        }
-                        setState(() {
-                          _formKey.currentState.save();
-                        });
-                        switch (_activity){
-                          case 'Sedentary: little or no exercise' :{
-                            _activityLevel=1.2;
-                          }
-                          break;
-                          case 'Light: exercise 1-3 times/week':{
-                            _activityLevel=1.375;
-                          }
-                          break;
-                          case 'Moderate: exercise 4-5 time/week':{
-                            _activityLevel=1.465;
-                          }
-                          break;
-                          case 'Active: daily exercise or intense exercise 3-4 times/week':{
-                            _activityLevel=1.55;
-                          }
-                          break;
-                          case 'Very Active: intense exercise 6-7 times/week':{
-                            _activityLevel=1.725;
-                          }
-                          break;
-                          case 'Extra Active: very intense exercise daily, or physical job':{
-                            _activityLevel=1.9;
-                          }
-                          break;
-                          default:{
-                            _activityLevel=1;
-                          }
-                        }
-                        double bmr=0;
-                        if(_isMale){
-                          bmr=10*_weight+6.25*_height-5*_age+5;
-                        }
-                        else{
-                          bmr=10*_weight+6.25*_height-5*_age-161;
-                        }
-                        bmr=bmr*_activityLevel;
-                        caloriePlan['gain']=bmr*1.15;
-                        caloriePlan['maintain']=bmr;
-                        caloriePlan['mildLoss']=bmr*0.88;
-                        caloriePlan['weightLoss']=bmr*0.75;
-                        caloriePlan['extLoss']=bmr*0.5;
-                        if (_joinDate=='') {
-                          DateTime now = DateTime.now();
-                          _joinDate=dateToString(now);
-                        }
-                        UserData userData = UserData(
-                          name: _name,
-                          age: _age,
-                          isMale: _isMale,
-                          height: _height,
-                          weight: _weight,
-                          activityLevel: _activityLevel,
-                          joinDate: _joinDate,
-                          userProfileUrl: _profileUrl
-                        );
-                        print(userData.userProfileUrl);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (BuildContext context) => PlanScreen(userData: userData,caloriePlan: caloriePlan,)),
-                        );
-                      },
                     ),
-                  ),
-                ],
+                    SizedBox(height: 5),
+                    _buildProfile(context, user),
+                    SizedBox(height: 15),
+                    _buildTextHelp('Name'),
+                    _buildName(),
+                    _buildTextHelp('Age'),
+                    _buildAge(),
+                    _buildGender(),
+                    _buildTextHelp('Height'),
+                    _buildHeight(),
+                    _buildTextHelp('Weight'),
+                    _buildWeight(),
+                    _buildTextHelp('Activity Level'),
+                    _buildActivity(),
+                    SizedBox(height: 10,),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      alignment: Alignment.center,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.symmetric(vertical: 7, horizontal: 30),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15)
+                            )
+                        ),
+                        child:  Text(
+                          'Next',
+                          style: TextStyle(
+                            fontSize: 20,
+                          ),
+                        ),
+                        onPressed: () async {
+                          if (!_formKey.currentState.validate()) {
+                            return;
+                          }
+                          setState(() {
+                            _formKey.currentState.save();
+                          });
+                          switch (_activity){
+                            case 'Sedentary: little or no exercise' :{
+                              _activityLevel=1.2;
+                            }
+                            break;
+                            case 'Light: exercise 1-3 times/week':{
+                              _activityLevel=1.375;
+                            }
+                            break;
+                            case 'Moderate: exercise 4-5 time/week':{
+                              _activityLevel=1.465;
+                            }
+                            break;
+                            case 'Active: daily exercise or intense exercise 3-4 times/week':{
+                              _activityLevel=1.55;
+                            }
+                            break;
+                            case 'Very Active: intense exercise 6-7 times/week':{
+                              _activityLevel=1.725;
+                            }
+                            break;
+                            case 'Extra Active: very intense exercise daily, or physical job':{
+                              _activityLevel=1.9;
+                            }
+                            break;
+                            default:{
+                              _activityLevel=1;
+                            }
+                          }
+                          double bmr=0;
+                          if(_isMale){
+                            bmr=10*_weight+6.25*_height-5*_age+5;
+                          }
+                          else{
+                            bmr=10*_weight+6.25*_height-5*_age-161;
+                          }
+                          bmr=bmr*_activityLevel;
+                          caloriePlan['gain']=bmr*1.15;
+                          caloriePlan['maintain']=bmr;
+                          caloriePlan['mildLoss']=bmr*0.88;
+                          caloriePlan['weightLoss']=bmr*0.75;
+                          caloriePlan['extLoss']=bmr*0.5;
+                          if (_joinDate=='') {
+                            DateTime now = DateTime.now();
+                            _joinDate=dateToString(now);
+                          }
+                          UserData userData = UserData(
+                            name: _name,
+                            age: _age,
+                            isMale: _isMale,
+                            height: _height,
+                            weight: _weight,
+                            activityLevel: _activityLevel,
+                            joinDate: _joinDate,
+                            userProfileUrl: _profileUrl
+                          );
+                          print(userData.userProfileUrl);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (BuildContext context) => PlanScreen(userData: userData,caloriePlan: caloriePlan,)),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

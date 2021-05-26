@@ -41,8 +41,9 @@ class _LoginScreenState extends State<LoginScreen> {
         if (value.isEmpty) {
           return 'Invalid Email Id';
         }
-        // var email = "tony@starkindustries.com"
-        // bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
+        if(!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value)){
+          return 'Email format not valid!';
+        }
         return null;
       },
       onSaved: (String value) {

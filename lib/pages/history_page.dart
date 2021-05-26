@@ -132,9 +132,10 @@ class _HistoryPageState extends State<HistoryPage> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
       insetPadding: EdgeInsets.zero,
       child: Container(
-        height: food.name.length<20?MediaQuery.of(context).size.width*1.46:MediaQuery.of(context).size.width*1.535,
+        // height: food.name.length<20?MediaQuery.of(context).size.width*1.46:MediaQuery.of(context).size.width*1.535,
         width: MediaQuery.of(context).size.width*0.9,
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Container(
@@ -150,6 +151,7 @@ class _HistoryPageState extends State<HistoryPage> {
               padding: EdgeInsets.only(left:12,top: 5),
               width: 400,
               child:Column(
+                mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start ,
                 children: <Widget>[
@@ -203,7 +205,7 @@ class _HistoryPageState extends State<HistoryPage> {
                 ],
               ),
             ),
-            Spacer(),
+            SizedBox(height: 15),
             Container(
               padding: EdgeInsets.only(bottom: 5,right: 12),
               child: Row(

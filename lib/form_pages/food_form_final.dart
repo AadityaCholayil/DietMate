@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:dietmate/model/food.dart';
 import 'package:dietmate/model/food_image.dart';
 import 'package:dietmate/form_pages/image_search_page.dart';
@@ -9,6 +12,7 @@ import 'package:dietmate/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class FoodFormFinal extends StatefulWidget {
@@ -26,15 +30,18 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
   FoodImage _foodImage;
   String _name;
   String _time = '1000';
-  int _calories, _fats, _protein, _carbohydrates;
+  int _calories=0, _fats=0, _protein=0, _carbohydrates=0;
   int _servingSizeQty;
   String _servingSizeUnit;
   String _fullUrl, _thumbnailUrl;
   int _imageWidth, _imageHeight;
   Timestamp _timestamp;
-
+  File _image;
+  final picker = ImagePicker();
   DateTime pickedTime;
+  String _fileName;
 
+  bool uploading=false;
   bool isLoading=false;
   String error='';
 
@@ -69,9 +76,27 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
     }
   }
 
+  Future incrFileName(User user) async {
+    firebase_storage.ListResult result =
+        await firebase_storage.FirebaseStorage.instance.ref('UserProfiles/${user.uid}/food_images').listAll();
+
+    result.items.forEach((firebase_storage.Reference ref) {
+      print('Found file: $ref');
+    });
+    if (result.items.isNotEmpty) {
+      String path = result.items[result.items.length-1].fullPath;
+      int index=path.indexOf('food_images/food');
+      String str='food${(int.tryParse(path.substring(index+16,path.length-5))??0)+1}';
+      _fileName = str;
+    } else {
+      _fileName ='food1';
+    }
+    print(_fileName);
+  }
+
   InputDecoration _inputDecoration(String label){
     return InputDecoration(
-      contentPadding: EdgeInsets.fromLTRB(20, 18, 15, 18),
+      contentPadding: EdgeInsets.fromLTRB(20, 15, 15, 15),
       filled: true,
       fillColor: Theme.of(context).colorScheme.surface,
       labelText: label,
@@ -106,6 +131,7 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
 
   Widget _buildCalories(){
     return TextFormField(
+      key: Key(_servingSizeQty.toString()),
       initialValue: _calories.toString(),
       decoration: _inputDecoration('Calories'),
       keyboardType: TextInputType.number,
@@ -118,14 +144,17 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
         return null;
       },
       onSaved: (String value) {
-        print(value);
-        _calories = double.tryParse(value).floor();
+        _calories = int.tryParse(value);
+      },
+      onChanged: (value){
+        _calories = int.tryParse(value);
       },
     );
   }
 
   Widget _buildFats(){
     return TextFormField(
+      key: Key(_servingSizeQty.toString()),
       initialValue: _fats.toString(),
       decoration: _inputDecoration('Fats (g)'),
       keyboardType: TextInputType.number,
@@ -140,11 +169,15 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
       onSaved: (String value) {
         _fats = int.tryParse(value);
       },
+      onChanged: (value){
+        _fats = int.tryParse(value);
+      },
     );
   }
 
   Widget _buildProtein(){
     return TextFormField(
+      key: Key(_servingSizeQty.toString()),
       initialValue: _protein.toString(),
       decoration: _inputDecoration('Protein (g)'),
       keyboardType: TextInputType.number,
@@ -159,11 +192,15 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
       onSaved: (String value) {
         _protein = int.tryParse(value);
       },
+      onChanged: (value){
+        _protein = int.tryParse(value);
+      },
     );
   }
 
   Widget _buildCarbohydrates(){
     return TextFormField(
+      key: Key(_servingSizeQty.toString()),
       initialValue: _carbohydrates.toString(),
       decoration: _inputDecoration('Carbohydrates (g)'),
       keyboardType: TextInputType.number,
@@ -178,47 +215,273 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
       onSaved: (String value) {
         _carbohydrates = int.tryParse(value);
       },
-    );
-  }
-
-  Widget _buildServingSizeQty(){
-    return TextFormField(
-      initialValue: _servingSizeQty.toString(),
-      decoration: _inputDecoration('Serving Size Qty'),
-      keyboardType: TextInputType.number,
-      style: _style,
-      validator: (String value) {
-        int servingSizeQty = int.tryParse(value);
-        if (servingSizeQty == null || servingSizeQty < 0) {
-          return 'servingSizeQty must be greater than 0';
-        }
-        return null;
-      },
-      onSaved: (String value) {
-        _servingSizeQty = int.tryParse(value);
+      onChanged: (value){
+        _carbohydrates = int.tryParse(value);
       },
     );
   }
 
-  Widget _buildServingSizeUnit(){
-    return TextFormField(
-      initialValue: _servingSizeUnit,
-      decoration: _inputDecoration('Serving Size Unit'),
-      keyboardType: TextInputType.name,
-      style: _style,
-      validator: (String value) {
-        if (value.isEmpty ) {
-          return 'Serving Size Unit cannot be empty';
-        }
-        return null;
-      },
-      onSaved: (String value) {
-        _servingSizeUnit = value;
-      },
+  Widget _buildServing(){
+    return Card(
+      elevation: 0,
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20)
+      ),
+      child: Container(
+        padding: EdgeInsets.fromLTRB(32, 9, 15, 9),
+        color: Theme.of(context).cardColor,
+        child: Row(
+          children: [
+            Expanded(
+              flex: 1,
+              child: Text(
+                '$_servingSizeQty',
+                style: _style,
+              ),
+            ),
+            Expanded(
+              flex: 3,
+              child: Text(
+                '$_servingSizeUnit${_servingSizeQty>1?'s':''}',
+                style: _style,
+              ),
+            ),
+            IconButton(
+              icon: Icon(Icons.add),
+              color: Color(0xFF2ACD07),
+              onPressed: _servingSizeQty>=5?null:(){
+                setState(() {
+                  _calories~/=_servingSizeQty;
+                  _fats~/=_servingSizeQty;
+                  _carbohydrates~/=_servingSizeQty;
+                  _protein~/=_servingSizeQty;
+                  _servingSizeQty++;
+                  _calories*=_servingSizeQty;
+                  _fats*=_servingSizeQty;
+                  _carbohydrates*=_servingSizeQty;
+                  _protein*=_servingSizeQty;
+                });
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.remove),
+              color: Color(0xFF2ACD07),
+              onPressed: _servingSizeQty<=1?null:(){
+                setState(() {
+                  _calories~/=_servingSizeQty;
+                  _fats~/=_servingSizeQty;
+                  _carbohydrates~/=_servingSizeQty;
+                  _protein~/=_servingSizeQty;
+                  _servingSizeQty--;
+                  _calories*=_servingSizeQty;
+                  _fats*=_servingSizeQty;
+                  _carbohydrates*=_servingSizeQty;
+                  _protein*=_servingSizeQty;
+                });
+              },
+            )
+          ],
+        ),
+      ),
     );
   }
 
-  Widget _buildFoodImage(){
+  Future uploadFile(User user) async {
+    try {
+      await firebase_storage.FirebaseStorage.instance
+          .ref('UserProfiles/${user.uid}/food_images/$_fileName.jpeg')
+          .putFile(_image);
+    } on Exception catch (e) {
+      print('Failed - $e');
+    }
+    try {
+      var result = await firebase_storage.FirebaseStorage.instance
+          .ref('UserProfiles/${user.uid}/food_images/$_fileName.jpeg')
+          .getDownloadURL();
+      _fullUrl=result;
+      _thumbnailUrl=result;
+      print('url: $_fullUrl');
+    } on Exception catch (e) {
+      print('Failed - $e');
+    }
+  }
+
+  Future getImageFromCamera() async {
+    final pickedImage = await picker.getImage(source: ImageSource.camera);
+    if(pickedImage != null){
+      _image = File(pickedImage.path);
+      var decodedImage = await decodeImageFromList(_image.readAsBytesSync());
+      _imageWidth=decodedImage.width;
+      _imageHeight=decodedImage.height;
+      print(_image.path);
+      print(decodedImage.width);
+      print(decodedImage.height);
+    }else{
+      print("No Image Selected");
+    }
+  }
+
+  Future getImageFromGallery() async{
+    final pickedImage = await picker.getImage(source: ImageSource.gallery);
+    if(pickedImage != null){
+      _image = File(pickedImage.path);
+      var decodedImage = await decodeImageFromList(_image.readAsBytesSync());
+      _imageWidth=decodedImage.width;
+      _imageHeight=decodedImage.height;
+      print(_image.path);
+      print(decodedImage.width);
+      print(decodedImage.height);
+    }else{
+      print("No Image Selected");
+    }
+  }
+
+  Widget _buildImagePicker(BuildContext context, User user){
+    return Container(
+      color: Theme.of(context).dialogBackgroundColor,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ListTile(
+            leading: Icon(Icons.search),
+            title: Text('WebSearch'),
+            onTap: () async {
+              _foodImage = await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (BuildContext context) => ImageSearch(query: widget.query))
+              );
+              setState(() {
+                if(_foodImage!=null) {
+                  _fullUrl = _foodImage.fullUrl;
+                  _thumbnailUrl = _foodImage.thumbnailUrl;
+                  _imageWidth = _foodImage.width;
+                  _imageHeight = _foodImage.height;
+                }
+              });
+            }
+          ),
+          ListTile(
+            leading: Icon(Icons.camera),
+            title: Text('Camera'),
+            onTap: () async {
+              print('pressed');
+              await getImageFromCamera();
+              if(_image!=null){
+                await showDialog(context: context, builder: (context)=>_buildImageDialog(user));
+              }
+              setState(() {
+                Navigator.pop(context);
+              });
+            }
+          ),
+          ListTile(
+              leading: Icon(Icons.photo),
+              title: Text('Gallery'),
+              onTap: () async {
+                print('pressed');
+                await getImageFromGallery();
+                if(_image!=null){
+                  await showDialog(context: context, builder: (context)=>_buildImageDialog(user));
+                }
+                setState(() {
+                  Navigator.pop(context);
+                });
+              }
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildImageDialog(User user){
+    Size size = MediaQuery.of(context).size;
+    return StatefulBuilder(
+      builder: (context, setState){
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          child: Container(
+            height: size.width*1.035,
+            width: size.width*0.9,
+            child: Column(
+              children: [
+                Container(
+                  height: size.width*0.9,
+                  width: size.width*0.9,
+                  child: Image.file(
+                    _image,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                uploading==true?Container(
+                  padding: EdgeInsets.only(top: 7),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(),
+                      SizedBox(width: 10,),
+                      Text(
+                        'Uploading..',
+                        style: TextStyle(
+                          fontSize: 22,
+                        ),
+                      ),
+                    ],
+                  ),
+                ):
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      child: Text(
+                        'Confirm',
+                        style: TextStyle(
+                          fontSize: 21,
+                        ),
+                      ),
+                      onPressed: () async {
+                        // setState(() {
+                        //   print('pressed upload');
+                        //   uploading=true;
+                        // });
+                        // await uploadFile(user);
+                        // setState(() {
+                        //   uploading=false;
+                        // });
+                        setState((){
+                          Navigator.pop(context);
+                        });
+                      },
+                    ),
+                    TextButton(
+                      child: Text(
+                        'Cancel',
+                        style: TextStyle(
+                          fontSize: 21,
+                        ),
+                      ),
+                      onPressed: () {
+                        _image=null;
+                        Navigator.pop(context);
+                      },
+                    ),
+                    SizedBox(width: 10)
+                  ],
+                )
+              ],
+            ),
+          ),
+        );
+      },
+
+    );
+  }
+
+  Widget _buildFoodImage(BuildContext context2, User user){
     return Container(
       margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
       width: MediaQuery.of(context).size.width*0.46,
@@ -231,15 +494,18 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
       child: Stack(
         fit: StackFit.expand,
         children: [
-          Opacity(
+          _image==null?Opacity(
             child: Image.network(
               _fullUrl==null?'https://cdn.dribbble.com/users/1012997/screenshots/14073001/media/4994fedc83e967607f1e3b3e17525831.png?compress=1&resize=400x300'
                   : _fullUrl,
               fit: _fullUrl==null?BoxFit.fitHeight:_imageWidth>_imageHeight?BoxFit.fitHeight:BoxFit.fitWidth,
             ),
             opacity: 1,
+          ):Image.file(
+            _image,
+            fit: _imageWidth>_imageHeight?BoxFit.fitHeight:BoxFit.fitWidth,
           ),
-          _fullUrl==null?Container(
+          _fullUrl==null&&_image==null?Container(
             alignment: Alignment.center,
             margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
             //width: MediaQuery.of(context).size.width*0.44,
@@ -260,25 +526,30 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
                 ),
               ),
               onPressed: () async {
-                _foodImage = await Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (BuildContext context) => ImageSearch(query: widget.query))
+                showModalBottomSheet(
+                    context: context2,
+                    builder:(context){
+                      return _buildImagePicker(context, user);
+                    }
                 );
-                setState(() {
-                  if(_foodImage!=null) {
-                    _fullUrl = _foodImage.fullUrl;
-                    _thumbnailUrl = _foodImage.thumbnailUrl;
-                    _imageWidth = _foodImage.width;
-                    _imageHeight = _foodImage.height;
-                  }
-                });
               },
             ),
           ):InkWell(
             child: Container(
               padding: EdgeInsets.all(10),
               alignment: Alignment.topRight,
-              child: Icon(Icons.edit, size: 35,),
+              child: Container(
+                padding: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.edit,
+                  size: 25,
+                  color: Theme.of(context).colorScheme.onSurface,
+                )
+              ),
             ),
             onTap: () async {
               FoodImage foodImage = await Navigator.push(
@@ -428,7 +699,7 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
         setState(() {
           _formKey.currentState.save();
         });
-        if(_thumbnailUrl==null){
+        if(_fullUrl==null&&_image==null){
           ScaffoldMessenger.of(context).showSnackBar(showCustomSnackBar('Select an Image!'));
           return;
         }
@@ -437,6 +708,10 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
         //   return;
         // }
         setState(() => isLoading=true);
+        if (_image!=null) {
+          await uploadFile(user);
+        }
+        print('Uploaded pic');
         String _date;
         if (widget.food.uid==null) {
           DateTime now = DateTime.now();
@@ -570,59 +845,68 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent.withOpacity(0),
-        elevation: 0,
-        leading: IconButton(
-          padding: EdgeInsets.only(left: 1),
-          icon: Icon(
-            Icons.arrow_back,
-            size: 30,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          }
-        )
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/search_${Theme.of(context).brightness==Brightness.light?'light':'dark'}.jpg'),
-            fit: BoxFit.cover,
-          ),
+    final user = Provider.of<User>(context);
+
+    if(_image==null){
+      incrFileName(user);
+    }
+    return SafeArea(
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent.withOpacity(0),
+          elevation: 0,
+          leading: IconButton(
+            padding: EdgeInsets.only(left: 1),
+            icon: Icon(
+              Icons.arrow_back,
+              size: 30,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            }
+          )
         ),
-        height: size.height,
-        child: SingleChildScrollView(
-          child: Container(
-            padding: EdgeInsets.all(size.width*0.057),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  _buildTitle(),
-                  _buildTextHelp('Food Name'),
-                  _buildName(),
-                  _buildRow(size, 'Calories', _buildCalories(), 'Fats', _buildFats()),
-                  SizedBox(height: 17),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      _buildFoodImage(),
-                      _buildTime(size),
-                    ],
-                  ),
-                  _buildRow(size, 'Protein', _buildProtein(), 'Carbohydrates', _buildCarbohydrates()),
-                  _buildRow(size, 'Serving Size Qty', _buildServingSizeQty(), 'Serving Size Unit', _buildServingSizeUnit()),
-                  SizedBox(height: 15),
-                  !isLoading?_buildSubmitButton(context)
-                      :LoadingSmall(color: Color( 0xFF2ACD07)),
-                  SizedBox(height: 10),
-                  error!=''?errorText(context):SizedBox.shrink(),
-                ],
+        body: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/search_${Theme.of(context).brightness==Brightness.light?'light':'dark'}.jpg'),
+              fit: BoxFit.cover,
+            ),
+          ),
+          height: size.height,
+          child: SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.all(size.width*0.057),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    _buildTitle(),
+                    _buildTextHelp('Food Name'),
+                    _buildName(),
+                    _buildRow(size, 'Calories(KCal)', _buildCalories(), 'Fats(g)', _buildFats()),
+                    SizedBox(height: 17),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        _buildFoodImage(context, user),
+                        _buildTime(size),
+                      ],
+                    ),
+                    _buildRow(size, 'Protein(g)', _buildProtein(), 'Carbohydrates(g)', _buildCarbohydrates()),
+                    // _buildRow(size, 'Serving Size Qty', _buildServingSizeQty(), 'Serving Size Unit', _buildServingSizeUnit()),
+                    _buildTextHelp('Serving Size'),
+                    _buildServing(),
+                    SizedBox(height: 15),
+                    !isLoading?_buildSubmitButton(context)
+                        :LoadingSmall(color: Color( 0xFF2ACD07)),
+                    SizedBox(height: 10),
+                    error!=''?errorText(context):SizedBox.shrink(),
+                  ],
+                ),
               ),
             ),
           ),
