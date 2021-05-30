@@ -78,11 +78,8 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
 
   Future incrFileName(User user) async {
     firebase_storage.ListResult result =
-        await firebase_storage.FirebaseStorage.instance.ref('UserProfiles/${user.uid}/food_images').listAll();
-
-    result.items.forEach((firebase_storage.Reference ref) {
-      print('Found file: $ref');
-    });
+        await firebase_storage.FirebaseStorage.instance
+        .ref('UserProfiles/${user.uid}/food_images').listAll();
     if (result.items.isNotEmpty) {
       String path = result.items[result.items.length-1].fullPath;
       int index=path.indexOf('food_images/food');

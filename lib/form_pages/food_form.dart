@@ -33,15 +33,32 @@ class _FoodFormState extends State<FoodForm> {
 
   Future<dynamic> getData(String query) async {
     Client _client = Client();
-    Response response = await _client
-        .get(Uri.https("nutritionix-api.p.rapidapi.com", "/v1_1/search/$query",
-        {"fields": "item_name,item_id,brand_name,nf_calories,nf_total_fat,nf_total_carbohydrate,nf_protein",
-          "limit": "5"}),
-        headers: {
-          "x-rapidapi-key": apiKey,
-          "x-rapidapi-host": "nutritionix-api.p.rapidapi.com",
-        }
+    Response response = await _client.get(
+      Uri.https('api.edamam.com', '/search',
+      {
+        'app_id': '09d2d618',
+        'app_key': '27642983d5b23a813598dfd96c727778',
+        'q': query
+      })
     );
+    
+    
+    
+    // rapid api nutritionix
+    // Response response = await _client
+    //     .get(Uri.https("nutritionix-api.p.rapidapi.com", "/v1_1/search/$query",
+    //     {"fields": "item_name,item_id,brand_name,nf_calories,nf_total_fat,nf_total_carbohydrate,nf_protein",
+    //       "limit": "5"}),
+    //     headers: {
+    //       "x-rapidapi-key": apiKey,
+    //       "x-rapidapi-host": "nutritionix-api.p.rapidapi.com",
+    //     }
+    // );
+    // webscraping
+    // Response response = await _client.get(
+    //   Uri.http("athul0491.pythonanywhere.com","/$query")
+    // );
+    // Nutritionix
     // Response response = await _client
     //     .post(Uri.https("trackapi.nutritionix.com", "/v2/natural/nutrients",
     //     {
@@ -65,8 +82,13 @@ class _FoodFormState extends State<FoodForm> {
     // );
     Map data = jsonDecode(response.body);
     print(data);
-    print(data['hits'].length);
-    if(data['max_score']!=null && data['max_score']>2)
+    int n = data['hits'].length;
+    for(int i=0;i<n;i++){
+      print(data['hits'][i]['food']['label']);
+    }
+
+    print(data['hints'].length);
+    if(n!=0)
       return data;
     else
       return 'No results';
