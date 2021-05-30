@@ -21,7 +21,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   final AuthService _auth = AuthService();
   bool _darkTheme=true;
-  bool debugMode=true;
+  bool debugMode=false;
 
   void onThemeChanged(bool value, ThemeNotifier themeNotifier) async {
     (value)

@@ -196,7 +196,7 @@ class _HistoryPageState extends State<HistoryPage> {
                   ),
                   SizedBox(height:1),
                   Text(
-                    'Carbohydrates: ${food.carbohydrates} Kcal',
+                    'Carbohydrates: ${food.carbohydrates}g',
                     style: TextStyle(
                         fontSize: 19,
                         fontWeight: FontWeight.w400

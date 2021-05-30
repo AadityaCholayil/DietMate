@@ -78,11 +78,8 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
 
   Future incrFileName(User user) async {
     firebase_storage.ListResult result =
-        await firebase_storage.FirebaseStorage.instance.ref('UserProfiles/${user.uid}/food_images').listAll();
-
-    result.items.forEach((firebase_storage.Reference ref) {
-      print('Found file: $ref');
-    });
+        await firebase_storage.FirebaseStorage.instance
+        .ref('UserProfiles/${user.uid}/food_images').listAll();
     if (result.items.isNotEmpty) {
       String path = result.items[result.items.length-1].fullPath;
       int index=path.indexOf('food_images/food');
@@ -357,7 +354,9 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
                   _thumbnailUrl = _foodImage.thumbnailUrl;
                   _imageWidth = _foodImage.width;
                   _imageHeight = _foodImage.height;
+                  _image=null;
                 }
+                Navigator.pop(context);
               });
             }
           ),
@@ -453,6 +452,8 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
                         //   uploading=false;
                         // });
                         setState((){
+                          _fullUrl=null;
+                          _thumbnailUrl=null;
                           Navigator.pop(context);
                         });
                       },
@@ -477,7 +478,6 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
           ),
         );
       },
-
     );
   }
 
@@ -552,19 +552,12 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
               ),
             ),
             onTap: () async {
-              FoodImage foodImage = await Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (BuildContext context) => ImageSearch())
+              showModalBottomSheet(
+                  context: context2,
+                  builder:(context){
+                    return _buildImagePicker(context, user);
+                  }
               );
-              setState(() {
-                if(foodImage!=null){
-                  _foodImage=foodImage;
-                  _fullUrl=_foodImage.fullUrl;
-                  _thumbnailUrl=_foodImage.thumbnailUrl;
-                  _imageWidth=_foodImage.width;
-                  _imageHeight=_foodImage.height;
-                }
-              });
             },
           ),
         ],

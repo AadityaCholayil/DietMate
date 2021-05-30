@@ -22,6 +22,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String email = '';
   String password = '';
 
+  Widget _buildTextHelp(String text){
+    return Container(
+      alignment: Alignment.centerLeft,
+      padding: EdgeInsets.only(left: 13, bottom: 5, top: 6),
+      child: Text(
+        text,
+        style: TextStyle(
+            fontSize: 17,
+            color: Theme.of(context).unselectedWidgetColor,
+            fontWeight: FontWeight.w400
+        ),
+      ),
+    );
+  }
+
   Widget _buildEmail(){
     return TextFormField(
       decoration: InputDecoration(
@@ -30,6 +45,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             borderSide: BorderSide(color: Colors.green, width: 2, style: BorderStyle.solid, ),
             borderRadius: BorderRadius.all(Radius.circular(17.0)),
           ),
+          errorStyle: TextStyle(color: Colors.red, fontSize: 16),
           fillColor: Theme.of(context).colorScheme.surface,
           labelText: 'Email Id',
           labelStyle: TextStyle(fontSize: 22),
@@ -63,6 +79,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 borderRadius: BorderRadius.all(Radius.circular(17.0)),
               ),
               fillColor: Theme.of(context).colorScheme.surface,
+              errorStyle: TextStyle(color: Colors.red, fontSize: 16),
               labelText: 'Password',
               labelStyle: TextStyle(fontSize: 22),
               floatingLabelBehavior: FloatingLabelBehavior.never
@@ -72,6 +89,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
           validator: (String value) {
             if (value.isEmpty) {
               return 'Password cannot be empty';
+            }
+            if (value.length<=6){
+              return 'Password length should be more than 6';
             }
             return null;
           },
@@ -111,6 +131,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 borderSide: BorderSide(color: Colors.green, width: 2, style: BorderStyle.solid, ),
                 borderRadius: BorderRadius.all(Radius.circular(17.0)),
               ),
+              errorStyle: TextStyle(color: Colors.red, fontSize: 16),
               fillColor: Theme.of(context).colorScheme.surface,
               labelText: 'Confirm Password',
               labelStyle: TextStyle(fontSize: 22),
@@ -171,103 +192,110 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.all(20),
         height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/Auth1_${Theme.of(context).brightness==Brightness.light?'light':'dark'}.jpg'),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                padding: EdgeInsets.all(20),
-                child: Text(
-                  'SignUp',
-                  style: TextStyle(
-                    fontSize: 40,
-                  ),
-                ),
+        child: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.all(20),
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/Auth1_${Theme.of(context).brightness==Brightness.light?'light':'dark'}.jpg'),
+                fit: BoxFit.cover,
               ),
-              SizedBox(height:25),
-              _buildEmail(),
-              SizedBox(height:10),
-              _buildPassword(),
-              SizedBox(height:10),
-              _buildConfirmPassword(),
-              SizedBox(height:10),
-              Container(
-                alignment: Alignment.topRight,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      "Already have an account?",
+            ),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(20),
+                    child: Text(
+                      'SignUp',
                       style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w400,
+                        fontSize: 40,
                       ),
                     ),
-                    logInButton(),
-                  ],
-                ),
-              ),
-              loading?LoadingSmall():ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: 7, horizontal: 30),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)
-                    )
-                ),
-                child:  Text(
-                  'SignUp',
-                  style: TextStyle(
-                    fontSize: 25,
                   ),
-                ),
-                onPressed: () async {
-                  if (!_formKey.currentState.validate()) {
-                    return;
-                  }
-                  setState(() {
-                    loading = true;
-                    errorOccurred=false;
-                    _formKey.currentState.save();
-                  } );
-                  UserData userData = UserData(
-                    name: 'firebase_default',
-                    age: 1,
-                    isMale: true,
-                    height: 1,
-                    weight: 1,
-                    activityLevel: 1,
-                    calorieGoal: 1,
-                    joinDate: '',
-                  );
-                  dynamic result = await _auth
-                      .registerWithEmailAndPassword(email, password, userData);
-                  if(result == null) {
-                    setState(() {
-                      loading = false;
-                      error = 'Please supply a valid email';
-                      errorOccurred=true;
-                    });
-                  }
-                },
+                  SizedBox(height:20),
+                  _buildTextHelp('Email Id'),
+                  _buildEmail(),
+                  SizedBox(height:3),
+                  _buildTextHelp('Password (minimum 7 characters)'),
+                  _buildPassword(),
+                  SizedBox(height:10),
+                  _buildConfirmPassword(),
+                  SizedBox(height:10),
+                  Container(
+                    alignment: Alignment.topRight,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          "Already have an account?",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        logInButton(),
+                      ],
+                    ),
+                  ),
+                  loading?LoadingSmall():ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.symmetric(vertical: 7, horizontal: 30),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15)
+                        )
+                    ),
+                    child:  Text(
+                      'SignUp',
+                      style: TextStyle(
+                        fontSize: 25,
+                      ),
+                    ),
+                    onPressed: () async {
+                      if (!_formKey.currentState.validate()) {
+                        return;
+                      }
+                      setState(() {
+                        loading = true;
+                        errorOccurred=false;
+                        _formKey.currentState.save();
+                      } );
+                      UserData userData = UserData(
+                        name: 'firebase_default',
+                        age: 1,
+                        isMale: true,
+                        height: 1,
+                        weight: 1,
+                        activityLevel: 1,
+                        calorieGoal: 1,
+                        joinDate: '',
+                      );
+                      dynamic result = await _auth
+                          .registerWithEmailAndPassword(email, password, userData);
+                      if(result == null) {
+                        setState(() {
+                          loading = false;
+                          error = 'Please supply a valid email';
+                          errorOccurred=true;
+                        });
+                      }
+                    },
+                  ),
+                  errorOccurred? Text(
+                    error,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight:FontWeight.w300,
+                      color: Colors.red,
+                    ),
+                  ): SizedBox.shrink(),
+                ],
               ),
-              errorOccurred? Text(
-                error,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight:FontWeight.w300,
-                  color: Colors.red,
-                ),
-              ): SizedBox.shrink(),
-            ],
+            ),
           ),
         ),
       ),
