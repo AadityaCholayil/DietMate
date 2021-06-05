@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:dietmate/auth_screens/additional_details_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:dietmate/model/food.dart';
@@ -12,6 +12,7 @@ import 'package:dietmate/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -333,6 +334,45 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
       print("No Image Selected");
     }
   }
+  Future <File> cropImage(File image) async{
+
+    File croppedFile = await ImageCropper.cropImage(
+        sourcePath: image.path,
+        aspectRatioPresets: Platform.isAndroid
+        ?<CropAspectRatioPreset>[
+          // CropAspectRatioPreset.original,
+          CropAspectRatioPreset.square,
+          // CropAspectRatioPreset.ratio3x2,
+          // CropAspectRatioPreset.original,
+          // CropAspectRatioPreset.ratio4x3,
+          // CropAspectRatioPreset.ratio16x9
+        ]
+        :<CropAspectRatioPreset>[
+          // CropAspectRatioPreset.original,
+          CropAspectRatioPreset.square,
+          // CropAspectRatioPreset.ratio3x2,
+          // CropAspectRatioPreset.ratio4x3,
+          // CropAspectRatioPreset.ratio5x3,
+          // CropAspectRatioPreset.ratio5x4,
+          // CropAspectRatioPreset.ratio7x5,
+          // CropAspectRatioPreset.ratio16x9
+        ],
+        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+        // cropStyle: CropStyle.circle,
+        androidUiSettings: AndroidUiSettings(
+          toolbarTitle: 'Crop Image',
+          toolbarColor: Colors.green,
+          statusBarColor: Theme.of(context).cardColor,
+          activeControlsWidgetColor: Colors.green,
+          toolbarWidgetColor: Theme.of(context).cardColor,
+          initAspectRatio: CropAspectRatioPreset.square,
+          lockAspectRatio: true,
+    ));
+    if (croppedFile != null){
+      return croppedFile;
+    }
+    return image;
+  }
 
   Widget _buildImagePicker(BuildContext context, User user){
     return Container(
@@ -340,26 +380,26 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          ListTile(
-            leading: Icon(Icons.search),
-            title: Text('WebSearch'),
-            onTap: () async {
-              _foodImage = await Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (BuildContext context) => ImageSearch(query: widget.query))
-              );
-              setState(() {
-                if(_foodImage!=null) {
-                  _fullUrl = _foodImage.fullUrl;
-                  _thumbnailUrl = _foodImage.thumbnailUrl;
-                  _imageWidth = _foodImage.width;
-                  _imageHeight = _foodImage.height;
-                  _image=null;
-                }
-                Navigator.pop(context);
-              });
-            }
-          ),
+          // ListTile(
+          //   leading: Icon(Icons.search),
+          //   title: Text('WebSearch'),
+          //   onTap: () async {
+          //     _foodImage = await Navigator.push(
+          //         context,
+          //         MaterialPageRoute(builder: (BuildContext context) => ImageSearch(query: widget.query))
+          //     );
+          //     setState(() {
+          //       if(_foodImage!=null) {
+          //         _fullUrl = _foodImage.fullUrl;
+          //         _thumbnailUrl = _foodImage.thumbnailUrl;
+          //         _imageWidth = _foodImage.width;
+          //         _imageHeight = _foodImage.height;
+          //         _image=null;
+          //       }
+          //       Navigator.pop(context);
+          //     });
+          //   }
+          // ),
           ListTile(
             leading: Icon(Icons.camera),
             title: Text('Camera'),
@@ -367,6 +407,10 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
               print('pressed');
               await getImageFromCamera();
               if(_image!=null){
+                  _image = await cropImage(_image);
+                  int imageLength = await _image.length();
+                  print("Crop Image");
+                  print(imageLength);
                 await showDialog(context: context, builder: (context)=>_buildImageDialog(user));
               }
               setState(() {
@@ -381,6 +425,10 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
                 print('pressed');
                 await getImageFromGallery();
                 if(_image!=null){
+                  _image = await cropImage(_image);
+                  int imageLength = await _image.length();
+                  print("Crop Image");
+                  print(imageLength);
                   await showDialog(context: context, builder: (context)=>_buildImageDialog(user));
                 }
                 setState(() {

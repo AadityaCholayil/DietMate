@@ -7,6 +7,7 @@ import 'package:dietmate/model/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:provider/provider.dart';
 
 class AdditionalDetailsScreen extends StatefulWidget {
@@ -124,6 +125,45 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
     }
     );
   }
+  Future <File> cropImage(File image) async{
+
+    File croppedFile = await ImageCropper.cropImage(
+        sourcePath: image.path,
+        aspectRatioPresets: Platform.isAndroid
+        ?<CropAspectRatioPreset>[
+          // CropAspectRatioPreset.original,
+          CropAspectRatioPreset.square,
+          // CropAspectRatioPreset.ratio3x2,
+          // CropAspectRatioPreset.original,
+          // CropAspectRatioPreset.ratio4x3,
+          // CropAspectRatioPreset.ratio16x9
+        ]
+        :<CropAspectRatioPreset>[
+          // CropAspectRatioPreset.original,
+          CropAspectRatioPreset.square,
+          // CropAspectRatioPreset.ratio3x2,
+          // CropAspectRatioPreset.ratio4x3,
+          // CropAspectRatioPreset.ratio5x3,
+          // CropAspectRatioPreset.ratio5x4,
+          // CropAspectRatioPreset.ratio7x5,
+          // CropAspectRatioPreset.ratio16x9
+        ],
+        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+        cropStyle: CropStyle.circle,
+        androidUiSettings: AndroidUiSettings(
+          toolbarTitle: 'Crop Image',
+          toolbarColor: Colors.green,
+          statusBarColor: Theme.of(context).cardColor,
+          activeControlsWidgetColor: Colors.green,
+          toolbarWidgetColor: Theme.of(context).cardColor,
+          initAspectRatio: CropAspectRatioPreset.square,
+          lockAspectRatio: true,
+    ));
+    if (croppedFile != null){
+      return croppedFile;
+    }
+    return image;
+  }
 
   Widget _buildImagePicker(BuildContext context, User user){
     return Container(
@@ -138,6 +178,10 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                 print('pressed');
                 await getImageFromCamera();
                 if(_image!=null){
+                  _image = await cropImage(_image);
+                  int imageLength = await _image.length();
+                  print("Crop Image");
+                  print(imageLength);
                   await showDialog(context: context, builder: (context)=>_buildImageDialog(user));
                 }
                 setState(() {
@@ -152,6 +196,10 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                 print('pressed');
                 await getImageFromGallery();
                 if(_image!=null){
+                  _image = await cropImage(_image);
+                  int imageLength = await _image.length();
+                  print("Crop Image");
+                  print(imageLength);
                   await showDialog(context: context, builder: (context)=>_buildImageDialog(user));
                 }
                 setState(() {
@@ -237,7 +285,24 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                         Navigator.pop(context);
                       },
                     ),
-                    SizedBox(width: 10)
+                    // TextButton(
+                    //   child: Text(
+                    //     'Crop Image',
+                    //     style: TextStyle(
+                    //       fontSize: 21,
+                    //     ),
+                    //   ),
+                    //   onPressed: () async{
+                    //     File file = await cropImage(_image);
+                    //     setState((){
+                    //       _image = file;
+                    //       });
+                    //     int imageLength = await _image.length();
+                    //     print("Crop Image");
+                    //     print(imageLength);
+                    //   },
+                    // ),
+                    SizedBox(width: 10),
                   ],
                 )
               ],
