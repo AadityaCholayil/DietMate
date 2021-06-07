@@ -126,30 +126,20 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
     );
   }
   Future <File> cropImage(File image) async{
-
+    int imageLength = await image.length();
+    print("Before Crop $imageLength");
     File croppedFile = await ImageCropper.cropImage(
         sourcePath: image.path,
         aspectRatioPresets: Platform.isAndroid
         ?<CropAspectRatioPreset>[
-          // CropAspectRatioPreset.original,
           CropAspectRatioPreset.square,
-          // CropAspectRatioPreset.ratio3x2,
-          // CropAspectRatioPreset.original,
-          // CropAspectRatioPreset.ratio4x3,
-          // CropAspectRatioPreset.ratio16x9
         ]
         :<CropAspectRatioPreset>[
-          // CropAspectRatioPreset.original,
           CropAspectRatioPreset.square,
-          // CropAspectRatioPreset.ratio3x2,
-          // CropAspectRatioPreset.ratio4x3,
-          // CropAspectRatioPreset.ratio5x3,
-          // CropAspectRatioPreset.ratio5x4,
-          // CropAspectRatioPreset.ratio7x5,
-          // CropAspectRatioPreset.ratio16x9
         ],
         aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
         cropStyle: CropStyle.circle,
+        compressQuality: imageLength>100000? 10000000~/imageLength: 100,
         androidUiSettings: AndroidUiSettings(
           toolbarTitle: 'Crop Image',
           toolbarColor: Colors.green,
