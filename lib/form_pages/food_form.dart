@@ -33,17 +33,20 @@ class _FoodFormState extends State<FoodForm> {
 
   Future<dynamic> getData(String query) async {
     Client _client = Client();
+    // webscraping
     Response response = await _client.get(
-      Uri.https('api.edamam.com', '/search',
-      {
-        'app_id': '09d2d618',
-        'app_key': '27642983d5b23a813598dfd96c727778',
-        'q': query
-      })
+      Uri.http("athul0491.pythonanywhere.com","/$query")
     );
-    
-    
-    
+
+    // Response response = await _client.get(
+    //   Uri.https('api.edamam.com', '/search',
+    //   {
+    //     'app_id': '09d2d618',
+    //     'app_key': '27642983d5b23a813598dfd96c727778',
+    //     'q': query
+    //   })
+    // );
+    //
     // rapid api nutritionix
     // Response response = await _client
     //     .get(Uri.https("nutritionix-api.p.rapidapi.com", "/v1_1/search/$query",
@@ -83,11 +86,7 @@ class _FoodFormState extends State<FoodForm> {
     Map data = jsonDecode(response.body);
     print(data);
     int n = data['hits'].length;
-    for(int i=0;i<n;i++){
-      print(data['hits'][i]['food']['label']);
-    }
-
-    print(data['hints'].length);
+    // print(data['hints'].length);
     if(n!=0)
       return data;
     else

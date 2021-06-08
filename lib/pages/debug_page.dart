@@ -1,10 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietmate/auth_screens/additional_details_screen.dart';
 import 'package:dietmate/auth_screens/login_screen.dart';
 import 'package:dietmate/auth_screens/plan_screen.dart';
 import 'package:dietmate/auth_screens/signup_screen.dart';
 import 'package:dietmate/auth_screens/auth_screen.dart';
-import 'package:dietmate/model/food_list_week.dart';
 import 'package:dietmate/model/user.dart';
 import 'package:dietmate/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';

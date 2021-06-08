@@ -45,8 +45,8 @@ class _HomeScreenState extends State<HomeScreen> {
         child: FittedBox(
           child: OpenContainer(
             routeSettings: RouteSettings(name: "/HomeScreen"),
-            closedColor: Theme.of(context).canvasColor,
-            openColor: Theme.of(context).canvasColor,
+            closedColor: Theme.of(context).brightness==Brightness.light?Color(0xFFC4C5CA):Color(0xFF000000),
+            openColor: Theme.of(context).brightness==Brightness.light?Color(0xFFC4C5CA):Color(0xFF000000),
             transitionDuration: Duration(milliseconds: 350),
             openBuilder: (context, closedContainer){
               return FoodForm();

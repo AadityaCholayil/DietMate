@@ -71,7 +71,7 @@ class _MyAppState extends State<MyApp> {
       );
     }
     if (!_initialized) {
-      return MaterialApp(
+  return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: themeNotifier.getTheme(),
         home: Scaffold(body: SplashScreen()),

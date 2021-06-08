@@ -202,6 +202,13 @@ class _HistoryPageState extends State<HistoryPage> {
                         fontWeight: FontWeight.w400
                     ),
                   ),
+                  Text(
+                    'Serving Size: ${food.servingSizeQty} ${food.servingSizeUnit}',
+                    style: TextStyle(
+                        fontSize: 19,
+                        fontWeight: FontWeight.w400
+                    ),
+                  ),
                 ],
               ),
             ),

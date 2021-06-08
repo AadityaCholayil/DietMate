@@ -1,10 +1,7 @@
 import 'dart:io';
-import 'package:dietmate/auth_screens/additional_details_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:dietmate/model/food.dart';
-import 'package:dietmate/model/food_image.dart';
-import 'package:dietmate/form_pages/image_search_page.dart';
 import 'package:dietmate/services/database.dart';
 import 'package:dietmate/shared/conversion.dart';
 import 'package:dietmate/shared/gradient.dart';
@@ -12,6 +9,7 @@ import 'package:dietmate/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -28,7 +26,7 @@ class FoodFormFinal extends StatefulWidget {
 class _FoodFormFinalState extends State<FoodFormFinal> {
   String _uid;
   Food _food;
-  FoodImage _foodImage;
+  // FoodImage _foodImage;
   String _name;
   String _time = '1000';
   int _calories=0, _fats=0, _protein=0, _carbohydrates=0;
@@ -41,6 +39,7 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
   final picker = ImagePicker();
   DateTime pickedTime;
   String _fileName;
+  int _multiplier=1;
 
   bool uploading=false;
   bool isLoading=false;
@@ -241,41 +240,45 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
             Expanded(
               flex: 3,
               child: Text(
-                '$_servingSizeUnit${_servingSizeQty>1?'s':''}',
+                '$_servingSizeUnit',
                 style: _style,
               ),
             ),
             IconButton(
               icon: Icon(Icons.add),
               color: Color(0xFF2ACD07),
-              onPressed: _servingSizeQty>=5?null:(){
+              onPressed: _multiplier>=5?null:(){
                 setState(() {
-                  _calories~/=_servingSizeQty;
-                  _fats~/=_servingSizeQty;
-                  _carbohydrates~/=_servingSizeQty;
-                  _protein~/=_servingSizeQty;
-                  _servingSizeQty++;
-                  _calories*=_servingSizeQty;
-                  _fats*=_servingSizeQty;
-                  _carbohydrates*=_servingSizeQty;
-                  _protein*=_servingSizeQty;
+                  _calories~/=_multiplier;
+                  _fats~/=_multiplier;
+                  _carbohydrates~/=_multiplier;
+                  _protein~/=_multiplier;
+                  _servingSizeQty~/=_multiplier;
+                  _multiplier++;
+                  _calories*=_multiplier;
+                  _fats*=_multiplier;
+                  _carbohydrates*=_multiplier;
+                  _protein*=_multiplier;
+                  _servingSizeQty*=_multiplier;
                 });
               },
             ),
             IconButton(
               icon: Icon(Icons.remove),
               color: Color(0xFF2ACD07),
-              onPressed: _servingSizeQty<=1?null:(){
+              onPressed: _multiplier<=1?null:(){
                 setState(() {
-                  _calories~/=_servingSizeQty;
-                  _fats~/=_servingSizeQty;
-                  _carbohydrates~/=_servingSizeQty;
-                  _protein~/=_servingSizeQty;
-                  _servingSizeQty--;
-                  _calories*=_servingSizeQty;
-                  _fats*=_servingSizeQty;
-                  _carbohydrates*=_servingSizeQty;
-                  _protein*=_servingSizeQty;
+                  _calories~/=_multiplier;
+                  _fats~/=_multiplier;
+                  _carbohydrates~/=_multiplier;
+                  _protein~/=_multiplier;
+                  _servingSizeQty~/=_multiplier;
+                  _multiplier--;
+                  _calories*=_multiplier;
+                  _fats*=_multiplier;
+                  _carbohydrates*=_multiplier;
+                  _protein*=_multiplier;
+                  _servingSizeQty*=_multiplier;
                 });
               },
             )
@@ -285,85 +288,50 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
     );
   }
 
-  Future uploadFile(User user) async {
+  Future<String> uploadFile(User user, {bool thumbnail = false}) async {
+    File image;
+    if(!thumbnail){
+      image=_image;
+    } else {
+      image=await compressFile(_image, thumbnail: true);
+    }
     try {
       await firebase_storage.FirebaseStorage.instance
-          .ref('UserProfiles/${user.uid}/food_images/$_fileName.jpeg')
-          .putFile(_image);
+          .ref('UserProfiles/${user.uid}/food_images/$_fileName${thumbnail?'_thumbnail':''}.png')
+          .putFile(image);
     } on Exception catch (e) {
       print('Failed - $e');
     }
     try {
       var result = await firebase_storage.FirebaseStorage.instance
-          .ref('UserProfiles/${user.uid}/food_images/$_fileName.jpeg')
+          .ref('UserProfiles/${user.uid}/food_images/$_fileName${thumbnail?'_thumbnail':''}.png')
           .getDownloadURL();
-      _fullUrl=result;
-      _thumbnailUrl=result;
-      print('url: $_fullUrl');
+      print('url: $result');
+      return result;
     } on Exception catch (e) {
       print('Failed - $e');
+      return 'Failed';
     }
   }
 
-  Future getImageFromCamera() async {
-    final pickedImage = await picker.getImage(source: ImageSource.camera);
-    if(pickedImage != null){
-      _image = File(pickedImage.path);
-      var decodedImage = await decodeImageFromList(_image.readAsBytesSync());
-      _imageWidth=decodedImage.width;
-      _imageHeight=decodedImage.height;
-      print(_image.path);
-      print(decodedImage.width);
-      print(decodedImage.height);
-    }else{
-      print("No Image Selected");
-    }
-  }
-
-  Future getImageFromGallery() async{
-    final pickedImage = await picker.getImage(source: ImageSource.gallery);
-    if(pickedImage != null){
-      _image = File(pickedImage.path);
-      var decodedImage = await decodeImageFromList(_image.readAsBytesSync());
-      _imageWidth=decodedImage.width;
-      _imageHeight=decodedImage.height;
-      print(_image.path);
-      print(decodedImage.width);
-      print(decodedImage.height);
-    }else{
-      print("No Image Selected");
-    }
-  }
   Future <File> cropImage(File image) async{
 
     File croppedFile = await ImageCropper.cropImage(
+        compressFormat: ImageCompressFormat.png,
         sourcePath: image.path,
         aspectRatioPresets: Platform.isAndroid
         ?<CropAspectRatioPreset>[
-          // CropAspectRatioPreset.original,
           CropAspectRatioPreset.square,
-          // CropAspectRatioPreset.ratio3x2,
-          // CropAspectRatioPreset.original,
-          // CropAspectRatioPreset.ratio4x3,
-          // CropAspectRatioPreset.ratio16x9
         ]
         :<CropAspectRatioPreset>[
-          // CropAspectRatioPreset.original,
           CropAspectRatioPreset.square,
-          // CropAspectRatioPreset.ratio3x2,
-          // CropAspectRatioPreset.ratio4x3,
-          // CropAspectRatioPreset.ratio5x3,
-          // CropAspectRatioPreset.ratio5x4,
-          // CropAspectRatioPreset.ratio7x5,
-          // CropAspectRatioPreset.ratio16x9
         ],
         aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
-        // cropStyle: CropStyle.circle,
         androidUiSettings: AndroidUiSettings(
           toolbarTitle: 'Crop Image',
-          toolbarColor: Colors.green,
+          toolbarColor: Theme.of(context).accentColor,
           statusBarColor: Theme.of(context).cardColor,
-          activeControlsWidgetColor: Colors.green,
+          activeControlsWidgetColor: Theme.of(context).accentColor,
           toolbarWidgetColor: Theme.of(context).cardColor,
           initAspectRatio: CropAspectRatioPreset.square,
           lockAspectRatio: true,
@@ -372,6 +340,64 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
       return croppedFile;
     }
     return image;
+  }
+
+  Future<File> compressFile(File file, {bool thumbnail = false}) async {
+    int imageLength = await file.length();
+    print('Size: $imageLength');
+    int finalSize=0;
+    if(!thumbnail){
+      finalSize=500000;
+    } else {
+      finalSize=150000;
+    }
+    if (imageLength>finalSize) {
+      int factor=(finalSize*100)~/imageLength;
+      print('Factor: $factor');
+      var result = await FlutterImageCompress.compressAndGetFile(
+        file.absolute.path, file.absolute.path.replaceAll('.png', '_compressed.png'),
+        minHeight: thumbnail?300:700,
+        minWidth: thumbnail?300:700,
+        quality: factor,
+        format: CompressFormat.png
+      );
+      print('Initial size: ${file.lengthSync()}');
+      print('After cropping: ${result.lengthSync()}');
+      return result;
+    } else {
+      print("Didn't Compress - Size: $imageLength");
+      return file;
+    }
+  }
+
+  Future cropAndCompress(File image) async {
+    image = await cropImage(image);
+    _image = await compressFile(image);
+    var decodedImage = await decodeImageFromList(_image.readAsBytesSync());
+    _imageWidth=decodedImage.width;
+    _imageHeight=decodedImage.height;
+    print(image.path);
+    print('Dimensions: ${decodedImage.width}x${decodedImage.height}');
+  }
+
+  Future getImageFromCamera() async {
+    final pickedImage = await picker.getImage(source: ImageSource.camera, imageQuality: 50, maxHeight: 1500, maxWidth: 1500);
+    if(pickedImage != null){
+      File image = File(pickedImage.path);
+      await cropAndCompress(image);
+    }else{
+      print("No Image Selected");
+    }
+  }
+
+  Future getImageFromGallery() async{
+    final pickedImage = await picker.getImage(source: ImageSource.gallery);
+    if(pickedImage != null){
+      File image = File(pickedImage.path);
+      await cropAndCompress(image);
+    }else{
+      print("No Image Selected");
+    }
   }
 
   Widget _buildImagePicker(BuildContext context, User user){
@@ -407,10 +433,6 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
               print('pressed');
               await getImageFromCamera();
               if(_image!=null){
-                  _image = await cropImage(_image);
-                  int imageLength = await _image.length();
-                  print("Crop Image");
-                  print(imageLength);
                 await showDialog(context: context, builder: (context)=>_buildImageDialog(user));
               }
               setState(() {
@@ -425,10 +447,6 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
                 print('pressed');
                 await getImageFromGallery();
                 if(_image!=null){
-                  _image = await cropImage(_image);
-                  int imageLength = await _image.length();
-                  print("Crop Image");
-                  print(imageLength);
                   await showDialog(context: context, builder: (context)=>_buildImageDialog(user));
                 }
                 setState(() {
@@ -750,7 +768,12 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
         // }
         setState(() => isLoading=true);
         if (_image!=null) {
-          await uploadFile(user);
+          _fullUrl = await uploadFile(user);
+          _thumbnailUrl = await uploadFile(user, thumbnail: true);
+          if(_fullUrl=='Failed'||_thumbnailUrl=='Failed'){
+            ScaffoldMessenger.of(context).showSnackBar(showCustomSnackBar('Error occurred! Please try again!'));
+            return;
+          }
         }
         print('Uploaded pic');
         String _date;
