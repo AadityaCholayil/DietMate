@@ -228,8 +228,8 @@ class _FoodFormState extends State<FoodForm> {
                         Food food=foodList.list[index];
                         return OpenContainer(
                           closedElevation: 0,
-                          closedColor: Theme.of(context).cardColor.withOpacity(0),
-                          openColor: Theme.of(context).canvasColor.withOpacity(0),
+                          closedColor: Theme.of(context).buttonColor,
+                          openColor: Theme.of(context).buttonColor,
                           transitionDuration: Duration(milliseconds: 500),
                           closedBuilder: (context, openBuilder){
                             return InkWell(

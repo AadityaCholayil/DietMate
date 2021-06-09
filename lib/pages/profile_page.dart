@@ -132,6 +132,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
     return Scaffold(
       body: SafeArea(
+        bottom: false,
         child: SingleChildScrollView(
           child: Stack(
             children: [
@@ -141,7 +142,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 shape: RoundedRectangleBorder(
                   borderRadius:  BorderRadius.vertical(bottom: Radius.elliptical(90, 40)),
                 ),
-                elevation: 8,
+                elevation: 0,
                 child: Container(
                   height: width*0.45,
                   width: width,
@@ -257,7 +258,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       padding: const EdgeInsets.only(left: 15),
                       child: _buildDebugPage(context),
                     ):SizedBox.shrink(),
-                    SizedBox(height: 20),
+                    SizedBox(height: 90),
                   ],
                 ),
               ),

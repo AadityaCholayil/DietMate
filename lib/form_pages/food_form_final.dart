@@ -671,9 +671,9 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
         height: MediaQuery.of(context).size.width*0.44,
         width: MediaQuery.of(context).size.width*0.370,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: 12,),
+            SizedBox(height: 7,),
             Container(
               alignment: Alignment.center,
               margin: EdgeInsets.zero,
