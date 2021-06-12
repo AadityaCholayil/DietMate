@@ -65,7 +65,7 @@ class _HistoryPageState extends State<HistoryPage> {
       },
       child: Card(
         clipBehavior: Clip.antiAliasWithSaveLayer,
-        elevation: 7,
+        elevation: 3,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(34)),
         child: Container(
           padding: EdgeInsets.all(width*0.0092),
@@ -202,6 +202,13 @@ class _HistoryPageState extends State<HistoryPage> {
                         fontWeight: FontWeight.w400
                     ),
                   ),
+                  Text(
+                    'Serving Size: ${food.servingSizeQty} ${food.servingSizeUnit}',
+                    style: TextStyle(
+                        fontSize: 19,
+                        fontWeight: FontWeight.w400
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -285,12 +292,10 @@ class _HistoryPageState extends State<HistoryPage> {
               shape: RoundedRectangleBorder(
                 borderRadius:  BorderRadius.vertical(bottom: Radius.elliptical(90, 40)),
               ),
-              elevation: 8,
-
-
+              elevation: 0,
               child: AnimatedContainer(
                 duration: Duration(milliseconds: 250),
-                height: _format == CalendarFormat.month ? uHeight*0.4 :( _format == CalendarFormat.twoWeeks ? uHeight*0.25 : uHeight*0.21),
+                height: _format == CalendarFormat.month ? uHeight*0.38 :( _format == CalendarFormat.twoWeeks ? uHeight*0.25 : uHeight*0.21),
                 width: MediaQuery.of(context).size.width,
                 // color: Theme.of(context).accentColor,
                 child: SizedBox(),
@@ -320,6 +325,7 @@ class _HistoryPageState extends State<HistoryPage> {
                       ),
                     ),
                     Card(
+                      elevation: 3,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(34.0)),
                       ),

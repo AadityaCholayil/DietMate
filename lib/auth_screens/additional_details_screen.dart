@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:dietmate/services/database.dart';
 import 'package:dietmate/shared/conversion.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
@@ -98,7 +99,11 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
     } on Exception catch (e) {
       print('Failed - $e');
     }
-
+    if (widget.userData!=null) {
+      UserData newUserData=widget.userData;
+      newUserData.userProfileUrl=_profileUrl;
+      await DatabaseService(uid: user.uid).updateUserData(newUserData);
+    }
   }
 
   Future getImageFromCamera() async{

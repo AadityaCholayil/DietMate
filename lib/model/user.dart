@@ -7,7 +7,7 @@ class UserData{
   final int weight;
   final double activityLevel;
   final String joinDate;
-  final String userProfileUrl;
+  String userProfileUrl;
   int calorieGoal;
 
   UserData({this.uid, this.name, this.age, this.isMale, this.height,

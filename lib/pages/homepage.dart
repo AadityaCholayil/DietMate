@@ -29,8 +29,8 @@ class _HomePageState extends State<HomePage> {
   int totalProtein = 0;
   int totalCarb = 0;
 
-  //ScrollController controller = ScrollController();
-  //bool closeTopContainer = false;
+  ScrollController controller = ScrollController();
+  bool closeTopContainer = false;
   //double topContainer = 0;
 
   Future<QuerySnapshot> getData(User user) async {
@@ -379,6 +379,13 @@ class _HomePageState extends State<HomePage> {
                         fontWeight: FontWeight.w400
                     ),
                   ),
+                  Text(
+                    'Serving Size: ${food.servingSizeQty} ${food.servingSizeUnit}',
+                    style: TextStyle(
+                        fontSize: 19,
+                        fontWeight: FontWeight.w400
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -467,7 +474,7 @@ class _HomePageState extends State<HomePage> {
                   shape: RoundedRectangleBorder(
                     borderRadius:  BorderRadius.vertical(bottom: Radius.elliptical(90, 40)),
                   ),
-                  elevation: 8,
+                  elevation: 0,
                   child: Container(
                     height: width*0.694,
                     width: size.width,

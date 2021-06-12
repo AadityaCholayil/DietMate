@@ -12,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'dart:ui';
-import 'package:animations/animations.dart';
 
 class ReportPage extends StatefulWidget {
   @override
@@ -26,6 +25,8 @@ class _ReportPageState extends State<ReportPage> {
   String weekNo = '';
   int caloriesGoal=0;
   DateTime now, start, end;
+
+  PageController _pageController = PageController(initialPage: 0);
 
   Future<QuerySnapshot> getData(User user) async {
     now = DateTime.now();
@@ -357,7 +358,6 @@ class _ReportPageState extends State<ReportPage> {
 
   List<PieChartSectionData> getPieChartData(FoodListWeek data, double width){
     List<PieChartSectionData> list = [];
-    var istouched;
     var fatPieCHart = PieChartSectionData(
       title: '${data.totalFats}g${touchedIndex == 0? "\nFats":""}' ,
       titleStyle: TextStyle(
@@ -634,10 +634,116 @@ class _ReportPageState extends State<ReportPage> {
     );
   }
 
+  Widget _buildHeader(UserData userData, User user) {
+    return StatefulBuilder(
+        builder: (context, setState2) {
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.04),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.only(left: 7),
+                  margin: EdgeInsets.only(bottom: 5, left: 5),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Theme.of(context).cardColor,
+                  ),
+                  child: Builder(
+                      builder: (context) {
+                        DateTime joinDate = stringToDate(userData.joinDate);
+                        return IconButton(
+                          // padding: EdgeInsets.only(bottom: 10, left: 5),
+                          icon: Icon(Icons.arrow_back_ios),
+                          iconSize: 25,
+                          color: Theme.of(context).colorScheme.onSurface,
+                          onPressed: !joinDate.isBefore(end.subtract(Duration(days: 7)))?null:() async {
+                            start=start.subtract(Duration(days: 7));
+                            end=end.subtract(Duration(days: 7));
+                            await getData(user);
+                            _pageController.nextPage(
+                              duration: Duration(milliseconds: 500),
+                              curve: Curves.ease,
+                            );
+                            setState2((){});
+                          },
+                        );
+                      }
+                  ),
+                ),
+                Column(
+                  // crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(top: 27),
+                      alignment: Alignment.center,
+                      child: Text(
+                        'Report',
+                        style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xff176607),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      // padding: EdgeInsets.only(top: 38),
+                      alignment: Alignment.center,
+                      child: Text(
+                        '${formattedDate(start)} - ${formattedDate(end)}',
+                        style: TextStyle(
+                          fontSize: 19,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xff176607),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                // Spacer(),
+                Container(
+                  alignment: Alignment.center,
+                  // padding: EdgeInsets.only(right: 5),
+                  margin: EdgeInsets.only(bottom: 5, right: 5,),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Theme.of(context).cardColor,
+                  ),
+                  child: IconButton(
+                    // padding: EdgeInsets.only(bottom: 10, left: 5),
+                    icon: Icon(Icons.arrow_forward_ios),
+                    iconSize: 25,
+                    color: Theme.of(context).colorScheme.onSurface,
+                    onPressed: !now.isAfter(end.add(Duration(days: 6)))?null:() async {
+                      start=start.add(Duration(days: 7));
+                      end=end.add(Duration(days: 7));
+                      await getData(user);
+                      _pageController.previousPage(
+                        duration: Duration(milliseconds: 500),
+                        curve: Curves.ease,
+                      );
+                      setState2((){});
+                    },
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+    );
+  }
 
   @override
   void initState() {
     super.initState();
+    now = DateTime.now();
+    if (start==null) {
+      start = now.subtract(Duration(days: 6));
+      start = DateTime(start.year, start.month, start.day, 0, 0);
+      end = DateTime(now.year, now.month, now.day, 23, 59);
+    }
   }
 
   @override
@@ -648,195 +754,115 @@ class _ReportPageState extends State<ReportPage> {
     final Size size = MediaQuery.of(context).size;
     double width = size.width;
     caloriesGoal=userData.calorieGoal;
+    // getData(user);
 
     return Scaffold(
-        body: SafeArea(
-          bottom: false,
-          child: Container(
-            height: MediaQuery.of(context).size.height,
-            child: SingleChildScrollView(
-              child: FutureBuilder<QuerySnapshot>(
-                future: getData(user),
-                builder: (context, snapshot){
-                  if(snapshot.connectionState!=ConnectionState.done){
-                    //query in progress
-                    return Loading();
-                  }
-                  if(snapshot.hasError){
-                    return Container(
-                      child: Text(
-                        'Error occurred',
-                      ),
-                    );
-                  }
-                  if(snapshot.hasData){
-                    FoodListWeek data = FoodListWeek.fromSnapshot(snapshot.data, start);
-                    // if(foodList.list.isEmpty){
-                    //   //query successful but is empty
-                    //   return Container(
-                    //     child: Text(
-                    //         'Empty'
-                    //     ),
-                    //   );
-                    // }
-                    //TODO main code
-                    return Stack(
-                      children: [
-                        Card(
-                          margin: EdgeInsets.zero,
-                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                          shape: RoundedRectangleBorder(
-                            borderRadius:  BorderRadius.vertical(bottom: Radius.elliptical(90, 40)),
-                          ),
-                          elevation: 8,
-                          child: Container(
-                            height: MediaQuery.of(context).size.height*0.35,
-                            width: MediaQuery.of(context).size.width,
-                            // color: Theme.of(context).accentColor,
-                            decoration: BoxDecoration(
-                              gradient: customGradient
-                            ),
-                            child: SizedBox(),
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.04),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Container(
-                                    alignment: Alignment.center,
-                                    padding: EdgeInsets.only(left: 7),
-                                    margin: EdgeInsets.only(bottom: 5, left: 5),
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Theme.of(context).cardColor,
-                                    ),
-                                    child: IconButton(
-                                      // padding: EdgeInsets.only(bottom: 10, left: 5),
-                                      icon: Icon(Icons.arrow_back_ios),
-                                      iconSize: 25,
-                                      color: Theme.of(context).colorScheme.onSurface,
-                                      onPressed: () {
-                                        DateTime joinDate = stringToDate(userData.joinDate);
-                                        if(joinDate.isBefore(end.subtract(Duration(days: 7)))){
-                                          setState(() {
-                                            start=start.subtract(Duration(days: 7));
-                                            end=end.subtract(Duration(days: 7));
-                                          });
-                                        }
-                                      },
-                                    ),
-                                  ),
-                                  Column(
-                                    // crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        padding: EdgeInsets.only(top: 27),
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          'Report',
-                                          style: TextStyle(
-                                            fontSize: 30,
-                                            fontWeight: FontWeight.bold,
-                                            color: Color(0xff176607),
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        // padding: EdgeInsets.only(top: 38),
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          '${ formattedDate(start)} - ${formattedDate(end)}',
-                                          style: TextStyle(
-                                            fontSize: 19,
-                                            fontWeight: FontWeight.w500,
-                                            color: Color(0xff176607),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  // Spacer(),
-                                  Container(
-                                    alignment: Alignment.center,
-                                    // padding: EdgeInsets.only(right: 5),
-                                    margin: EdgeInsets.only(bottom: 5, right: 5,),
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Theme.of(context).cardColor,
-                                    ),
-                                    child: IconButton(
-                                      // padding: EdgeInsets.only(bottom: 10, left: 5),
-                                      icon: Icon(Icons.arrow_forward_ios),
-                                      iconSize: 25,
-                                      color: Theme.of(context).colorScheme.onSurface,
-                                      onPressed: () {
-                                        if(now.isAfter(end.add(Duration(days: 6)))){
-                                          setState(() {
-                                            start=start.add(Duration(days: 7));
-                                            end=end.add(Duration(days: 7));
-                                          });
-                                        }
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: width*0.03,
-                              ),
-                              _buildLineChart(data,width),
-                              SizedBox(
-                                height: width*0.03,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  _buildLegends(data, width),
-
-                                  SizedBox(
-                                    width: width*0.03,
-                                  ),
-
-                                  _buildPieChart(data,width)
-                                ],
-                              ),
-                              SizedBox(
-                                height: width*0.03,
-                              ),
-                              _buildBarChart(data,1,width), //Fats Bar Chart
-                              SizedBox(
-                                height: width*0.03,
-                              ),
-                              _buildBarChart(data,2,width), //Protein Bar Chart
-                              SizedBox(
-                                height: width*0.03,
-                              ),
-                              _buildBarChart(data,3,width), //Carbs Bar Chart
-                              SizedBox(
-                                height: 90,
-                              )
-                            ],
-                          ),
-                        ),
-                      ]
-                    );
-                  }
-                  return Container(
-                    child: Text(
-                        'Something went wrong'
+      body: SafeArea(
+        bottom: false,
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          child: SingleChildScrollView(
+            child: Stack(
+              children: [
+                Card(
+                  margin: EdgeInsets.zero,
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  shape: RoundedRectangleBorder(
+                    borderRadius:  BorderRadius.vertical(bottom: Radius.elliptical(90, 40)),
+                  ),
+                  elevation: 0,
+                  child: Container(
+                    height: MediaQuery.of(context).size.height*0.35,
+                    width: MediaQuery.of(context).size.width,
+                    // color: Theme.of(context).accentColor,
+                    decoration: BoxDecoration(
+                        gradient: customGradient
                     ),
-                  );
-                },
-              ),
-            ),
+                    child: SizedBox(),
+                  ),
+                ),
+                Container(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      _buildHeader(userData, user),
+                      SizedBox(
+                        height: width*0.03,
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.width * 3.2,
+                        width: MediaQuery.of(context).size.width,
+                        child: PageView.builder(
+                          reverse: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          controller: _pageController,
+                          itemBuilder: (context, index) {
+                            return FutureBuilder<QuerySnapshot>(
+                              future: getData(user),
+                              builder: (context, snapshot) {
+                                if(snapshot.connectionState!=ConnectionState.done){
+                                  //query in progress
+                                  return Loading();
+                                } else if(snapshot.hasData) {
+                                  FoodListWeek data = FoodListWeek.fromSnapshot(snapshot.data, start);
+                                  return Container(
+                                    padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.04),
+                                    child: Column(
+                                      children: [
+                                        _buildLineChart(data, width),
+                                        SizedBox(
+                                          height: width * 0.03,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment
+                                              .center,
+                                          children: [
+                                            _buildLegends(data, width),
+
+                                            SizedBox(
+                                              width: width * 0.03,
+                                            ),
+
+                                            _buildPieChart(data, width)
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: width * 0.03,
+                                        ),
+                                        _buildBarChart(data, 1, width),
+                                        //Fats Bar Chart
+                                        SizedBox(
+                                          height: width * 0.03,
+                                        ),
+                                        _buildBarChart(data, 2, width),
+                                        //Protein Bar Chart
+                                        SizedBox(
+                                          height: width * 0.03,
+                                        ),
+                                        _buildBarChart(data, 3, width),
+                                        //Carbs Bar Chart
+                                        SizedBox(
+                                          height: 90,
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                } else {
+                                  return Container();
+                                }
+                              }
+                            );
+                          }
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ]
+            )
           ),
-        )
+        ),
+      )
     );
   }
 }
