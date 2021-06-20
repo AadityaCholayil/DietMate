@@ -571,7 +571,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
       ),
       child: Container(
         //height: MediaQuery.of(context).size.width*0.,
-        padding: EdgeInsets.all(12),
+        padding: EdgeInsets.all(MediaQuery.of(context).size.width*0.026),
         width: MediaQuery.of(context).size.width,
         child: DropdownButton<String>(
           value: _activity,
@@ -636,7 +636,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
           child: SingleChildScrollView(
             child: Container(
               //height: MediaQuery.of(context).size.height,
-              padding: EdgeInsets.all(15),
+              padding: EdgeInsets.all(MediaQuery.of(context).size.width*(15/432)),
               child: Form(
                 key: _formKey,
                 child: Column(

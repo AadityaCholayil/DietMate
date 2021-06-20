@@ -453,7 +453,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-
+    print('${MediaQuery.of(context).textScaleFactor}');
+    print('${MediaQuery.of(context).size.height}');
+    print('${MediaQuery.of(context).size.width}');
     final user = Provider.of<User>(context);
     final userData = Provider.of<UserData>(context);
     caloriesGoal=userData.calorieGoal;
