@@ -7,10 +7,10 @@ class FoodImage{
   FoodImage({this.fullUrl, this.thumbnailUrl, this.height, this.width});
 
   FoodImage.fromData(Map data, int hitNo){
-    this.fullUrl=data['value'][hitNo]['url'];
-    this.thumbnailUrl=data['value'][hitNo]['thumbnail'];
-    this.height=data['value'][hitNo]['height'];
-    this.width=data['value'][hitNo]['width'];
+    this.fullUrl=data['img'][hitNo];
+    this.thumbnailUrl=data['img'][hitNo];
+    this.height=500;
+    this.width=500;
   }
 }
 

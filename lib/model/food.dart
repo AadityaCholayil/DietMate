@@ -33,7 +33,7 @@ class Food{
   // }
 
    Food.fromAPIData(var data, int hitNo){
-    this.name='${data["hits"][hitNo]["item_name"]} - ${data["hits"][hitNo]["item_disc"]}';
+    this.name='${data["hits"][hitNo]["item_name"]} - ${data["hits"][hitNo]["item_desc"]}';
     String cal = data["hits"][hitNo]["calories"]??'0';
     this.calories=int.tryParse(cal);
     this.fats=int.tryParse(data["hits"][hitNo]["nf_total_fat"]);
