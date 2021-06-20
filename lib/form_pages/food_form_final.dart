@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:dietmate/form_pages/image_search_page.dart';
+// import 'package:dietmate/model/food_image.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:dietmate/model/food.dart';
 import 'package:dietmate/services/database.dart';

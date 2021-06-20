@@ -35,7 +35,7 @@ class _FoodFormState extends State<FoodForm> {
     Client _client = Client();
     // webscraping
     Response response = await _client.get(
-      Uri.http("athul0491.pythonanywhere.com","/$query")
+      Uri.http("athul0491.pythonanywhere.com","/api/$query")
     );
 
     // Response response = await _client.get(

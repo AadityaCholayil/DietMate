@@ -21,6 +21,13 @@ class Wrapper extends StatelessWidget {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: themeNotifier.getTheme(),
+          builder: (context, widget){
+            int width = MediaQuery.of(context).size.width.toInt();
+            return MediaQuery(
+              data: MediaQuery.of(context).copyWith(textScaleFactor: width/392.72),
+              child: widget,
+            );
+          },
           home: HomeScreen(),
         ),
         builder: (context, widget){

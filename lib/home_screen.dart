@@ -20,6 +20,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    print('${MediaQuery.of(context).textScaleFactor}');
+    print('${MediaQuery.of(context).size.height}');
+    print('${MediaQuery.of(context).size.width}');
+
     return Scaffold(
       extendBody: true,
       body: PageView(

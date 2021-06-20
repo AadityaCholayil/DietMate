@@ -30,15 +30,18 @@ class _ImageSearchState extends State<ImageSearch> {
 
   Future<dynamic> getImages(String query) async {
     Client _client = Client();
-    const String _baseUrl = "contextualwebsearch-websearch-v1.p.rapidapi.com";
-    Response response = await _client
-        .get(Uri.https(_baseUrl, "/api/Search/ImageSearchAPI",
-        {"q": query, "pageNumber": "1", "pageSize":"15", "autoCorrect":"true"}),
-        headers: {
-          "x-rapidapi-key": "9b837a32d8mshd72f108cc18a5ebp160760jsnc13d929cb7fd",
-          "x-rapidapi-host": "contextualwebsearch-websearch-v1.p.rapidapi.com",
-        }
+    Response response = await _client.get(
+        Uri.http("athul0491.pythonanywhere.com","/image/$query")
     );
+    // const String _baseUrl = "contextualwebsearch-websearch-v1.p.rapidapi.com";
+    // Response response = await _client
+    //     .get(Uri.https(_baseUrl, "/api/Search/ImageSearchAPI",
+    //     {"q": query, "pageNumber": "1", "pageSize":"15", "autoCorrect":"true"}),
+    //     headers: {
+    //       "x-rapidapi-key": "9b837a32d8mshd72f108cc18a5ebp160760jsnc13d929cb7fd",
+    //       "x-rapidapi-host": "contextualwebsearch-websearch-v1.p.rapidapi.com",
+    //     }
+    // );
     Map data=jsonDecode(response.body);
     print(data);
     if(data['totalCount']==0){
