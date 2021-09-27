@@ -657,7 +657,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                     SizedBox(height: 5),
                     _buildProfile(context, user),
                     SizedBox(height: 15),
-                    _buildTextHelp('Name'),
+                    _buildTextHelp('First Name'),
                     _buildName(),
                     _buildTextHelp('Age'),
                     _buildAge(),
