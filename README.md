@@ -1,16 +1,12 @@
-# dietmate
+# DietMate
 
-A Calorie Counter Mobile Application.
+DietMate is a Calorie Counter App that helps users track their calorie intake to assist them with their weight goals. 
 
-## Getting Started
+DietMate gives access to the largest branded food database in existence with over 942,347 food items. 
 
-This project is a starting point for a Flutter application.
+DietMate provides personalized plans for setting a calorie goal like losing, maintaining, or gaining weight at different paces calculated on factors like their height, weight, age, gender, activity level, etc. 
 
-A few resources to get you started if this is your first Flutter project:
+The app uses REST API to fetch the nutritional data that the user searches for. 
+The Provider Package is used for State Management. 
+Google’s Firebase Platform is used for User Authentication, Database, and Storage.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
