@@ -13,14 +13,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]).then((_) {
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+      overlays: [SystemUiOverlay.bottom]).then((_) {
     SharedPreferences.getInstance().then((prefs) {
       var darkModeOn = prefs.getBool('darkMode') ?? false;
       runApp(
         ChangeNotifierProvider<ThemeNotifier>(
           create: (_) => ThemeNotifier(darkModeOn ? darkTheme : lightTheme),
           child: MyApp(),
-          builder: (context, widget){
+          builder: (context, widget) {
             return widget;
           },
         ),
@@ -35,7 +36,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   bool _initialized = false;
   bool _error = false;
 
@@ -45,17 +45,19 @@ class _MyAppState extends State<MyApp> {
       setState(() {
         _initialized = true;
       });
-    } catch(e) {
+    } catch (e) {
       setState(() {
         _error = true;
       });
     }
   }
+
   @override
   void initState() {
     initializeFlutterFire();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
@@ -63,7 +65,7 @@ class _MyAppState extends State<MyApp> {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    if(_error) {
+    if (_error) {
       return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: themeNotifier.getTheme(),
@@ -71,7 +73,7 @@ class _MyAppState extends State<MyApp> {
       );
     }
     if (!_initialized) {
-  return MaterialApp(
+      return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: themeNotifier.getTheme(),
         home: Scaffold(body: SplashScreen()),
@@ -79,9 +81,6 @@ class _MyAppState extends State<MyApp> {
     }
     User user = FirebaseAuth.instance.currentUser ?? null;
     return StreamProvider<User>.value(
-        initialData: user,
-        value: AuthService().user,
-        child: Wrapper()
-    );
+        initialData: user, value: AuthService().user, child: Wrapper());
   }
 }

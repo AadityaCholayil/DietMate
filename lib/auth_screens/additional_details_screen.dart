@@ -133,7 +133,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
   Future <File> cropImage(File image) async{
     int imageLength = await image.length();
     print("Before Crop $imageLength");
-    File croppedFile = await ImageCropper.cropImage(
+    File croppedFile = await ImageCropper().cropImage(
         sourcePath: image.path,
         aspectRatioPresets: Platform.isAndroid
         ?<CropAspectRatioPreset>[

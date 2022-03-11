@@ -318,7 +318,7 @@ class _FoodFormFinalState extends State<FoodFormFinal> {
 
   Future <File> cropImage(File image) async{
 
-    File croppedFile = await ImageCropper.cropImage(
+    File croppedFile = await ImageCropper().cropImage(
         compressFormat: ImageCompressFormat.png,
         sourcePath: image.path,
         aspectRatioPresets: Platform.isAndroid
