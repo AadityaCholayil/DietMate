@@ -226,7 +226,7 @@ class _ReportPageState extends State<ReportPage> {
 
           ),
 
-          swapAnimationDuration: Duration(seconds: 1),
+          swapAnimationDuration: Duration(microseconds: 500),
           swapAnimationCurve: Curves.linear,
         ),
       ),

@@ -21,6 +21,13 @@ class Wrapper extends StatelessWidget {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: themeNotifier.getTheme(),
+          builder: (context, widget){
+            int width = MediaQuery.of(context).size.width.toInt();
+            return MediaQuery(
+              data: MediaQuery.of(context).copyWith(textScaleFactor: width/392.72727272725),
+              child: widget,
+            );
+          },
           home: HomeScreen(),
         ),
         builder: (context, widget){
@@ -30,6 +37,13 @@ class Wrapper extends StatelessWidget {
               return MaterialApp(
                 debugShowCheckedModeBanner: false,
                 theme: themeNotifier.getTheme(),
+                builder: (context, widget){
+                  int width = MediaQuery.of(context).size.width.toInt();
+                  return MediaQuery(
+                    data: MediaQuery.of(context).copyWith(textScaleFactor: width/392.72727272725),
+                    child: widget,
+                  );
+                },
                 home: AdditionalDetailsScreen(),
               );
             } else {
@@ -40,6 +54,7 @@ class Wrapper extends StatelessWidget {
                 debugShowCheckedModeBanner: false,
                 theme: themeNotifier.getTheme(),
                 home: Scaffold(body: Loading()),
+
             );
           }
         },
@@ -48,6 +63,13 @@ class Wrapper extends StatelessWidget {
       return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: themeNotifier.getTheme(),
+         builder: (context, widget){
+            int width = MediaQuery.of(context).size.width.toInt();
+            return MediaQuery(
+              data: MediaQuery.of(context).copyWith(textScaleFactor: width/392.72727272725),
+              child: widget,
+            );
+          },
         home: AuthScreen()
       );
     }

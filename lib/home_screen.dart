@@ -84,6 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
+        color: Theme.of(context).brightness==Brightness.light?Colors.white:Color(0xFF1F1F1F),
         child: Container(
           height: 60,
           padding: EdgeInsets.symmetric(horizontal: 27),

@@ -131,30 +131,20 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
     );
   }
   Future <File> cropImage(File image) async{
-
-    File croppedFile = await ImageCropper.cropImage(
+    int imageLength = await image.length();
+    print("Before Crop $imageLength");
+    File croppedFile = await ImageCropper().cropImage(
         sourcePath: image.path,
         aspectRatioPresets: Platform.isAndroid
         ?<CropAspectRatioPreset>[
-          // CropAspectRatioPreset.original,
           CropAspectRatioPreset.square,
-          // CropAspectRatioPreset.ratio3x2,
-          // CropAspectRatioPreset.original,
-          // CropAspectRatioPreset.ratio4x3,
-          // CropAspectRatioPreset.ratio16x9
         ]
         :<CropAspectRatioPreset>[
-          // CropAspectRatioPreset.original,
           CropAspectRatioPreset.square,
-          // CropAspectRatioPreset.ratio3x2,
-          // CropAspectRatioPreset.ratio4x3,
-          // CropAspectRatioPreset.ratio5x3,
-          // CropAspectRatioPreset.ratio5x4,
-          // CropAspectRatioPreset.ratio7x5,
-          // CropAspectRatioPreset.ratio16x9
         ],
         aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
         cropStyle: CropStyle.circle,
+        compressQuality: imageLength>100000? 10000000~/imageLength: 100,
         androidUiSettings: AndroidUiSettings(
           toolbarTitle: 'Crop Image',
           toolbarColor: Colors.green,
@@ -581,7 +571,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
       ),
       child: Container(
         //height: MediaQuery.of(context).size.width*0.,
-        padding: EdgeInsets.all(12),
+        padding: EdgeInsets.all(MediaQuery.of(context).size.width*0.026),
         width: MediaQuery.of(context).size.width,
         child: DropdownButton<String>(
           value: _activity,
@@ -646,7 +636,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
           child: SingleChildScrollView(
             child: Container(
               //height: MediaQuery.of(context).size.height,
-              padding: EdgeInsets.all(15),
+              padding: EdgeInsets.all(MediaQuery.of(context).size.width*(15/432)),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -667,7 +657,7 @@ class _AdditionalDetailsScreenState extends State<AdditionalDetailsScreen> {
                     SizedBox(height: 5),
                     _buildProfile(context, user),
                     SizedBox(height: 15),
-                    _buildTextHelp('Name'),
+                    _buildTextHelp('First Name'),
                     _buildName(),
                     _buildTextHelp('Age'),
                     _buildAge(),

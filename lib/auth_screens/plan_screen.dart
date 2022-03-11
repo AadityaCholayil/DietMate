@@ -124,7 +124,7 @@ class _PlanScreenState extends State<PlanScreen> {
               children: [
                 SizedBox(width: 5,),
                 Expanded(
-                  flex: 2,
+                  flex: 17,
                   child: Container(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -150,7 +150,7 @@ class _PlanScreenState extends State<PlanScreen> {
                 ),
                 VerticalDivider(thickness: 2, color:Theme.of(context).primaryColorLight),
                 Expanded(
-                  flex: 1,
+                  flex: 10,
                   child: Container(
                     padding:EdgeInsets.fromLTRB(10, 0, 0, 0),
                     height: 80,
@@ -206,6 +206,7 @@ class _PlanScreenState extends State<PlanScreen> {
 
   Widget _buildCustom(){
     return TextFormField(
+      maxLength: 4,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(15, 16, 15, 16),
           enabledBorder: OutlineInputBorder(

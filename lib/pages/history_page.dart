@@ -282,9 +282,10 @@ class _HistoryPageState extends State<HistoryPage> {
     UserData userData = Provider.of<UserData>(context);
     DateTime joinDate = stringToDate(userData.joinDate);
     var uHeight = MediaQuery.of(context).size.height;
-    return Scaffold(
-      body: SafeArea(
-        child: Stack(
+    return SafeArea(
+      bottom: false,
+      child: Scaffold(
+        body: Stack(
           children:[
             Card(
               margin: EdgeInsets.zero,
